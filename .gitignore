@@ -1,0 +1,18 @@
+# Build outputs
+/artifacts/
+/build/
+
+# Visual Studio / editors
+/.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.log

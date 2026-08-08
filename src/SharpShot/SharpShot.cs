@@ -15,8 +15,8 @@ using Microsoft.Win32;
 [assembly: AssemblyDescription("Lossless, high-quality Windows region screenshots")]
 [assembly: AssemblyProduct("SharpShot")]
 [assembly: AssemblyCopyright("Copyright (c) 2026 Leonxlnx")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
 
 namespace SharpShot
 {
@@ -122,6 +122,7 @@ namespace SharpShot
         private readonly ToolStripMenuItem _nativeItem;
         private readonly ToolStripMenuItem _crispItem;
         private readonly ToolStripMenuItem _ultraItem;
+        private readonly ToolStripMenuItem _maxItem;
         private readonly ToolStripMenuItem _autoSaveItem;
         private readonly ToolStripMenuItem _startupItem;
         private readonly ToolStripMenuItem _openLastItem;
@@ -151,15 +152,18 @@ namespace SharpShot
             _nativeItem = new ToolStripMenuItem("Native - exact pixels (1\u00D7)");
             _crispItem = new ToolStripMenuItem("Crisp - enlarge 2\u00D7");
             _ultraItem = new ToolStripMenuItem("Ultra - enlarge 3\u00D7");
+            _maxItem = new ToolStripMenuItem("Max - enlarge up to 6\u00D7 (micro crops)");
             _autoItem.Click += delegate { SetQuality(0); };
             _nativeItem.Click += delegate { SetQuality(1); };
             _crispItem.Click += delegate { SetQuality(2); };
             _ultraItem.Click += delegate { SetQuality(3); };
+            _maxItem.Click += delegate { SetQuality(6); };
             qualityMenu.DropDownItems.Add(_autoItem);
             qualityMenu.DropDownItems.Add(new ToolStripSeparator());
             qualityMenu.DropDownItems.Add(_nativeItem);
             qualityMenu.DropDownItems.Add(_crispItem);
             qualityMenu.DropDownItems.Add(_ultraItem);
+            qualityMenu.DropDownItems.Add(_maxItem);
             _menu.Items.Add(qualityMenu);
 
             _autoSaveItem = new ToolStripMenuItem("Automatically save lossless PNGs");
@@ -253,6 +257,7 @@ namespace SharpShot
             _nativeItem.Checked = _settings.QualityScale == 1;
             _crispItem.Checked = _settings.QualityScale == 2;
             _ultraItem.Checked = _settings.QualityScale == 3;
+            _maxItem.Checked = _settings.QualityScale == 6;
         }
 
         private void BeginCapture()
@@ -281,13 +286,13 @@ namespace SharpShot
                 desktop = null;
 
                 int effectiveScale = QualityProcessor.ResolveScale(selected.Width, selected.Height, _settings.QualityScale);
-                output = QualityProcessor.Process(crop, effectiveScale);
-                crop.Dispose();
+                Bitmap ownedCrop = crop;
                 crop = null;
+                output = QualityProcessor.ProcessOwned(ownedCrop, effectiveScale);
 
                 int outputWidth = output.Width;
                 int outputHeight = output.Height;
-                byte[] png = PngEncoder.Encode(output);
+                PngPayload png = PngEncoder.Encode(output);
                 bool copied = false;
                 string clipboardError = null;
                 try
@@ -424,9 +429,9 @@ namespace SharpShot
         private void ShowAbout()
         {
             MessageBox.Show(
-                "SharpShot 1.1.0\n\n" +
+                "SharpShot 1.2.0\n\n" +
                 "A native-pixel Windows region capture tool.\n\n" +
-                "Auto Crisp chooses Native 1\u00D7, Crisp 2\u00D7, or Ultra 3\u00D7 from the selection size. Enlargement uses local-range-clamped Catmull-Rom resampling for clean edges without sharpening halos. It improves small-crop readability but cannot create missing source detail.\n\n" +
+                "Auto Crisp chooses Native 1\u00D7, Crisp 2\u00D7, Ultra 3\u00D7, or Max 6\u00D7 from the selection size. Enlargement uses local-range-clamped Catmull-Rom resampling for clean edges without sharpening halos. It improves small-crop readability but cannot create missing source detail.\n\n" +
                 "Captures are copied as lossless PNG and saved when auto-save is enabled.\n\n" +
                 "Keyboard shortcut: " + _hotkeyLabel + "\n" +
                 "You can also double-click the tray icon to capture.",
@@ -970,6 +975,9 @@ namespace SharpShot
     internal static class QualityProcessor
     {
         private const long MaxOutputPixels = 16000000L;
+        private const long MaxAutoOutputPixels = 4000000L;
+        private const int MaxOutputDimension = 32760;
+        private const int MaxAutoOutputDimension = 4096;
 
         private struct ScaleMap
         {
@@ -985,6 +993,7 @@ namespace SharpShot
 
         internal static string GetModeName(int scale)
         {
+            if (scale >= 6) return "Max 6\u00D7";
             if (scale >= 3) return "Ultra 3\u00D7";
             if (scale == 2) return "Crisp 2\u00D7";
             return "Native 1\u00D7";
@@ -1007,24 +1016,54 @@ namespace SharpShot
             if (width < 1 || height < 1)
                 return 1;
 
-            long area = (long)width * height;
-            int longestEdge = Math.Max(width, height);
-            if (area <= 200000L && longestEdge <= 640)
+            if (OutputFits(width, height, 6, MaxAutoOutputPixels, MaxAutoOutputDimension))
+                return 6;
+            if (OutputFits(width, height, 3, MaxAutoOutputPixels, MaxAutoOutputDimension))
                 return 3;
-            if (area <= 625000L && longestEdge <= 1280)
+            if (OutputFits(width, height, 2, MaxAutoOutputPixels, MaxAutoOutputDimension))
                 return 2;
             return 1;
         }
 
         internal static int GetSafeScale(int width, int height, int requestedScale)
         {
-            int scale = Math.Max(1, Math.Min(3, requestedScale));
-            while (scale > 1 &&
-                  ((long)width * height * scale * scale > MaxOutputPixels ||
-                   (long)width * scale > 32760L ||
-                   (long)height * scale > 32760L))
-                scale--;
+            if (width < 1 || height < 1)
+                return 1;
+
+            int scale = NormalizeScale(requestedScale);
+            while (scale > 1 && !OutputFits(width, height, scale, MaxOutputPixels, MaxOutputDimension))
+                scale = NextLowerScale(scale);
             return scale;
+        }
+
+        private static int NormalizeScale(int requestedScale)
+        {
+            if (requestedScale >= 6) return 6;
+            if (requestedScale >= 3) return 3;
+            if (requestedScale >= 2) return 2;
+            return 1;
+        }
+
+        private static int NextLowerScale(int scale)
+        {
+            if (scale >= 6) return 3;
+            if (scale >= 3) return 2;
+            return 1;
+        }
+
+        private static bool OutputFits(
+            int width,
+            int height,
+            int scale,
+            long maximumPixels,
+            int maximumDimension)
+        {
+            long outputWidth = (long)width * scale;
+            long outputHeight = (long)height * scale;
+            if (outputWidth < 1 || outputHeight < 1 ||
+                outputWidth > maximumDimension || outputHeight > maximumDimension)
+                return false;
+            return outputWidth <= maximumPixels / outputHeight;
         }
 
         internal static Bitmap Process(Bitmap source, int scale)
@@ -1038,6 +1077,35 @@ namespace SharpShot
             }
 
             return ResizeClampedCatmullRom(source, scale);
+        }
+
+        // The capture pipeline transfers ownership here so native, high-resolution
+        // crops do not need a second full-size bitmap copy.
+        internal static Bitmap ProcessOwned(Bitmap source, int scale)
+        {
+            scale = GetSafeScale(source.Width, source.Height, scale);
+            if (scale == 1)
+            {
+                try
+                {
+                    source.SetResolution(96.0f, 96.0f);
+                    return source;
+                }
+                catch
+                {
+                    source.Dispose();
+                    throw;
+                }
+            }
+
+            try
+            {
+                return ResizeClampedCatmullRom(source, scale);
+            }
+            finally
+            {
+                source.Dispose();
+            }
         }
 
         private static Bitmap ResizeClampedCatmullRom(Bitmap source, int scale)
@@ -1081,7 +1149,6 @@ namespace SharpShot
                         int slotD = EnsureHorizontalRow(vertical.D, vertical, sourceData,
                             sourceRowBytes, mapX, cacheKeys, sourceRows, horizontalRows);
 
-                        Array.Clear(outputRow, 0, outputRow.Length);
                         for (int x = 0; x < width; x++)
                         {
                             ScaleMap horizontal = mapX[x];
@@ -1103,8 +1170,26 @@ namespace SharpShot
                                 int bottomRight = sourceRows[slotC][sourceRight + channel];
                                 int minimum = Math.Min(Math.Min(topLeft, topRight), Math.Min(bottomLeft, bottomRight));
                                 int maximum = Math.Max(Math.Max(topLeft, topRight), Math.Max(bottomLeft, bottomRight));
-                                int rounded = (int)Math.Round(value);
-                                outputRow[component] = (byte)Math.Max(minimum, Math.Min(maximum, rounded));
+                                if (value <= minimum)
+                                {
+                                    outputRow[component] = (byte)minimum;
+                                }
+                                else if (value >= maximum)
+                                {
+                                    outputRow[component] = (byte)maximum;
+                                }
+                                else
+                                {
+                                    // Inline midpoint-to-even rounding preserves Math.Round's
+                                    // pixels without its per-channel call overhead.
+                                    int floor = (int)value;
+                                    float fraction = value - floor;
+                                    int rounded = fraction > 0.5f ||
+                                                  (fraction == 0.5f && (floor & 1) != 0)
+                                        ? floor + 1
+                                        : floor;
+                                    outputRow[component] = (byte)rounded;
+                                }
                             }
                         }
 
@@ -1243,33 +1328,48 @@ namespace SharpShot
         }
     }
 
+    internal struct PngPayload
+    {
+        internal readonly byte[] Buffer;
+        internal readonly int Length;
+
+        internal PngPayload(byte[] buffer, int length)
+        {
+            Buffer = buffer;
+            Length = length;
+        }
+
+        internal void WriteTo(Stream destination)
+        {
+            destination.Write(Buffer, 0, Length);
+        }
+    }
+
     internal static class PngEncoder
     {
-        internal static byte[] Encode(Bitmap bitmap)
+        internal static PngPayload Encode(Bitmap bitmap)
         {
             using (MemoryStream stream = new MemoryStream())
             {
                 bitmap.Save(stream, ImageFormat.Png);
-                return stream.ToArray();
+                return new PngPayload(stream.GetBuffer(), checked((int)stream.Length));
             }
         }
     }
 
     internal static class ClipboardWriter
     {
-        internal static bool TrySetPng(Bitmap bitmap, byte[] png)
+        internal static bool TrySetPng(Bitmap bitmap, PngPayload png)
         {
             try
             {
-                using (MemoryStream pngStream = new MemoryStream(png, false))
-                using (MemoryStream mimePngStream = new MemoryStream(png, false))
-                using (Bitmap clipboardBitmap = new Bitmap(bitmap))
+                using (MemoryStream pngStream = new MemoryStream(png.Buffer, 0, png.Length, false))
+                using (MemoryStream mimePngStream = new MemoryStream(png.Buffer, 0, png.Length, false))
                 {
-                    clipboardBitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
                     DataObject data = new DataObject();
                     data.SetData("PNG", false, pngStream);
                     data.SetData("image/png", false, mimePngStream);
-                    data.SetData(DataFormats.Bitmap, true, clipboardBitmap);
+                    data.SetData(DataFormats.Bitmap, true, bitmap);
                     // This overload performs its own bounded clipboard-busy retries.
                     Clipboard.SetDataObject(data, true, 6, 60);
                 }
@@ -1289,7 +1389,7 @@ namespace SharpShot
             return Path.Combine(pictures, "SharpShot");
         }
 
-        internal static string Save(byte[] png, int width, int height)
+        internal static string Save(PngPayload png, int width, int height)
         {
             string folder = GetFolder();
             Directory.CreateDirectory(folder);
@@ -1302,7 +1402,8 @@ namespace SharpShot
                 path = Path.Combine(folder, baseName + "_" + suffix + ".png");
                 suffix++;
             }
-            File.WriteAllBytes(path, png);
+            using (FileStream file = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+                png.WriteTo(file);
             return path;
         }
     }
@@ -1341,7 +1442,8 @@ namespace SharpShot
                     if (String.Equals(key, "qualityScale", StringComparison.OrdinalIgnoreCase))
                     {
                         int parsed;
-                        if (Int32.TryParse(value, out parsed) && parsed >= 0 && parsed <= 3)
+                        if (Int32.TryParse(value, out parsed) &&
+                            ((parsed >= 0 && parsed <= 3) || parsed == 6))
                             settings.QualityScale = parsed;
                     }
                     else if (String.Equals(key, "autoSave", StringComparison.OrdinalIgnoreCase))
@@ -1547,13 +1649,24 @@ namespace SharpShot
                 using (Bitmap pattern = CreatePattern())
                 {
                     string nativePath = Path.Combine(outputFolder, "pattern-native.png");
-                    pattern.Save(nativePath, ImageFormat.Png);
+                    PngPayload nativePng = PngEncoder.Encode(pattern);
+                    using (FileStream nativeFile = new FileStream(nativePath, FileMode.Create, FileAccess.Write, FileShare.Read))
+                        nativePng.WriteTo(nativeFile);
                     VerifyPng(nativePath);
                     using (Bitmap exact = QualityProcessor.Process(pattern, 1))
                     {
                         if (!PixelsEqual(pattern, exact))
                             throw new InvalidOperationException("Native 1x changed source pixels.");
                         report.Add("PASS: Native 1x is pixel-exact");
+                    }
+                    Bitmap ownedNative = pattern.Clone(
+                        new Rectangle(0, 0, pattern.Width, pattern.Height),
+                        PixelFormat.Format32bppArgb);
+                    using (Bitmap ownedExact = QualityProcessor.ProcessOwned(ownedNative, 1))
+                    {
+                        if (!Object.ReferenceEquals(ownedNative, ownedExact) || !PixelsEqual(pattern, ownedExact))
+                            throw new InvalidOperationException("Owned native processing made an unnecessary copy.");
+                        report.Add("PASS: owned native processing reuses the exact crop bitmap");
                     }
                     using (Bitmap crisp = QualityProcessor.Process(pattern, 2))
                     {
@@ -1580,6 +1693,22 @@ namespace SharpShot
                         report.Add("PASS: Ultra 3x produced " + ultra.Width + " x " + ultra.Height);
                     }
 
+                    Bitmap ownedMaximum = pattern.Clone(
+                        new Rectangle(0, 0, pattern.Width, pattern.Height),
+                        PixelFormat.Format32bppArgb);
+                    using (Bitmap maximum = QualityProcessor.ProcessOwned(ownedMaximum, 6))
+                    {
+                        if (maximum.Width != pattern.Width * 6 || maximum.Height != pattern.Height * 6)
+                            throw new InvalidOperationException("6x output dimensions are wrong.");
+                        string maximumPath = Path.Combine(outputFolder, "pattern-max-6x.png");
+                        maximum.Save(maximumPath, ImageFormat.Png);
+                        VerifyPng(maximumPath);
+                        if (Math.Abs(maximum.HorizontalResolution - 576.0f) > 1.0f)
+                            throw new InvalidOperationException("6x DPI metadata is wrong.");
+                        VerifyNoNewChannelExtrema(pattern, maximum, 6);
+                        report.Add("PASS: Max 6x produced " + maximum.Width + " x " + maximum.Height);
+                    }
+
                     VerifyOverlayPreviewIsUnscaled(pattern);
                     report.Add("PASS: overlay and selection stay pixel-aligned at 125% DPI");
                 }
@@ -1590,7 +1719,15 @@ namespace SharpShot
                 VerifyAutoScaleBoundaries();
                 report.Add("PASS: Auto Crisp scale boundaries are deterministic");
 
-                if (QualityProcessor.GetSafeScale(4000, 3000, 3) != 1)
+                if (QualityProcessor.GetSafeScale(4000, 3000, 6) != 1 ||
+                    QualityProcessor.GetSafeScale(2000, 2000, 6) != 2 ||
+                    QualityProcessor.GetSafeScale(667, 667, 6) != 3 ||
+                    QualityProcessor.GetSafeScale(666, 666, 6) != 6 ||
+                    QualityProcessor.GetSafeScale(5460, 1, 6) != 6 ||
+                    QualityProcessor.GetSafeScale(5461, 1, 6) != 3 ||
+                    QualityProcessor.GetSafeScale(Int32.MaxValue, Int32.MaxValue, 6) != 1 ||
+                    QualityProcessor.GetSafeScale(0, 100, 6) != 1 ||
+                    QualityProcessor.GetSafeScale(-1, 100, 6) != 1)
                     throw new InvalidOperationException("Large-output memory cap did not lower the scale.");
                 if (QualityProcessor.ResolveScale(4000, 3000, 0) != 1)
                     throw new InvalidOperationException("Auto Crisp did not remain native for a large selection.");
@@ -1661,12 +1798,20 @@ namespace SharpShot
         {
             byte[] data = File.ReadAllBytes(path);
             byte[] signature = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
+            byte[] endChunk = new byte[] { 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130 };
             if (data.Length < signature.Length)
                 throw new InvalidDataException("PNG output is too short: " + path);
             for (int i = 0; i < signature.Length; i++)
             {
                 if (data[i] != signature[i])
                     throw new InvalidDataException("PNG signature is invalid: " + path);
+            }
+            if (data.Length < endChunk.Length)
+                throw new InvalidDataException("PNG output has no IEND chunk: " + path);
+            for (int i = 0; i < endChunk.Length; i++)
+            {
+                if (data[data.Length - endChunk.Length + i] != endChunk[i])
+                    throw new InvalidDataException("PNG output has trailing or invalid data: " + path);
             }
         }
 
@@ -1687,14 +1832,19 @@ namespace SharpShot
 
         private static void VerifyAutoScaleBoundaries()
         {
-            if (QualityProcessor.GetAutoScale(400, 500) != 3 ||
-                QualityProcessor.GetAutoScale(401, 500) != 2 ||
-                QualityProcessor.GetAutoScale(640, 300) != 3 ||
-                QualityProcessor.GetAutoScale(641, 300) != 2 ||
-                QualityProcessor.GetAutoScale(625, 1000) != 2 ||
-                QualityProcessor.GetAutoScale(626, 1000) != 1 ||
-                QualityProcessor.GetAutoScale(1280, 400) != 2 ||
-                QualityProcessor.GetAutoScale(1281, 400) != 1)
+            if (QualityProcessor.GetAutoScale(333, 333) != 6 ||
+                QualityProcessor.GetAutoScale(334, 333) != 3 ||
+                QualityProcessor.GetAutoScale(682, 1) != 6 ||
+                QualityProcessor.GetAutoScale(683, 1) != 3 ||
+                QualityProcessor.GetAutoScale(444, 1001) != 3 ||
+                QualityProcessor.GetAutoScale(445, 999) != 2 ||
+                QualityProcessor.GetAutoScale(1365, 1) != 3 ||
+                QualityProcessor.GetAutoScale(1366, 1) != 2 ||
+                QualityProcessor.GetAutoScale(1000, 1000) != 2 ||
+                QualityProcessor.GetAutoScale(1001, 1000) != 1 ||
+                QualityProcessor.GetAutoScale(2048, 1) != 2 ||
+                QualityProcessor.GetAutoScale(2049, 1) != 1 ||
+                QualityProcessor.GetAutoScale(0, 100) != 1)
                 throw new InvalidOperationException("Auto Crisp threshold behavior changed.");
         }
 
@@ -1705,7 +1855,7 @@ namespace SharpShot
             {
                 using (Graphics graphics = Graphics.FromImage(source))
                     graphics.Clear(flat);
-                using (Bitmap enlarged = QualityProcessor.Process(source, 3))
+                using (Bitmap enlarged = QualityProcessor.Process(source, 6))
                 {
                     for (int y = 0; y < enlarged.Height; y++)
                     {

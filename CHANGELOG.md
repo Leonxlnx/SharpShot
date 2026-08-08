@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 — 2026-08-08
+
+- Added Auto Crisp, which selects native, 2×, or 3× output from the crop size.
+- Replaced bicubic plus unconstrained sharpening with local-range-clamped Catmull-Rom enlargement.
+- Eliminated new per-channel edge extrema from the enlargement pipeline.
+- Reduced scaling scratch memory to four cached source and horizontal scanlines.
+- Added regression tests for Auto Crisp boundaries, flat colors, and channel halos.
+
 ## 1.0.0 — 2026-08-08
 
 - Initial public release.

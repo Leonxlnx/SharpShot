@@ -11,7 +11,8 @@ Press **Win + Shift + D**, drag a rectangle, and release. SharpShot copies the r
 
 - Native physical-pixel capture with Per-Monitor V2 DPI awareness
 - Lossless PNG encoding; no JPEG conversion
-- Optional high-quality 2× and 3× enlargement for small UI or text crops
+- Auto Crisp chooses native, 2×, or 3× output from the selection size
+- Local-range-clamped enlargement keeps UI edges clean without sharpening halos
 - Global `Win + Shift + D` shortcut
 - Multi-monitor and negative-origin desktop support
 - Clipboard formats for modern apps and legacy bitmap consumers
@@ -41,9 +42,10 @@ Press `Esc` or right-click to cancel. Double-click the tray icon to start a capt
 
 The tray menu also provides:
 
-- **Native pixels (1×)** — exact source pixels, no resampling
-- **Crisp (2×)** — bicubic enlargement with restrained edge sharpening; the default
-- **Ultra (3×)** — intended for very small selections
+- **Auto Crisp — recommended** — automatically uses 3× for tiny crops, 2× for small crops, and native pixels for larger captures
+- **Native (1×)** — exact source pixels, no resampling
+- **Crisp (2×)** — deterministic manual 2× enlargement
+- **Ultra (3×)** — deterministic manual 3× enlargement
 - Automatic lossless PNG saving
 - Open screenshot folder / open the last capture saved during the current session
 - Start with Windows
@@ -55,7 +57,9 @@ If the clipboard is unavailable, SharpShot still saves the PNG when auto-save is
 
 A screenshot cannot contain more real detail than the monitor rendered. Native mode preserves every available source pixel exactly. Crisp and Ultra create a controlled enlarged copy to avoid lower-quality downstream scaling; they do not invent missing detail.
 
-SharpShot caps enlarged output at 16 megapixels and automatically steps down the scale for large selections to keep memory use reasonable.
+Auto Crisp uses 3× only when the source is at most 200,000 pixels with no edge longer than 640 pixels. It uses 2× up to 625,000 pixels with no edge longer than 1,280 pixels, and otherwise stays native. The 2×/3× scaler uses Catmull-Rom reconstruction and clamps every output channel to nearby source colors, preventing the light and dark halos created by unconstrained sharpening.
+
+SharpShot caps manually enlarged output at 16 megapixels and automatically steps down the scale for large selections to keep memory use reasonable. Auto Crisp always stays at or below 2.5 megapixels. Scaling runs only after a capture; it adds no idle work.
 
 ## Efficiency
 

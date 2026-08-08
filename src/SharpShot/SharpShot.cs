@@ -15,8 +15,8 @@ using Microsoft.Win32;
 [assembly: AssemblyDescription("Lossless, high-quality Windows region screenshots")]
 [assembly: AssemblyProduct("SharpShot")]
 [assembly: AssemblyCopyright("Copyright (c) 2026 Leonxlnx")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 
 namespace SharpShot
 {
@@ -118,6 +118,7 @@ namespace SharpShot
         private readonly ContextMenuStrip _menu;
         private readonly HotkeyWindow _hotkeyWindow;
         private readonly ToolStripMenuItem _captureItem;
+        private readonly ToolStripMenuItem _autoItem;
         private readonly ToolStripMenuItem _nativeItem;
         private readonly ToolStripMenuItem _crispItem;
         private readonly ToolStripMenuItem _ultraItem;
@@ -146,12 +147,16 @@ namespace SharpShot
             _menu.Items.Add(new ToolStripSeparator());
 
             ToolStripMenuItem qualityMenu = new ToolStripMenuItem("Output quality");
-            _nativeItem = new ToolStripMenuItem("Native pixels (1\u00D7)");
-            _crispItem = new ToolStripMenuItem("Crisp (2\u00D7) - recommended");
-            _ultraItem = new ToolStripMenuItem("Ultra (3\u00D7) - tiny selections");
+            _autoItem = new ToolStripMenuItem("Auto Crisp - recommended");
+            _nativeItem = new ToolStripMenuItem("Native - exact pixels (1\u00D7)");
+            _crispItem = new ToolStripMenuItem("Crisp - enlarge 2\u00D7");
+            _ultraItem = new ToolStripMenuItem("Ultra - enlarge 3\u00D7");
+            _autoItem.Click += delegate { SetQuality(0); };
             _nativeItem.Click += delegate { SetQuality(1); };
             _crispItem.Click += delegate { SetQuality(2); };
             _ultraItem.Click += delegate { SetQuality(3); };
+            qualityMenu.DropDownItems.Add(_autoItem);
+            qualityMenu.DropDownItems.Add(new ToolStripSeparator());
             qualityMenu.DropDownItems.Add(_nativeItem);
             qualityMenu.DropDownItems.Add(_crispItem);
             qualityMenu.DropDownItems.Add(_ultraItem);
@@ -244,6 +249,7 @@ namespace SharpShot
 
         private void RefreshQualityChecks()
         {
+            _autoItem.Checked = _settings.QualityScale == 0;
             _nativeItem.Checked = _settings.QualityScale == 1;
             _crispItem.Checked = _settings.QualityScale == 2;
             _ultraItem.Checked = _settings.QualityScale == 3;
@@ -262,89 +268,101 @@ namespace SharpShot
             {
                 Rectangle desktopBounds;
                 desktop = ScreenCapture.CaptureVirtualDesktop(out desktopBounds);
+                Rectangle selected;
                 using (CaptureOverlay overlay = new CaptureOverlay(desktop, desktopBounds, _settings.QualityScale))
                 {
                     if (overlay.ShowDialog() != DialogResult.OK || overlay.SelectedRegion.Width < 1 || overlay.SelectedRegion.Height < 1)
                         return;
+                    selected = overlay.SelectedRegion;
+                }
 
-                    Rectangle selected = overlay.SelectedRegion;
-                    crop = desktop.Clone(selected, PixelFormat.Format32bppArgb);
-                    int effectiveScale = QualityProcessor.GetSafeScale(selected.Width, selected.Height, _settings.QualityScale);
-                    output = QualityProcessor.Process(crop, effectiveScale);
+                crop = desktop.Clone(selected, PixelFormat.Format32bppArgb);
+                desktop.Dispose();
+                desktop = null;
 
-                    byte[] png = PngEncoder.Encode(output);
-                    bool copied = false;
-                    string clipboardError = null;
+                int effectiveScale = QualityProcessor.ResolveScale(selected.Width, selected.Height, _settings.QualityScale);
+                output = QualityProcessor.Process(crop, effectiveScale);
+                crop.Dispose();
+                crop = null;
+
+                int outputWidth = output.Width;
+                int outputHeight = output.Height;
+                byte[] png = PngEncoder.Encode(output);
+                bool copied = false;
+                string clipboardError = null;
+                try
+                {
+                    copied = ClipboardWriter.TrySetPng(output, png);
+                }
+                catch (Exception ex)
+                {
+                    clipboardError = ex.Message;
+                }
+                output.Dispose();
+                output = null;
+
+                string savedPath = null;
+                string saveError = null;
+                // Auto-save is a strict opt-in for disk persistence. If it is
+                // off and the clipboard is unavailable, report the loss rather
+                // than writing a recovery file behind the user's back.
+                if (_settings.AutoSave)
+                {
                     try
                     {
-                        copied = ClipboardWriter.TrySetPng(output, png);
+                        savedPath = ScreenshotStorage.Save(png, outputWidth, outputHeight);
+                        _lastCapturePath = savedPath;
+                        _openLastItem.Enabled = true;
                     }
                     catch (Exception ex)
                     {
-                        clipboardError = ex.Message;
+                        saveError = ex.Message;
                     }
-                    string savedPath = null;
-                    string saveError = null;
-                    // Auto-save is a strict opt-in for disk persistence. If it is
-                    // off and the clipboard is unavailable, report the loss rather
-                    // than writing a recovery file behind the user's back.
-                    if (_settings.AutoSave)
-                    {
-                        try
-                        {
-                            savedPath = ScreenshotStorage.Save(png, output.Width, output.Height);
-                            _lastCapturePath = savedPath;
-                            _openLastItem.Enabled = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            saveError = ex.Message;
-                        }
-                    }
-
-                    string title;
-                    ToolTipIcon notificationIcon;
-                    if (copied && saveError == null)
-                    {
-                        title = "Screenshot copied";
-                        notificationIcon = ToolTipIcon.Info;
-                    }
-                    else if (copied)
-                    {
-                        title = "Copied, but could not auto-save";
-                        notificationIcon = ToolTipIcon.Warning;
-                    }
-                    else if (savedPath != null)
-                    {
-                        title = "Saved PNG; clipboard unavailable";
-                        notificationIcon = ToolTipIcon.Warning;
-                    }
-                    else
-                    {
-                        title = "Could not retain capture";
-                        notificationIcon = ToolTipIcon.Error;
-                    }
-                    string detail = selected.Width + " \u00D7 " + selected.Height + " source pixels";
-                    if (effectiveScale > 1)
-                        detail += "  \u2192  " + output.Width + " \u00D7 " + output.Height + " " + QualityProcessor.GetModeName(effectiveScale);
-                    else
-                        detail += "  \u2192  native 1\u00D7";
-
-                    if (savedPath != null)
-                        detail += "\nSaved as lossless PNG.";
-                    else if (!_settings.AutoSave && copied)
-                        detail += "\nAuto-save is off; clipboard only.";
-                    else if (saveError != null)
-                        detail += "\nCould not save: " + saveError;
-
-                    if (!copied && savedPath != null)
-                        detail += "\nClipboard was unavailable; the auto-saved PNG is safe.";
-                    else if (!copied && savedPath == null)
-                        detail += "\nThe image could not be retained. Clipboard: " +
-                                  (clipboardError ?? "unavailable") + "; save: " + (saveError ?? "unavailable") + ".";
-
-                    _tray.ShowBalloonTip(3500, title, detail, notificationIcon);
                 }
+
+                string title;
+                ToolTipIcon notificationIcon;
+                if (copied && saveError == null)
+                {
+                    title = "Screenshot copied";
+                    notificationIcon = ToolTipIcon.Info;
+                }
+                else if (copied)
+                {
+                    title = "Copied, but could not auto-save";
+                    notificationIcon = ToolTipIcon.Warning;
+                }
+                else if (savedPath != null)
+                {
+                    title = "Saved PNG; clipboard unavailable";
+                    notificationIcon = ToolTipIcon.Warning;
+                }
+                else
+                {
+                    title = "Could not retain capture";
+                    notificationIcon = ToolTipIcon.Error;
+                }
+                string detail = selected.Width + " \u00D7 " + selected.Height + " source pixels";
+                if (effectiveScale > 1)
+                    detail += "  \u2192  " + outputWidth + " \u00D7 " + outputHeight + "  " +
+                              QualityProcessor.GetDecisionName(_settings.QualityScale, effectiveScale);
+                else
+                    detail += "  \u2192  " + QualityProcessor.GetDecisionName(_settings.QualityScale, effectiveScale);
+
+                if (savedPath != null)
+                    detail += "\nSaved as lossless PNG.";
+                else if (!_settings.AutoSave && copied)
+                    detail += "\nAuto-save is off; clipboard only.";
+                else if (saveError != null)
+                    detail += "\nCould not save: " + saveError;
+
+                if (!copied && savedPath != null)
+                    detail += "\nClipboard was unavailable; the auto-saved PNG is safe.";
+                else if (!copied && savedPath == null)
+                    detail += "\nThe image could not be retained. Clipboard: " +
+                              (clipboardError ?? "unavailable") + "; save: " + (saveError ?? "unavailable") + ".";
+
+                _tray.ShowBalloonTip(3500, title, detail, notificationIcon);
             }
             catch (Exception ex)
             {
@@ -406,9 +424,10 @@ namespace SharpShot
         private void ShowAbout()
         {
             MessageBox.Show(
-                "SharpShot 1.0.0\n\n" +
+                "SharpShot 1.1.0\n\n" +
                 "A native-pixel Windows region capture tool.\n\n" +
-                "Native 1\u00D7 preserves the exact screen pixels. Crisp 2\u00D7 and Ultra 3\u00D7 use high-quality bicubic enlargement plus restrained edge sharpening. Captures are copied as lossless PNG and saved when auto-save is enabled.\n\n" +
+                "Auto Crisp chooses Native 1\u00D7, Crisp 2\u00D7, or Ultra 3\u00D7 from the selection size. Enlargement uses local-range-clamped Catmull-Rom resampling for clean edges without sharpening halos. It improves small-crop readability but cannot create missing source detail.\n\n" +
+                "Captures are copied as lossless PNG and saved when auto-save is enabled.\n\n" +
                 "Keyboard shortcut: " + _hotkeyLabel + "\n" +
                 "You can also double-click the tray icon to capture.",
                 "About SharpShot",
@@ -739,12 +758,13 @@ namespace SharpShot
 
         private string BuildDimensionText(Rectangle rect)
         {
-            int effectiveScale = QualityProcessor.GetSafeScale(rect.Width, rect.Height, _requestedScale);
+            int effectiveScale = QualityProcessor.ResolveScale(rect.Width, rect.Height, _requestedScale);
             string text = rect.Width + " \u00D7 " + rect.Height + " px";
             if (effectiveScale > 1)
-                text += "  \u2192  " + (rect.Width * effectiveScale) + " \u00D7 " + (rect.Height * effectiveScale) + "  " + QualityProcessor.GetModeName(effectiveScale);
+                text += "  \u2192  " + (rect.Width * effectiveScale) + " \u00D7 " + (rect.Height * effectiveScale) + "  " +
+                        QualityProcessor.GetDecisionName(_requestedScale, effectiveScale);
             else
-                text += "  /  native";
+                text += "  /  " + QualityProcessor.GetDecisionName(_requestedScale, effectiveScale);
             return text;
         }
 
@@ -951,11 +971,49 @@ namespace SharpShot
     {
         private const long MaxOutputPixels = 16000000L;
 
+        private struct ScaleMap
+        {
+            internal int A;
+            internal int B;
+            internal int C;
+            internal int D;
+            internal float Wa;
+            internal float Wb;
+            internal float Wc;
+            internal float Wd;
+        }
+
         internal static string GetModeName(int scale)
         {
             if (scale >= 3) return "Ultra 3\u00D7";
             if (scale == 2) return "Crisp 2\u00D7";
             return "Native 1\u00D7";
+        }
+
+        internal static string GetDecisionName(int requestedMode, int effectiveScale)
+        {
+            string mode = GetModeName(effectiveScale);
+            return requestedMode == 0 ? "Auto: " + mode : mode;
+        }
+
+        internal static int ResolveScale(int width, int height, int requestedMode)
+        {
+            int requestedScale = requestedMode == 0 ? GetAutoScale(width, height) : requestedMode;
+            return GetSafeScale(width, height, requestedScale);
+        }
+
+        internal static int GetAutoScale(int width, int height)
+        {
+            if (width < 1 || height < 1)
+                return 1;
+
+            long area = (long)width * height;
+            int longestEdge = Math.Max(width, height);
+            if (area <= 200000L && longestEdge <= 640)
+                return 3;
+            if (area <= 625000L && longestEdge <= 1280)
+                return 2;
+            return 1;
         }
 
         internal static int GetSafeScale(int width, int height, int requestedScale)
@@ -979,26 +1037,92 @@ namespace SharpShot
                 return exact;
             }
 
-            Bitmap resized = new Bitmap(source.Width * scale, source.Height * scale, PixelFormat.Format32bppArgb);
+            return ResizeClampedCatmullRom(source, scale);
+        }
+
+        private static Bitmap ResizeClampedCatmullRom(Bitmap source, int scale)
+        {
+            int width = source.Width * scale;
+            int height = source.Height * scale;
+            ScaleMap[] mapX = BuildScaleMap(source.Width, width);
+            ScaleMap[] mapY = BuildScaleMap(source.Height, height);
+            Bitmap resized = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             try
             {
                 resized.SetResolution(96.0f * scale, 96.0f * scale);
-                using (Graphics g = Graphics.FromImage(resized))
-                using (ImageAttributes attributes = new ImageAttributes())
+                Rectangle sourceBounds = new Rectangle(0, 0, source.Width, source.Height);
+                Rectangle targetBounds = new Rectangle(0, 0, width, height);
+                BitmapData sourceData = source.LockBits(sourceBounds, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                BitmapData targetData = null;
+                try
                 {
-                    g.CompositingMode = CompositingMode.SourceCopy;
-                    g.CompositingQuality = CompositingQuality.HighQuality;
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    attributes.SetWrapMode(WrapMode.TileFlipXY);
-                    g.DrawImage(source,
-                        new Rectangle(0, 0, resized.Width, resized.Height),
-                        0, 0, source.Width, source.Height,
-                        GraphicsUnit.Pixel,
-                        attributes);
-                }
+                    targetData = resized.LockBits(targetBounds, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                    int sourceRowBytes = Math.Abs(sourceData.Stride);
+                    int targetRowBytes = Math.Abs(targetData.Stride);
+                    int[] cacheKeys = new int[] { -1, -1, -1, -1 };
+                    byte[][] sourceRows = new byte[4][];
+                    float[][] horizontalRows = new float[4][];
+                    for (int slot = 0; slot < 4; slot++)
+                    {
+                        sourceRows[slot] = new byte[sourceRowBytes];
+                        horizontalRows[slot] = new float[width * 4];
+                    }
+                    byte[] outputRow = new byte[targetRowBytes];
 
-                ApplyLightSharpen(resized, scale == 3 ? 0.34f : 0.28f);
+                    for (int y = 0; y < height; y++)
+                    {
+                        ScaleMap vertical = mapY[y];
+                        int slotA = EnsureHorizontalRow(vertical.A, vertical, sourceData,
+                            sourceRowBytes, mapX, cacheKeys, sourceRows, horizontalRows);
+                        int slotB = EnsureHorizontalRow(vertical.B, vertical, sourceData,
+                            sourceRowBytes, mapX, cacheKeys, sourceRows, horizontalRows);
+                        int slotC = EnsureHorizontalRow(vertical.C, vertical, sourceData,
+                            sourceRowBytes, mapX, cacheKeys, sourceRows, horizontalRows);
+                        int slotD = EnsureHorizontalRow(vertical.D, vertical, sourceData,
+                            sourceRowBytes, mapX, cacheKeys, sourceRows, horizontalRows);
+
+                        Array.Clear(outputRow, 0, outputRow.Length);
+                        for (int x = 0; x < width; x++)
+                        {
+                            ScaleMap horizontal = mapX[x];
+                            int targetPixel = x * 4;
+                            int sourceLeft = horizontal.B * 4;
+                            int sourceRight = horizontal.C * 4;
+                            for (int channel = 0; channel < 4; channel++)
+                            {
+                                int component = targetPixel + channel;
+                                float value =
+                                    horizontalRows[slotA][component] * vertical.Wa +
+                                    horizontalRows[slotB][component] * vertical.Wb +
+                                    horizontalRows[slotC][component] * vertical.Wc +
+                                    horizontalRows[slotD][component] * vertical.Wd;
+
+                                int topLeft = sourceRows[slotB][sourceLeft + channel];
+                                int topRight = sourceRows[slotB][sourceRight + channel];
+                                int bottomLeft = sourceRows[slotC][sourceLeft + channel];
+                                int bottomRight = sourceRows[slotC][sourceRight + channel];
+                                int minimum = Math.Min(Math.Min(topLeft, topRight), Math.Min(bottomLeft, bottomRight));
+                                int maximum = Math.Max(Math.Max(topLeft, topRight), Math.Max(bottomLeft, bottomRight));
+                                int rounded = (int)Math.Round(value);
+                                outputRow[component] = (byte)Math.Max(minimum, Math.Min(maximum, rounded));
+                            }
+                        }
+
+                        Marshal.Copy(outputRow, 0, GetRowPointer(targetData, y), targetRowBytes);
+                    }
+                }
+                finally
+                {
+                    try
+                    {
+                        if (targetData != null)
+                            resized.UnlockBits(targetData);
+                    }
+                    finally
+                    {
+                        source.UnlockBits(sourceData);
+                    }
+                }
                 return resized;
             }
             catch
@@ -1008,55 +1132,114 @@ namespace SharpShot
             }
         }
 
-        private static void ApplyLightSharpen(Bitmap bitmap, float amount)
+        private static int EnsureHorizontalRow(
+            int sourceY,
+            ScaleMap neededRows,
+            BitmapData sourceData,
+            int sourceRowBytes,
+            ScaleMap[] mapX,
+            int[] cacheKeys,
+            byte[][] sourceRows,
+            float[][] horizontalRows)
         {
-            Rectangle bounds = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-            BitmapData data = bitmap.LockBits(bounds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            try
+            for (int slot = 0; slot < cacheKeys.Length; slot++)
             {
-                int stride = data.Stride;
-                int length = Math.Abs(stride) * bitmap.Height;
-                byte[] source = new byte[length];
-                byte[] rowBuffer = new byte[Math.Abs(stride)];
-                Marshal.Copy(data.Scan0, source, 0, length);
+                if (cacheKeys[slot] == sourceY)
+                    return slot;
+            }
 
-                for (int y = 1; y < bitmap.Height - 1; y++)
+            int replacement = -1;
+            for (int slot = 0; slot < cacheKeys.Length; slot++)
+            {
+                if (cacheKeys[slot] < 0 || !ContainsRow(neededRows, cacheKeys[slot]))
                 {
-                    int row = y * stride;
-                    int previous = (y - 1) * stride;
-                    int next = (y + 1) * stride;
-                    Buffer.BlockCopy(source, row, rowBuffer, 0, Math.Abs(stride));
-                    for (int x = 1; x < bitmap.Width - 1; x++)
-                    {
-                        int pixel = row + x * 4;
-                        for (int channel = 0; channel < 3; channel++)
-                        {
-                            int center = source[pixel + channel];
-                            int blur = (
-                                source[previous + (x - 1) * 4 + channel] +
-                                2 * source[previous + x * 4 + channel] +
-                                source[previous + (x + 1) * 4 + channel] +
-                                2 * source[row + (x - 1) * 4 + channel] +
-                                4 * center +
-                                2 * source[row + (x + 1) * 4 + channel] +
-                                source[next + (x - 1) * 4 + channel] +
-                                2 * source[next + x * 4 + channel] +
-                                source[next + (x + 1) * 4 + channel] + 8) >> 4;
-                            int delta = center - blur;
-                            if (Math.Abs(delta) >= 2)
-                            {
-                                int value = center + (int)(delta * amount);
-                                rowBuffer[x * 4 + channel] = (byte)Math.Max(0, Math.Min(255, value));
-                            }
-                        }
-                    }
-                    Marshal.Copy(rowBuffer, 0, new IntPtr(data.Scan0.ToInt64() + row), Math.Abs(stride));
+                    replacement = slot;
+                    break;
                 }
             }
-            finally
+            if (replacement < 0)
+                throw new InvalidOperationException("The scaling row cache could not advance.");
+
+            byte[] sourceRow = sourceRows[replacement];
+            float[] horizontalRow = horizontalRows[replacement];
+            Marshal.Copy(GetRowPointer(sourceData, sourceY), sourceRow, 0, sourceRowBytes);
+            for (int x = 0; x < mapX.Length; x++)
             {
-                bitmap.UnlockBits(data);
+                ScaleMap horizontal = mapX[x];
+                int outputPixel = x * 4;
+                int a = horizontal.A * 4;
+                int b = horizontal.B * 4;
+                int c = horizontal.C * 4;
+                int d = horizontal.D * 4;
+                for (int channel = 0; channel < 4; channel++)
+                {
+                    horizontalRow[outputPixel + channel] =
+                        sourceRow[a + channel] * horizontal.Wa +
+                        sourceRow[b + channel] * horizontal.Wb +
+                        sourceRow[c + channel] * horizontal.Wc +
+                        sourceRow[d + channel] * horizontal.Wd;
+                }
             }
+            cacheKeys[replacement] = sourceY;
+            return replacement;
+        }
+
+        private static bool ContainsRow(ScaleMap map, int row)
+        {
+            return map.A == row || map.B == row || map.C == row || map.D == row;
+        }
+
+        private static ScaleMap[] BuildScaleMap(int sourceSize, int targetSize)
+        {
+            ScaleMap[] result = new ScaleMap[targetSize];
+            double scale = targetSize / (double)sourceSize;
+            for (int target = 0; target < targetSize; target++)
+            {
+                double position = (target + 0.5) / scale - 0.5;
+                int left = (int)Math.Floor(position);
+                double fraction = position - left;
+                result[target] = new ScaleMap
+                {
+                    A = MirrorIndex(left - 1, sourceSize),
+                    B = MirrorIndex(left, sourceSize),
+                    C = MirrorIndex(left + 1, sourceSize),
+                    D = MirrorIndex(left + 2, sourceSize),
+                    Wa = CubicWeight((float)(1.0 + fraction)),
+                    Wb = CubicWeight((float)fraction),
+                    Wc = CubicWeight((float)(1.0 - fraction)),
+                    Wd = CubicWeight((float)(2.0 - fraction))
+                };
+            }
+            return result;
+        }
+
+        private static float CubicWeight(float distance)
+        {
+            float x = Math.Abs(distance);
+            if (x < 1.0f)
+                return 1.5f * x * x * x - 2.5f * x * x + 1.0f;
+            if (x < 2.0f)
+                return -0.5f * x * x * x + 2.5f * x * x - 4.0f * x + 2.0f;
+            return 0.0f;
+        }
+
+        private static int MirrorIndex(int value, int size)
+        {
+            if (size <= 1)
+                return 0;
+            while (value < 0 || value >= size)
+            {
+                if (value < 0)
+                    value = -value - 1;
+                if (value >= size)
+                    value = size * 2 - value - 1;
+            }
+            return value;
+        }
+
+        private static IntPtr GetRowPointer(BitmapData data, int row)
+        {
+            return new IntPtr(data.Scan0.ToInt64() + (long)row * data.Stride);
         }
     }
 
@@ -1126,7 +1309,7 @@ namespace SharpShot
 
     internal sealed class AppSettings
     {
-        internal int QualityScale = 2;
+        internal int QualityScale = 0;
         internal bool AutoSave = true;
 
         private static string SettingsPath
@@ -1158,7 +1341,7 @@ namespace SharpShot
                     if (String.Equals(key, "qualityScale", StringComparison.OrdinalIgnoreCase))
                     {
                         int parsed;
-                        if (Int32.TryParse(value, out parsed) && parsed >= 1 && parsed <= 3)
+                        if (Int32.TryParse(value, out parsed) && parsed >= 0 && parsed <= 3)
                             settings.QualityScale = parsed;
                     }
                     else if (String.Equals(key, "autoSave", StringComparison.OrdinalIgnoreCase))
@@ -1381,6 +1564,7 @@ namespace SharpShot
                         VerifyPng(crispPath);
                         if (Math.Abs(crisp.HorizontalResolution - 192.0f) > 1.0f)
                             throw new InvalidOperationException("2x DPI metadata is wrong.");
+                        VerifyNoNewChannelExtrema(pattern, crisp, 2);
                         report.Add("PASS: native test pattern encoded as PNG");
                         report.Add("PASS: Crisp 2x produced " + crisp.Width + " x " + crisp.Height);
                     }
@@ -1392,6 +1576,7 @@ namespace SharpShot
                         string ultraPath = Path.Combine(outputFolder, "pattern-ultra-3x.png");
                         ultra.Save(ultraPath, ImageFormat.Png);
                         VerifyPng(ultraPath);
+                        VerifyNoNewChannelExtrema(pattern, ultra, 3);
                         report.Add("PASS: Ultra 3x produced " + ultra.Width + " x " + ultra.Height);
                     }
 
@@ -1399,8 +1584,16 @@ namespace SharpShot
                     report.Add("PASS: overlay and selection stay pixel-aligned at 125% DPI");
                 }
 
+                VerifyFlatColorPreserved();
+                report.Add("PASS: clamped enlargement preserves flat colors and introduces no channel halos");
+
+                VerifyAutoScaleBoundaries();
+                report.Add("PASS: Auto Crisp scale boundaries are deterministic");
+
                 if (QualityProcessor.GetSafeScale(4000, 3000, 3) != 1)
                     throw new InvalidOperationException("Large-output memory cap did not lower the scale.");
+                if (QualityProcessor.ResolveScale(4000, 3000, 0) != 1)
+                    throw new InvalidOperationException("Auto Crisp did not remain native for a large selection.");
                 report.Add("PASS: large-output memory cap lowers unsafe scale");
 
                 if (includeLiveCapture)
@@ -1490,6 +1683,92 @@ namespace SharpShot
                 }
             }
             return true;
+        }
+
+        private static void VerifyAutoScaleBoundaries()
+        {
+            if (QualityProcessor.GetAutoScale(400, 500) != 3 ||
+                QualityProcessor.GetAutoScale(401, 500) != 2 ||
+                QualityProcessor.GetAutoScale(640, 300) != 3 ||
+                QualityProcessor.GetAutoScale(641, 300) != 2 ||
+                QualityProcessor.GetAutoScale(625, 1000) != 2 ||
+                QualityProcessor.GetAutoScale(626, 1000) != 1 ||
+                QualityProcessor.GetAutoScale(1280, 400) != 2 ||
+                QualityProcessor.GetAutoScale(1281, 400) != 1)
+                throw new InvalidOperationException("Auto Crisp threshold behavior changed.");
+        }
+
+        private static void VerifyFlatColorPreserved()
+        {
+            Color flat = Color.FromArgb(255, 37, 91, 143);
+            using (Bitmap source = new Bitmap(31, 19, PixelFormat.Format32bppArgb))
+            {
+                using (Graphics graphics = Graphics.FromImage(source))
+                    graphics.Clear(flat);
+                using (Bitmap enlarged = QualityProcessor.Process(source, 3))
+                {
+                    for (int y = 0; y < enlarged.Height; y++)
+                    {
+                        for (int x = 0; x < enlarged.Width; x++)
+                        {
+                            if (enlarged.GetPixel(x, y).ToArgb() != flat.ToArgb())
+                                throw new InvalidOperationException("Flat-color enlargement introduced a false edge.");
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void VerifyNoNewChannelExtrema(Bitmap source, Bitmap enlarged, int scale)
+        {
+            for (int y = 0; y < enlarged.Height; y++)
+            {
+                int sourceTop;
+                int sourceBottom;
+                GetCentralSourcePair(y, scale, source.Height, out sourceTop, out sourceBottom);
+                for (int x = 0; x < enlarged.Width; x++)
+                {
+                    int sourceLeft;
+                    int sourceRight;
+                    GetCentralSourcePair(x, scale, source.Width, out sourceLeft, out sourceRight);
+                    Color a = source.GetPixel(sourceLeft, sourceTop);
+                    Color b = source.GetPixel(sourceRight, sourceTop);
+                    Color c = source.GetPixel(sourceLeft, sourceBottom);
+                    Color d = source.GetPixel(sourceRight, sourceBottom);
+                    Color actual = enlarged.GetPixel(x, y);
+                    VerifyChannelRange(actual.B, a.B, b.B, c.B, d.B);
+                    VerifyChannelRange(actual.G, a.G, b.G, c.G, d.G);
+                    VerifyChannelRange(actual.R, a.R, b.R, c.R, d.R);
+                    VerifyChannelRange(actual.A, a.A, b.A, c.A, d.A);
+                }
+            }
+        }
+
+        private static void GetCentralSourcePair(int target, int scale, int sourceSize, out int first, out int second)
+        {
+            double position = (target + 0.5) / scale - 0.5;
+            int left = (int)Math.Floor(position);
+            first = MirrorTestIndex(left, sourceSize);
+            second = MirrorTestIndex(left + 1, sourceSize);
+        }
+
+        private static int MirrorTestIndex(int value, int size)
+        {
+            if (size <= 1) return 0;
+            while (value < 0 || value >= size)
+            {
+                if (value < 0) value = -value - 1;
+                if (value >= size) value = size * 2 - value - 1;
+            }
+            return value;
+        }
+
+        private static void VerifyChannelRange(int actual, int a, int b, int c, int d)
+        {
+            int minimum = Math.Min(Math.Min(a, b), Math.Min(c, d));
+            int maximum = Math.Max(Math.Max(a, b), Math.Max(c, d));
+            if (actual < minimum || actual > maximum)
+                throw new InvalidOperationException("Clamped enlargement created a channel halo.");
         }
 
         private static void VerifyOverlayPreviewIsUnscaled(Bitmap desktop)

@@ -11,7 +11,7 @@ $toolsRoot = Join-Path $repoRoot 'tools'
 $buildRoot = Join-Path $repoRoot 'build'
 $artifactsRoot = Join-Path $repoRoot 'artifacts'
 $portableRoot = Join-Path $artifactsRoot 'SharpShot'
-$version = '1.0.0'
+$version = '1.1.0'
 
 function Reset-RepoDirectory([string]$path) {
     $fullPath = [IO.Path]::GetFullPath($path)

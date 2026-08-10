@@ -1,16 +1,20 @@
 import cobaltBloomThumbnail from "../../resources/backgrounds/thumbnails/cobalt-bloom.webp";
+import beaconStreetSunsetThumbnail from "../../resources/backgrounds/thumbnails/beacon-street-sunset.webp";
 import duskFoldThumbnail from "../../resources/backgrounds/thumbnails/dusk-fold.webp";
 import glacierGlassThumbnail from "../../resources/backgrounds/thumbnails/glacier-glass.webp";
 import lunarPaperThumbnail from "../../resources/backgrounds/thumbnails/lunar-paper.webp";
+import lakeSherburneThumbnail from "../../resources/backgrounds/thumbnails/lake-sherburne.webp";
 import midnightBloomThumbnail from "../../resources/backgrounds/thumbnails/midnight-bloom.webp";
 import mossAlloyThumbnail from "../../resources/backgrounds/thumbnails/moss-alloy.webp";
 import obsidianTideThumbnail from "../../resources/backgrounds/thumbnails/obsidian-tide.webp";
+import oceanWavesThumbnail from "../../resources/backgrounds/thumbnails/ocean-waves.webp";
 import solarSilkThumbnail from "../../resources/backgrounds/thumbnails/solar-silk.webp";
+import valleyMidnightThumbnail from "../../resources/backgrounds/thumbnails/valley-midnight.webp";
 import { backgroundPresetSource } from "./background-gallery";
 import type { CaptureItem, EditorProject, Wallpaper, Workflow } from "./types";
 import { createEmptyOverlayDocument } from "../shared/overlays";
 
-export const WALLPAPERS: Wallpaper[] = [
+export const ORIGINAL_WALLPAPERS: Wallpaper[] = [
     { id: "cobalt", name: "Cobalt Bloom", thumbnailSource: cobaltBloomThumbnail, source: bundledBackgroundUrl("cobalt-bloom"), accent: "#1d5cff", textColor: "light" },
     { id: "lunar", name: "Lunar Paper", thumbnailSource: lunarPaperThumbnail, source: bundledBackgroundUrl("lunar-paper"), accent: "#f2efe7", textColor: "dark" },
     { id: "midnight", name: "Midnight Bloom", thumbnailSource: midnightBloomThumbnail, source: bundledBackgroundUrl("midnight-bloom"), accent: "#7f94ff", textColor: "light" },
@@ -20,6 +24,15 @@ export const WALLPAPERS: Wallpaper[] = [
     { id: "moss", name: "Moss Alloy", thumbnailSource: mossAlloyThumbnail, source: bundledBackgroundUrl("moss-alloy"), accent: "#8ea97b", textColor: "light" },
     { id: "obsidian", name: "Obsidian Tide", thumbnailSource: obsidianTideThumbnail, source: bundledBackgroundUrl("obsidian-tide"), accent: "#5e6670", textColor: "light" },
 ];
+
+export const CINEMATIC_WALLPAPERS: Wallpaper[] = [
+    { id: "sherburne", name: "Lake Sherburne", thumbnailSource: lakeSherburneThumbnail, source: bundledBackgroundUrl("lake-sherburne"), accent: "#7da7d5", textColor: "light" },
+    { id: "valley-night", name: "Valley Midnight", thumbnailSource: valleyMidnightThumbnail, source: bundledBackgroundUrl("valley-midnight"), accent: "#5b76a4", textColor: "light" },
+    { id: "blue-current", name: "Ocean Waves", thumbnailSource: oceanWavesThumbnail, source: bundledBackgroundUrl("ocean-waves"), accent: "#2e7db5", textColor: "light" },
+    { id: "beacon-sunset", name: "Beacon Street", thumbnailSource: beaconStreetSunsetThumbnail, source: bundledBackgroundUrl("beacon-street-sunset"), accent: "#e69b55", textColor: "light" },
+];
+
+export const WALLPAPERS: Wallpaper[] = [...ORIGINAL_WALLPAPERS, ...CINEMATIC_WALLPAPERS];
 
 export function resolveBackgroundSource(
     backgroundId: string,

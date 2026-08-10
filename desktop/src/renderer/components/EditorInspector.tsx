@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { WALLPAPERS } from "../data";
+import { CINEMATIC_WALLPAPERS, ORIGINAL_WALLPAPERS } from "../data";
 import { getDesktopBridge, importLibraryImages, isDesktopBridgeAvailable, openExternalLink } from "../bridge";
 import {
     APPLE_WALLPAPER_URL,
@@ -9,7 +9,7 @@ import {
 } from "../background-gallery";
 import { formatTime, projectDurationUs, type EditorAction } from "../state";
 import type { BundledAudioTrack, MediaItem } from "../../shared/api";
-import type { EditorState } from "../types";
+import type { EditorState, Wallpaper } from "../types";
 import type { ZoomSegment } from "../../shared/cursor-zoom";
 import { availableZoomRangeAtPlayhead, resizeZoomSegmentRange } from "../zoom-timeline";
 import {
@@ -40,6 +40,31 @@ import {
 const ZOOM_SCALE_PRESETS = [1, 1.5, 2, 3] as const;
 const ZOOM_MOTION_PRESETS = ["Quick", "Smooth", "Gentle"] as const;
 type ZoomMotionPreset = typeof ZOOM_MOTION_PRESETS[number];
+
+function WallpaperPicker({
+    selectedId,
+    wallpapers,
+    onSelect,
+}: {
+    selectedId: string;
+    wallpapers: readonly Wallpaper[];
+    onSelect: (id: string) => void;
+}) {
+    return (
+        <div className="background-browser__images">
+            {wallpapers.map((wallpaper) => {
+                const selected = selectedId === wallpaper.id;
+                return (
+                    <button aria-pressed={selected} className={selected ? "is-active" : ""} key={wallpaper.id} onClick={() => onSelect(wallpaper.id)} type="button">
+                        <span className="background-browser__image-frame"><img alt={`${wallpaper.name} background preview`} decoding="async" loading="lazy" src={wallpaper.thumbnailSource} /></span>
+                        <strong>{wallpaper.name}</strong>
+                        {selected ? <span className="background-browser__check"><Icon name="check" size={12} /></span> : null}
+                    </button>
+                );
+            })}
+        </div>
+    );
+}
 
 export function EditorInspector({
     state,
@@ -455,19 +480,13 @@ export function EditorInspector({
                     </section>
 
                     <section className="background-browser__group" aria-labelledby="background-originals-heading">
-                        <header><h4 id="background-originals-heading">SharpShot originals</h4><span>{WALLPAPERS.length} included</span></header>
-                        <div className="background-browser__images">
-                            {WALLPAPERS.map((wallpaper) => {
-                                const selected = state.project.backgroundId === wallpaper.id;
-                                return (
-                                    <button aria-pressed={selected} className={selected ? "is-active" : ""} key={wallpaper.id} onClick={() => dispatch({ type: "SET_BACKGROUND", id: wallpaper.id })} type="button">
-                                        <span className="background-browser__image-frame"><img alt={`${wallpaper.name} background preview`} decoding="async" loading="lazy" src={wallpaper.thumbnailSource} /></span>
-                                        <strong>{wallpaper.name}</strong>
-                                        {selected ? <span className="background-browser__check"><Icon name="check" size={12} /></span> : null}
-                                    </button>
-                                );
-                            })}
-                        </div>
+                        <header><h4 id="background-originals-heading">SharpShot originals</h4><span>{ORIGINAL_WALLPAPERS.length} included</span></header>
+                        <WallpaperPicker onSelect={(id) => dispatch({ type: "SET_BACKGROUND", id })} selectedId={state.project.backgroundId} wallpapers={ORIGINAL_WALLPAPERS} />
+                    </section>
+
+                    <section className="background-browser__group" aria-labelledby="background-cinematic-heading">
+                        <header><h4 id="background-cinematic-heading">Cinematic landscapes</h4><span>{CINEMATIC_WALLPAPERS.length} · CC0</span></header>
+                        <WallpaperPicker onSelect={(id) => dispatch({ type: "SET_BACKGROUND", id })} selectedId={state.project.backgroundId} wallpapers={CINEMATIC_WALLPAPERS} />
                     </section>
 
                     <section className="background-browser__group" aria-labelledby="background-library-heading">

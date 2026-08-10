@@ -18,6 +18,9 @@
 - Added a coherent dark tactile editor using normal inline SVG icons, responsive
   shell and inspector layouts, and direct video move, resize, and non-destructive
   crop controls with preview/export parity.
+- Reworked the app navigation and Studio tool rail around a dark cobalt identity,
+  removed nested selected tiles and side stripes, raised small-text contrast,
+  and added a short reduced-motion-aware startup reveal using the real app icon.
 - Added persisted manual zooms, direct focus placement, a zoom timeline, and
   bounded click-generated auto zoom for Video-to-Studio recordings.
 - Added persisted manual/SRT/VTT captions with output-canvas preview, safe
@@ -45,6 +48,9 @@
 - Added eight original SharpShot backgrounds, including four center-safe 4K
   masters, an original application icon, a normal inline SVG interface-icon
   system, and three clearly inventoried CC0 music tracks.
+- Added four unmodified 4K cinematic landscapes from Budgie Backgrounds v3.0
+  under CC0-1.0, with pinned source provenance, hashes, a shipped license, and
+  lightweight picker thumbnails.
 - Added local background import and an external link to official Apple wallpaper
   guidance. Apple artwork is intentionally not bundled, copied, cached, or
   hotlinked.

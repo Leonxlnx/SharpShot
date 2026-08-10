@@ -46,7 +46,7 @@ Windows hotkey conflict; use one shortcut owner at a time.
 | Audio editor | Embedded-source volume, a persisted music timeline, three bundled CC0 tracks or local audio import, trim/split, fades, gain, mute, and export-accurate source ducking. Separate Studio WAV stems are not attached automatically |
 | Export | Local MP4 and GIF rendering with zoom/caption support, MP4 audio mixing, cancellation, progress events, media probing, collision-safe finalization, and Windows file clipboard support |
 | Safe Redact | Up to 64 timed, fully opaque axis-aligned rectangles with black/dark/white presets, direct preview move/resize, timeline trimming, persistence, and MP4/GIF burn-in |
-| Visual assets | Eight original built-in backgrounds (four center-safe 4K masters), an original application icon, normal inline SVG interface icons, and three CC0 starter music tracks |
+| Visual assets | Eight original built-in backgrounds, four 4K CC0 cinematic landscapes, an original application icon, normal inline SVG action icons, and three CC0 starter music tracks |
 
 Safe Redact is the only visual-annotation surface in this alpha. Unsupported
 persisted overlays are preserved but rejected during export rather than silently
@@ -89,7 +89,13 @@ retain the image generator's 1672 × 941 source size:
 
 Prompts and generation provenance are recorded in
 [`resources/backgrounds/manifest.json`](resources/backgrounds/manifest.json).
-The active interface uses ordinary inline SVG icons. Superseded tactile PNG
+Four additional unmodified 4K landscapes from Budgie Backgrounds v3.0 are
+included under CC0-1.0: Lake Sherburne, Ocean Waves, Valley Midnight, and Beacon
+Street Sunset. Their pinned source commit, hashes, and license are recorded in
+the same manifest and in the repository asset notice.
+
+The brand uses the original SharpShot application artwork; action and
+navigation controls use ordinary inline SVG icons. Superseded tactile PNG
 studies are local development artifacts: they are ignored by Git, unreferenced
 by the renderer, and excluded from every package.
 

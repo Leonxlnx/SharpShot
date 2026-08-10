@@ -8,7 +8,7 @@ notices; it is not a complete dependency inventory or legal advice.
 ## Original SharpShot artwork
 
 The repository does not copy interface icons or bundled wallpapers from Cap,
-Tella, Apple, or another product.
+Tella, or Apple. Separately licensed CC0 backgrounds are identified below.
 
 ### Original backgrounds
 
@@ -33,10 +33,32 @@ recorded in
 [`desktop/resources/backgrounds/manifest.json`](desktop/resources/backgrounds/manifest.json).
 These files are distributed with SharpShot under the repository's MIT license.
 
+### CC0 cinematic landscape backgrounds
+
+SharpShot Studio also includes four unmodified 3840 × 2160 JPEG files from
+[Budgie Backgrounds v3.0](https://github.com/BuddiesOfBudgie/budgie-backgrounds).
+The upstream collection is dedicated to the public domain under CC0 1.0:
+
+| File | Display name | SHA-256 recorded |
+| --- | --- | --- |
+| `lake-sherburne.jpg` | Lake Sherburne | Yes |
+| `ocean-waves.jpg` | Ocean Waves | Yes |
+| `valley-midnight.jpg` | Valley Midnight | Yes |
+| `beacon-street-sunset.jpg` | Beacon Street Sunset | Yes |
+
+The source is pinned to commit
+[`e2e314bef84fca804e1bd802898c7c7e72629de1`](https://github.com/BuddiesOfBudgie/budgie-backgrounds/tree/e2e314bef84fca804e1bd802898c7c7e72629de1).
+Exact source paths and hashes are recorded in the background manifest. The
+small WebP picker images are deterministic 640 × 360 resizes of those masters.
+No endorsement by Budgie or its contributors is implied. The complete CC0 text
+ships as
+[`LICENSE-BUDGIE-BACKGROUNDS-CC0-1.0.txt`](desktop/resources/backgrounds/LICENSE-BUDGIE-BACKGROUNDS-CC0-1.0.txt).
+
 ### Application and interface icons
 
-The SharpShot Studio application icon and tray mark are original project
-assets. The active interface uses normal inline SVG icons authored in code.
+The SharpShot Studio application icon, in-app brand image, and tray mark are
+original project assets. Navigation and action icons use normal inline SVG
+icons authored in code.
 Superseded tactile PNG studies are ignored local development artifacts; they are
 not referenced by source, tracked in the public repository, or included in a
 package.

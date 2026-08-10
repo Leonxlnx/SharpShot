@@ -13,6 +13,10 @@ describe("wallpaper sources", () => {
       "dusk",
       "moss",
       "obsidian",
+      "sherburne",
+      "valley-night",
+      "blue-current",
+      "beacon-sunset",
     ]);
 
     for (const wallpaper of WALLPAPERS) {

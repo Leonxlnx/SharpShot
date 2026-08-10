@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "license": "Original assets generated for SharpShot Studio; redistributable with this project under MIT.",
-  "provenanceNote": "Generated-image sources are identified per item. Final 4K masters are project-owned derivatives produced only by resampling the generated source; no third-party wallpaper artwork was used.",
+  "license": "SharpShot originals are distributed under MIT. The four Budgie Backgrounds files are unmodified CC0-1.0 assets; see each item's provenance and LICENSE-BUDGIE-BACKGROUNDS-CC0-1.0.txt.",
+  "provenanceNote": "Generated-image sources are identified per original item. The additional cinematic landscapes are pinned, hash-verified CC0 files from Budgie Backgrounds v3.0. Apple artwork is not included.",
   "items": [
     {
       "id": "dusk-fold",
@@ -214,6 +214,74 @@
         "Constraints: Completely original artwork; no logos, no UI, no text, no watermark, no recognizable brand wallpaper, no copied Apple or Tella composition; generous center-safe negative space; crisp enough for a 4K display.",
         "Avoid: literal moon or space scene, origami animals, stationery flat-lay, typography, bright gradients, glossy plastic, busy center, perfect symmetry, lens flare, obvious generative artifacts."
       ]
+    },
+    {
+      "id": "lake-sherburne",
+      "name": "Lake Sherburne",
+      "file": "lake-sherburne.jpg",
+      "mood": "alpine blue",
+      "dimensions": { "width": 3840, "height": 2160 },
+      "provenance": {
+        "type": "third-party-cc0-unmodified",
+        "collection": "Budgie Backgrounds v3.0",
+        "repository": "https://github.com/BuddiesOfBudgie/budgie-backgrounds",
+        "sourceCommit": "e2e314bef84fca804e1bd802898c7c7e72629de1",
+        "sourcePath": "backgrounds/lake-sherburne.jpg",
+        "retrievedOn": "2026-08-10",
+        "license": "CC0-1.0",
+        "sha256": "3328b2304962a173153e9e4c81a2bec3c24fb4ffa4b5af6aac0774dc89e1cb06"
+      }
+    },
+    {
+      "id": "ocean-waves",
+      "name": "Ocean Waves",
+      "file": "ocean-waves.jpg",
+      "mood": "ink blue",
+      "dimensions": { "width": 3840, "height": 2160 },
+      "provenance": {
+        "type": "third-party-cc0-unmodified",
+        "collection": "Budgie Backgrounds v3.0",
+        "repository": "https://github.com/BuddiesOfBudgie/budgie-backgrounds",
+        "sourceCommit": "e2e314bef84fca804e1bd802898c7c7e72629de1",
+        "sourcePath": "backgrounds/ocean-waves.jpg",
+        "retrievedOn": "2026-08-10",
+        "license": "CC0-1.0",
+        "sha256": "8f0a9934d1f0cdd33db50e9f04c0e42e0067a3c9f58beafaf2960e17b27be7c7"
+      }
+    },
+    {
+      "id": "valley-midnight",
+      "name": "Valley Midnight",
+      "file": "valley-midnight.jpg",
+      "mood": "midnight cobalt",
+      "dimensions": { "width": 3840, "height": 2160 },
+      "provenance": {
+        "type": "third-party-cc0-unmodified",
+        "collection": "Budgie Backgrounds v3.0",
+        "repository": "https://github.com/BuddiesOfBudgie/budgie-backgrounds",
+        "sourceCommit": "e2e314bef84fca804e1bd802898c7c7e72629de1",
+        "sourcePath": "backgrounds/valley-midnight.jpg",
+        "retrievedOn": "2026-08-10",
+        "license": "CC0-1.0",
+        "sha256": "9341d63e9ab0ebc923a7606667503458b22e53e9db9d7ca1eb53ec38ca84e662"
+      }
+    },
+    {
+      "id": "beacon-street-sunset",
+      "name": "Beacon Street Sunset",
+      "file": "beacon-street-sunset.jpg",
+      "mood": "winter gold",
+      "dimensions": { "width": 3840, "height": 2160 },
+      "provenance": {
+        "type": "third-party-cc0-unmodified",
+        "collection": "Budgie Backgrounds v3.0",
+        "repository": "https://github.com/BuddiesOfBudgie/budgie-backgrounds",
+        "sourceCommit": "e2e314bef84fca804e1bd802898c7c7e72629de1",
+        "sourcePath": "backgrounds/beacon-street-sunset.jpg",
+        "retrievedOn": "2026-08-10",
+        "license": "CC0-1.0",
+        "sha256": "5e9ca463019146cf3f525b117348fbfdfef7e0a59a094f575c3fba69523e5a67"
+      }
     }
   ]
 }

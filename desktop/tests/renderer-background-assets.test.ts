@@ -2,14 +2,18 @@ import { describe, expect, it } from "vitest"
 import { assertRendererBackgroundAssets } from "../renderer.vite.shared.js"
 
 const thumbnails = [
+  "beacon-street-sunset.webp",
   "cobalt-bloom.webp",
   "dusk-fold.webp",
   "glacier-glass.webp",
+  "lake-sherburne.webp",
   "lunar-paper.webp",
   "midnight-bloom.webp",
   "moss-alloy.webp",
   "obsidian-tide.webp",
+  "ocean-waves.webp",
   "solar-silk.webp",
+  "valley-midnight.webp",
 ]
 
 describe("renderer background asset contract", () => {

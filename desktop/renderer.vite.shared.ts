@@ -3,14 +3,18 @@ import react from "@vitejs/plugin-react"
 import type { Plugin, UserConfig } from "vite"
 
 const BACKGROUND_THUMBNAILS = [
+  "beacon-street-sunset.webp",
   "cobalt-bloom.webp",
   "dusk-fold.webp",
   "glacier-glass.webp",
+  "lake-sherburne.webp",
   "lunar-paper.webp",
   "midnight-bloom.webp",
   "moss-alloy.webp",
   "obsidian-tide.webp",
+  "ocean-waves.webp",
   "solar-silk.webp",
+  "valley-midnight.webp",
 ] as const
 
 type RendererBundleItem = {

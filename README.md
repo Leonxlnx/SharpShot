@@ -62,8 +62,8 @@ shortcuts; Windows can register a chord to only one process.
 | Cursor and Redact | When enabled, the cursor is burned into the captured video. Redact supports up to 64 timed opaque black, dark, or white rectangles with direct preview move/resize, timeline trimming, persistence, and MP4/GIF burn-in. Editable cursor replacement, blur/pixelation, and other annotation types are not shipped |
 | Cloud, collaboration, AI, webcam, macOS | Not included in this alpha |
 
-Studio includes eight original backgrounds (four finished as center-safe 4K
-masters), an original app icon, normal inline SVG interface icons, and three
+Studio includes eight original backgrounds, four additional 4K CC0 cinematic
+landscapes, an original app icon, normal inline SVG action icons, and three
 CC0 starter music tracks. Apple wallpaper artwork is **not**
 bundled or hotlinked: Studio can open Apple's wallpaper guidance in the default
 browser and can import a local image that the user has the right to use. See

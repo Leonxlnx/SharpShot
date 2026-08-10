@@ -1,6 +1,8 @@
 # Build outputs
 /artifacts/
 /build/
+/test-results/
+/node_modules/
 
 # Visual Studio / editors
 /.vs/

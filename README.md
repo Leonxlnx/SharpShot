@@ -1,109 +1,97 @@
-# SharpShot
+# SharpShot Quick
 
 [![Build](https://github.com/Leonxlnx/SharpShot/actions/workflows/build.yml/badge.svg)](https://github.com/Leonxlnx/SharpShot/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-20252b.svg)](LICENSE)
 
-SharpShot is a small Windows region-capture utility for people who want one shortcut and a clean PNG.
-
-Press **Win + Shift + D**, drag a rectangle, and release. SharpShot copies the result to the clipboard and can save it automatically to `Pictures\SharpShot`.
-
-## Why SharpShot?
-
-- Native physical-pixel capture with Per-Monitor V2 DPI awareness
-- Lossless PNG encoding; no JPEG conversion
-- Auto Crisp chooses native, 2×, 3×, or 6× output from the selection size
-- Local-range-clamped enlargement keeps UI edges clean without sharpening halos
-- Global `Win + Shift + D` shortcut
-- Multi-monitor and negative-origin desktop support
-- Clipboard formats for modern apps and legacy bitmap consumers
-- Silent start at Windows sign-in
-- No installer, administrator rights, network access, telemetry, service, polling loop, or watchdog
-
-Microsoft's current Windows shortcut reference does not list `Win + Shift + D` as a default shortcut. Another installed application or OEM utility can still register it. See [Microsoft's Windows shortcut reference](https://support.microsoft.com/windows/keyboard-shortcuts-in-windows-dcc61a57-8ff0-cffe-9796-cb9706c75eec).
+SharpShot Quick is a tiny native Windows tool for fast screenshots and short screen recordings. It stays in the notification area, works locally, and has no accounts, telemetry, network code, Electron, FFmpeg, or third-party runtime dependencies.
 
 ## Install
 
-1. Download the latest `SharpShot-v...-win-x64.zip` from [Releases](https://github.com/Leonxlnx/SharpShot/releases).
-2. Select **Extract All** and move the extracted `SharpShot` folder somewhere permanent.
-3. Run `SharpShot.exe`.
-4. Right-click the tray icon and enable **Start with Windows** if desired.
+1. Download `SharpShot-Quick-1.5.0-win-x64.zip` and its `.sha256.txt` file from [Releases](https://github.com/Leonxlnx/SharpShot/releases).
+2. Verify the ZIP if you want the strongest check:
 
-Do not enable startup while running the executable from inside a ZIP or a temporary folder.
+   ```powershell
+   (Get-FileHash .\SharpShot-Quick-1.5.0-win-x64.zip -Algorithm SHA256).Hash
+   ```
 
-The current release is not code-signed, so Windows may show an **Unknown publisher** or SmartScreen warning. Verify the adjacent SHA-256 checksum before running it.
+3. Select **Extract all**. Do not run the app inside the ZIP.
+4. Open the extracted `SharpShot` folder and double-click **Install.cmd**.
 
-## Use
+The installer verifies every packaged file, runs the built-in synthetic self-test, installs per-user to `%LOCALAPPDATA%\Programs\SharpShot Quick`, creates Desktop and Start Menu shortcuts, registers a normal **Installed apps** entry, and starts the tray app. It does not need administrator rights.
+
+The release is currently unsigned, so Windows may show **Unknown publisher** or SmartScreen. Use **More info → Run anyway** only after the checksum matches the release page.
+
+### Portable use
+
+Skip `Install.cmd` and run `SharpShot.exe` directly from a permanent extracted folder. Enable **Start with Windows** from the tray menu only after moving the folder where you want to keep it.
+
+### Uninstall
+
+Open **Settings → Apps → Installed apps → SharpShot Quick → Uninstall**. Captures in `Pictures\SharpShot` and local preferences are kept.
+
+## 60-second tutorial
+
+### Screenshot
 
 1. Press **Win + Shift + D**.
-2. Drag over the area you want.
-3. Release to copy it. With auto-save enabled (the default), SharpShot also saves a lossless PNG.
+2. Drag around the area you want.
+3. Release to copy it. By default, a lossless PNG is also saved to `Pictures\SharpShot`.
 
-Press `Esc` or right-click to cancel. Double-click the tray icon to start a capture without the keyboard shortcut.
+Press **Esc** or right-click while selecting to cancel without saving.
 
-The tray menu also provides:
+### Quick video
 
-- **Auto Crisp — recommended** — automatically uses 6× for micro-crops, then 3×, 2×, or native pixels as the selection grows
-- **Native (1×)** — exact source pixels, no resampling
-- **Crisp (up to 2×)** — manual 2× enlargement with safety fallback for exceptionally large selections
-- **Ultra (up to 3×)** — manual 3× enlargement with safety fallback for larger selections
-- **Max (up to 6×)** — manual 6× enlargement for micro-crops, with automatic safety fallback for larger selections
-- Automatic lossless PNG saving
-- Open screenshot folder / open the last capture saved during the current session
+1. Press **Win + Shift + A**.
+2. Drag around the recording area.
+3. Press **Esc** during selection or the countdown to cancel.
+4. After recording starts, press **Win + Shift + A** again or click the floating square Stop button.
+
+The finalized H.264 MP4 is saved to `Pictures\SharpShot` and copied as a pasteable file. `Esc` intentionally does not delete an active recording; this prevents an accidental key press from losing captured video.
+
+Do not run SharpShot Quick and SharpShot Studio together: both use the same global shortcuts.
+
+## Tray controls
+
+- Capture now / Record screen area
+- Auto Crisp XXL, Native 1×, Crisp 2×, Ultra 3×, and Max 6× screenshot modes
+- Compact chat-sized clipboard output with optional full-resolution PNG auto-save
+- Open captures folder / last capture
 - Start with Windows
-- Exit
+- Exit safely after an active MP4 has finalized
 
-If the clipboard is unavailable, SharpShot still saves the PNG when auto-save is enabled. With auto-save disabled, SharpShot warns you and does not write the capture to disk.
+## Privacy and reliability
 
-## Quality, honestly
-
-A screenshot cannot contain more real detail than the monitor rendered. Native mode preserves every available source pixel exactly. Crisp, Ultra, and Max create a controlled enlarged copy to avoid lower-quality downstream scaling; they do not invent missing detail.
-
-Auto Crisp tries 6×, then 3×, then 2×, and uses the highest tier whose enlarged output fits within 4 megapixels and 4096 pixels per edge. Otherwise it stays native. In practice, 6× is reserved for source crops with at most 111,111 pixels of area and no edge longer than 682 pixels. Every enlargement is calculated directly from the captured pixels rather than chaining lower-resolution passes. The scaler uses Catmull-Rom reconstruction and clamps every output channel to nearby source colors, preventing the light and dark halos created by unconstrained sharpening.
-
-SharpShot caps manually enlarged output at 16 megapixels and automatically steps down the 6× → 3× → 2× → 1× ladder for large selections. Automatically enlarged outputs stay within the 4-megapixel/4096-pixel budget for predictable speed and memory use; native captures are never downscaled to meet that budget. Scaling runs only after a capture and adds no idle work.
-
-## Efficiency
-
-SharpShot is a small .NET Framework tray application with no third-party dependencies. While idle it blocks in the native Windows message loop; it has no polling timer or background worker. On the development machine, an idle five-second sample used no measurable CPU time and approximately `27 MB` of private memory. Exact memory use varies by Windows version and display setup.
-
-During capture, native output reuses the selected crop, enlargement streams through four cached rows, PNG data is carried without an extra exact-length copy, and the persistent clipboard is flushed without an additional app-side full-bitmap clone. Automatically enlarged output is capped at about 15.3 MB of raw pixels before encoding.
-
-## Privacy
-
-SharpShot captures pixels locally. It has no networking or telemetry code. Its only on-disk and registry state is:
-
-- screenshots under `Pictures\SharpShot` when auto-save is enabled;
-- settings and runtime status under `%LOCALAPPDATA%\SharpShot`;
-- an optional current-user `Run` entry when **Start with Windows** is enabled.
+- Windows-only, x64, .NET Framework 4.8
+- No networking, telemetry, cloud upload, service, driver, watchdog, or administrator access
+- Screenshots and recordings are written locally and finalized before clipboard copy
+- Native DXGI/Desktop Duplication and Media Foundation hardware paths with automatic GDI/software fallback
+- 60 FPS through 1280 × 720; efficient 30 FPS above it
+- Region selection supports multiple monitors and per-monitor DPI
 
 ## Build from source
 
-Requirements:
-
-- Windows 10 or 11, x64
-- .NET Framework 4.8 compiler/runtime (included on current supported Windows installations; the Developer Pack may be needed on stripped-down systems)
-- PowerShell 5.1 or newer
-
-Run:
+Requirements: Windows 10/11 x64, PowerShell 5.1+, and the .NET Framework 4.8 compiler/runtime.
 
 ```powershell
+git clone https://github.com/Leonxlnx/SharpShot.git
+cd SharpShot
 .\build.ps1
 ```
 
-The portable ZIP is written to `artifacts\`. The build script compiles only the checked-in C# source using the Windows .NET Framework compiler, generates the application icon, runs pixel/DPI/PNG self-tests, and packages checksums.
+The script compiles checked-in C# with the Windows compiler, generates the icon, runs synthetic pixel/DPI/PNG/recording tests, packages the exact portable file set, re-extracts and retests it, and writes:
 
-The normal self-test uses generated patterns only. Run `SharpShot.exe --self-test-live <output-folder>` explicitly to add an interactive desktop-capture check; it validates capture in memory and does not save desktop pixels.
+- `artifacts\native\SharpShot-Quick-1.5.0-win-x64.zip`
+- `artifacts\native\SharpShot-Quick-1.5.0-win-x64.zip.sha256.txt`
 
-## Known limitations
+The interactive `--self-test-live` path is opt-in; normal builds never capture the developer's desktop.
 
-- GDI capture is 8-bit SDR. HDR desktops may be tone-mapped by Windows.
-- Protected video, the UAC secure desktop, and some exclusive full-screen content may appear black.
-- The global shortcut is available only while signed in and while SharpShot is running.
-- Another application or OEM utility can claim the shortcut. SharpShot reports that shortcut registration failed and remains available from its tray icon.
+## Scope
 
-## Contributing
+Quick intentionally does screenshot and quick video only. The unfinished multi-track Studio editor is developed separately and will be published later when its UX, packaging, and binary-license review are ready.
 
-Bug reports and focused pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+## Contributing and security
+
+Focused issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Report vulnerabilities privately using [GitHub Security Advisories](https://github.com/Leonxlnx/SharpShot/security/advisories/new).
 
 ## License
 

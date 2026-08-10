@@ -1,0 +1,50 @@
+{
+  "name": "sharpshot-studio",
+  "version": "0.2.0-alpha.1",
+  "private": true,
+  "description": "Fast native Windows capture with a focused Electron workflow and editing studio.",
+  "license": "MIT",
+  "author": "Leonxlnx",
+  "type": "module",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "qa:renderer": "vite --config vite.renderer.config.ts --host 127.0.0.1 --port 4174 --strictPort",
+    "qa:renderer:build": "vite build --config vite.renderer.config.ts",
+    "build": "npm run typecheck && electron-vite build",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "preview": "electron-vite preview",
+    "native:vendor": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/vendor-native.ps1",
+    "native:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-native.ps1",
+    "media:vendor": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/vendor-ffmpeg.ps1",
+    "media:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-ffmpeg.ps1",
+    "media:smoke": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-ffmpeg.ps1 -SmokeTest",
+    "media:verify-package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-packaged-ffmpeg.ps1 -LatestZip",
+    "setup:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-studio-setup.ps1 -LatestSetup",
+    "release:verify-static": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-release-contract.ps1",
+    "package:dir": "npm run native:vendor && npm run media:verify && npm run build && npm run native:verify && electron-builder --dir && npm run native:verify && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-packaged-ffmpeg.ps1 -PackagePath ../artifacts/desktop/win-unpacked",
+    "package:zip": "npm run native:vendor && npm run media:verify && npm run build && npm run native:verify && electron-builder --win zip && npm run native:verify && npm run media:verify-package",
+    "package:win": "npm run native:vendor && npm run media:verify && npm run build && npm run native:verify && electron-builder --win nsis zip && npm run native:verify && npm run media:verify-package && npm run setup:verify"
+  },
+  "dependencies": {
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@vitejs/plugin-react": "5.1.4",
+    "electron": "43.3.0",
+    "electron-builder": "26.15.3",
+    "electron-vite": "5.0.0",
+    "typescript": "7.0.2",
+    "vite": "7.3.6",
+    "vitest": "4.1.10"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -1,6 +1,18 @@
 # Build outputs
 /artifacts/
 /build/
+/test-results/
+/node_modules/
+
+# Generated Studio outputs and reproducibly restored runtimes
+/desktop/test-results/
+/desktop/resources/native/
+
+# Superseded local design studies. The shipped UI uses source SVG components.
+/desktop/docs/design-reference/
+/desktop/resources/icons/tactile/
+/desktop/scripts/extract-tactile-icons.ps1
+/desktop/scripts/prepare-tactile-nav-icons.ps1
 
 # Visual Studio / editors
 /.vs/

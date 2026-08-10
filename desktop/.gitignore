@@ -1,0 +1,23 @@
+node_modules/
+out/
+dist/
+release/
+.tsbuild/
+*.tsbuildinfo
+*.log
+coverage/
+test-results/
+resources/ffmpeg/win32-x64/*.exe
+.staging/
+
+# Reproducibly restored by scripts/vendor-ffmpeg.ps1. Keep the manifest,
+# licenses, and provenance in Git; keep the 140+ MB runtime out.
+.cache/
+resources/ffmpeg/win32-x64/*.dll
+resources/native/
+
+# Local-only, superseded design explorations.
+docs/design-reference/
+resources/icons/tactile/
+scripts/extract-tactile-icons.ps1
+scripts/prepare-tactile-nav-icons.ps1

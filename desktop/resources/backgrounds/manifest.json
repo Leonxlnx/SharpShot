@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 2,
+  "license": "Original assets generated for SharpShot Studio; redistributable with this project under MIT.",
+  "provenanceNote": "Generated-image sources are identified per item. Final 4K masters are project-owned derivatives produced only by resampling the generated source; no third-party wallpaper artwork was used.",
+  "items": [
+    {
+      "id": "dusk-fold",
+      "name": "Dusk Fold",
+      "file": "dusk-fold.png",
+      "mood": "graphite ember",
+      "dimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "thirdPartyInputs": [],
+        "sha256": "a1ff9c12cbcac457392843971576dd760f2784419d423872c74b37152a6a0d94"
+      }
+    },
+    {
+      "id": "glacier-glass",
+      "name": "Glacier Glass",
+      "file": "glacier-glass.png",
+      "mood": "navy mineral",
+      "dimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "thirdPartyInputs": [],
+        "sha256": "ebffe074aa3540f34ebe29881ea289e4c36d986980c8faf3a7eaa12265a8eed4"
+      }
+    },
+    {
+      "id": "solar-silk",
+      "name": "Solar Silk",
+      "file": "solar-silk.png",
+      "mood": "vermilion gold",
+      "dimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "thirdPartyInputs": [],
+        "sha256": "e0f64754feea348a536b5be0ff5ad5f8ea0ba187dadf3f3b96540b6b8f8872ec"
+      }
+    },
+    {
+      "id": "midnight-bloom",
+      "name": "Midnight Bloom",
+      "file": "midnight-bloom.png",
+      "mood": "indigo cobalt",
+      "dimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "thirdPartyInputs": [],
+        "sha256": "47e4f7b474f5de13b61d6b4c5c2723db1b8ed5b84dba5653ec7c992aeec858c9"
+      }
+    },
+    {
+      "id": "obsidian-tide",
+      "name": "Obsidian Tide",
+      "file": "obsidian-tide.webp",
+      "mood": "obsidian sea-glass",
+      "dimensions": {
+        "width": 3840,
+        "height": 2160
+      },
+      "centerSafe": "Central 55% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "sourceArtifact": "exec-5ef10523-3f33-4d9e-ba6a-d6a9d2c56644.png",
+        "sourceDimensions": {
+          "width": 1672,
+          "height": 941
+        },
+        "postProcess": "High-quality bicubic resample to exact 3840x2160, then visually lossless q100 WebP packaging with libwebp picture preset; no compositing, repainting, or third-party source material.",
+        "sha256": "007aff651683ca76ca4e2f46efe831850596970f4c43c893389dd08919f29104"
+      },
+      "prompt": [
+        "Use case: stylized-concept",
+        "Asset type: SharpShot Studio built-in cinematic desktop and captured-video background master",
+        "Primary request: Create an entirely original premium abstract wallpaper titled \"Obsidian Tide\".",
+        "Scene/backdrop: A monumental landscape of smooth carved obsidian and deep charcoal basalt flowing like a slow ocean tide, with sparse translucent smoked-glass ridges and subtle mineral seams.",
+        "Style/medium: Photoreal high-end 3D material study, tactile sculptural surfaces, editorial product-film art direction, physically plausible rendering, sophisticated rather than flashy.",
+        "Composition/framing: Exact 16:9 landscape composition intended for a 3840x2160 master. Keep the central 55% calm, spacious, low-frequency, and free of focal objects so a 16:9 screen recording remains readable. Place most sculptural energy along the far left and right edges and lower third. No hard horizon through the center.",
+        "Lighting/mood: Near-black ambient field, restrained cyan and sea-glass green rim light grazing the forms, deep shadow detail without crushed blacks, quiet dramatic atmosphere.",
+        "Color palette: Obsidian black, graphite, smoked gray, tiny accents of muted cyan and deep teal.",
+        "Materials/textures: Satin basalt, polished volcanic glass, microscopic mineral grain, soft atmospheric depth, no plastic look.",
+        "Constraints: Completely original artwork; no logos, no UI, no text, no watermark, no recognizable brand wallpaper, no copied Apple or Tella composition; preserve generous center-safe negative space; crisp enough for 4K display.",
+        "Avoid: neon cyberpunk glow, loud gradients, busy center, symmetrical orb, fabric folds, lens flare, star fields, landscape photography, obvious generative artifacts."
+      ]
+    },
+    {
+      "id": "cobalt-bloom",
+      "name": "Cobalt Bloom",
+      "file": "cobalt-bloom.webp",
+      "mood": "cobalt porcelain",
+      "dimensions": {
+        "width": 3840,
+        "height": 2160
+      },
+      "centerSafe": "Central 55% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "sourceArtifact": "exec-40dc414b-e5f5-4fbe-9240-8679628a477d.png",
+        "sourceDimensions": {
+          "width": 1672,
+          "height": 941
+        },
+        "postProcess": "High-quality bicubic resample to exact 3840x2160, then visually lossless q100 WebP packaging with libwebp picture preset; no compositing, repainting, or third-party source material.",
+        "sha256": "e60c10a89400611d22f8e4eaf0e4ec220c17c9a3b8f1f4ce58723eaa5722f13e"
+      },
+      "prompt": [
+        "Use case: stylized-concept",
+        "Asset type: SharpShot Studio built-in cinematic desktop and captured-video background master",
+        "Primary request: Create an entirely original premium abstract wallpaper titled \"Cobalt Bloom\".",
+        "Scene/backdrop: Large sculptural ribbons and rounded petal-like plates unfolding from the outer corners, built from glazed cobalt ceramic and translucent ultramarine resin, suspended in a quiet atmospheric studio.",
+        "Style/medium: Photoreal luxury 3D still life, tactile playful sculpture with precise product-design craft, editorial but friendly, refined and clean.",
+        "Composition/framing: Exact 16:9 landscape composition intended for a 3840x2160 master. Keep the central 55% calm and mostly open for a screen-recording frame. Let the forms bloom inward from the upper-left and lower-right edges without closing the center; asymmetric and balanced. Large shapes, no small clutter.",
+        "Lighting/mood: Soft cool daylight with a faint warm bounce, luminous but not glossy-plastic, gentle contact shadows and convincing depth.",
+        "Color palette: Saturated cobalt, ultramarine, ink blue, porcelain white, a very small accent of pale apricot.",
+        "Materials/textures: Fine glazed ceramic, velvet-matte porcelain, translucent resin edges, subtle hand-finished imperfections.",
+        "Constraints: Completely original artwork; no logos, no UI, no text, no watermark, no recognizable brand wallpaper, no copied Apple or Tella composition; generous center-safe negative space; crisp enough for a 4K display.",
+        "Avoid: flowers as literal botanical objects, neon, candy overload, generic liquid gradient, spherical blobs, chrome, busy center, symmetry, lens flare, obvious generative artifacts."
+      ]
+    },
+    {
+      "id": "moss-alloy",
+      "name": "Moss Alloy",
+      "file": "moss-alloy.webp",
+      "mood": "lichen gunmetal",
+      "dimensions": {
+        "width": 3840,
+        "height": 2160
+      },
+      "centerSafe": "Central 55% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "sourceArtifact": "exec-277828e5-0cb3-49cb-b954-64d3fd4612a4.png",
+        "sourceDimensions": {
+          "width": 1672,
+          "height": 941
+        },
+        "postProcess": "High-quality bicubic resample to exact 3840x2160, then visually lossless q100 WebP packaging with libwebp picture preset; no compositing, repainting, or third-party source material.",
+        "sha256": "70b89d801284fadaa9186651f42011ab1ec7043c2358878038716cf7bb900a52"
+      },
+      "prompt": [
+        "Use case: stylized-concept",
+        "Asset type: SharpShot Studio built-in cinematic desktop and captured-video background master",
+        "Primary request: Create an entirely original premium abstract wallpaper titled \"Moss Alloy\".",
+        "Scene/backdrop: Broad architectural sheets of weathered bronze and brushed dark aluminum interlock at the outer edges of a tranquil mineral field; selective areas carry a very fine velvety moss-like patina, as if nature has slowly softened a precision-made object.",
+        "Style/medium: Photoreal high-end 3D material study, tactile industrial sculpture, quiet Japanese-European editorial art direction, natural imperfection with precise geometry.",
+        "Composition/framing: Exact 16:9 landscape composition intended for a 3840x2160 master. Preserve the central 55% as a calm soft-focus plane for a screen-recording frame. Use one low sweeping metal arc entering from the bottom-left and a lighter layered form near the upper-right; asymmetrical, spacious, no central focal object.",
+        "Lighting/mood: Diffuse overcast studio light with a narrow warm sunrise reflection across a metal edge; soft shadows, dimensional but serene.",
+        "Color palette: Deep moss green, lichen olive, oxidized bronze, gunmetal, muted stone, tiny amber highlights.",
+        "Materials/textures: Brushed aluminum, aged bronze patina, microscopically soft moss fibers, matte stone dust, fine machining lines.",
+        "Constraints: Completely original artwork; no logos, no UI, no text, no watermark, no recognizable brand wallpaper, no copied Apple or Tella composition; generous center-safe negative space; crisp enough for a 4K display.",
+        "Avoid: literal forest or plants, camouflage, military styling, steampunk parts, gears, shiny chrome, neon, busy center, perfect symmetry, landscape photography, obvious generative artifacts."
+      ]
+    },
+    {
+      "id": "lunar-paper",
+      "name": "Lunar Paper",
+      "file": "lunar-paper.webp",
+      "mood": "ivory moonlight",
+      "dimensions": {
+        "width": 3840,
+        "height": 2160
+      },
+      "centerSafe": "Central 55% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-09",
+        "sourceArtifact": "exec-cb3e8123-30b3-4383-9f8e-473411f73899.png",
+        "sourceDimensions": {
+          "width": 1672,
+          "height": 941
+        },
+        "postProcess": "High-quality bicubic resample to exact 3840x2160, then visually lossless q100 WebP packaging with libwebp picture preset; no compositing, repainting, or third-party source material.",
+        "sha256": "5709357e92899dc05704612e0bd7628a6a0e30c88510800104f66b828ce363ac"
+      },
+      "prompt": [
+        "Use case: stylized-concept",
+        "Asset type: SharpShot Studio built-in cinematic desktop and captured-video background master",
+        "Primary request: Create an entirely original premium abstract wallpaper titled \"Lunar Paper\".",
+        "Scene/backdrop: Oversized layers of thick handmade ivory paper and pale silver fiber sheet curl softly from the outer edges, revealing charcoal-gray undersides and a dusting of pearlescent mineral fibers; an abstract relief that suggests moonlight without depicting a moon.",
+        "Style/medium: Ultra-detailed editorial paper sculpture photographed in a quiet gallery, tactile analog craft, refined contemporary art direction, warm and human.",
+        "Composition/framing: Exact 16:9 landscape composition intended for a 3840x2160 master. Keep the central 55% open, softly textured, and low-contrast for a screen-recording frame. Use a broad deckled fold from the upper-left and a shallow layered wave along the bottom-right; asymmetric, simple, large scale.",
+        "Lighting/mood: Soft directional moonlike studio light, delicate long shadows, luminous whites with retained texture, tranquil and premium.",
+        "Color palette: Warm ivory, moon silver, pearl, soft clay gray, charcoal, the faintest hint of cool lilac in shadow.",
+        "Materials/textures: Handmade cotton paper fibers, deckled torn edges, embossed ridges, mineral-flecked vellum, subtle dry ink wash.",
+        "Constraints: Completely original artwork; no logos, no UI, no text, no watermark, no recognizable brand wallpaper, no copied Apple or Tella composition; generous center-safe negative space; crisp enough for a 4K display.",
+        "Avoid: literal moon or space scene, origami animals, stationery flat-lay, typography, bright gradients, glossy plastic, busy center, perfect symmetry, lens flare, obvious generative artifacts."
+      ]
+    }
+  ]
+}

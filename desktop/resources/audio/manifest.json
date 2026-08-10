@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "pack": {
+    "id": "iamoneabe-vintage-starter",
+    "title": "Vintage Collection — SharpShot Starter Selection",
+    "creator": "iamoneabe",
+    "sourcePage": "https://opengameart.org/content/vintage-collection-vgm-sfx-tracks-stuff-vol-i",
+    "creatorPage": "https://iamoneabe.itch.io/vintage-collection",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "licenseFile": "LICENSE-CC0-1.0.txt",
+    "retrievedAt": "2026-08-09",
+    "contentIdStatement": "The creator states that none of the collection is registered with YouTube Content ID or another copyright system."
+  },
+  "assets": [
+    {
+      "id": "beauty-beat",
+      "title": "Beauty Beat",
+      "creator": "iamoneabe",
+      "kind": "music",
+      "file": "music/beauty-beat.mp3",
+      "originalFilename": "beauty_beat_2.mp3",
+      "source": "https://opengameart.org/sites/default/files/beauty_beat_2.mp3",
+      "license": "CC0-1.0",
+      "retrievedAt": "2026-08-09",
+      "sha256": "a41d95e568f5449074ae2c65f5f347b22e7d58b7a15baa1fd62083179f8fce3a",
+      "bytes": 3311326,
+      "durationSeconds": 137.80125,
+      "media": {
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRateHz": 44100,
+        "channels": 2,
+        "bitRateBps": 192000
+      }
+    },
+    {
+      "id": "evening",
+      "title": "Evening",
+      "creator": "iamoneabe",
+      "kind": "music",
+      "file": "music/evening.mp3",
+      "originalFilename": "evening_0.mp3",
+      "source": "https://opengameart.org/sites/default/files/evening_0.mp3",
+      "license": "CC0-1.0",
+      "retrievedAt": "2026-08-09",
+      "sha256": "595608c216dfe0e5f378c0884abfc29c62ee35b3114fbbb91ccccf0fc73738e1",
+      "bytes": 4531348,
+      "durationSeconds": 188.6355,
+      "media": {
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRateHz": 44100,
+        "channels": 2,
+        "bitRateBps": 192000
+      }
+    },
+    {
+      "id": "floating-away",
+      "title": "Floating Away",
+      "creator": "iamoneabe",
+      "kind": "music",
+      "file": "music/floating-away.mp3",
+      "originalFilename": "floating_away_0.mp3",
+      "source": "https://opengameart.org/sites/default/files/floating_away_0.mp3",
+      "license": "CC0-1.0",
+      "retrievedAt": "2026-08-09",
+      "sha256": "96bcfb96de7c26662a9de39cc8458d74e7a1ddbe40bed42ed21370d8716e1064",
+      "bytes": 4185073,
+      "durationSeconds": 174.288958,
+      "media": {
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRateHz": 44100,
+        "channels": 2,
+        "bitRateBps": 192000
+      }
+    }
+  ]
+}

@@ -10,24 +10,57 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  test:
     runs-on: windows-2025
-    timeout-minutes: 10
+    timeout-minutes: 30
 
     steps:
       - name: Check out source
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Build and test
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.12.0
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Build and self-test Quick Capture
         shell: pwsh
         run: ./build.ps1
 
-      - name: Upload portable build
+      - name: Install and audit Studio dependencies
+        working-directory: desktop
+        shell: pwsh
+        run: |
+          npm ci
+          npm audit --audit-level=high
+
+      - name: Restore and verify native and media runtimes
+        working-directory: desktop
+        shell: pwsh
+        run: |
+          npm run native:vendor
+          npm run native:verify
+          npm run media:vendor
+          npm run media:verify
+
+      - name: Test and build Studio
+        working-directory: desktop
+        shell: pwsh
+        run: |
+          npm run release:verify-static
+          npm test
+          npm run typecheck
+          npm run build
+          npm run media:smoke
+
+      - name: Upload Quick Capture
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: SharpShot-win-x64
+          name: SharpShot-Quick-win-x64
           path: |
-            artifacts/SharpShot-v*-win-x64.zip
-            artifacts/SharpShot-v*-win-x64.zip.sha256.txt
+            artifacts/native/SharpShot-Quick-1.5.0-win-x64.zip
+            artifacts/native/SharpShot-Quick-1.5.0-win-x64.zip.sha256.txt
           if-no-files-found: error

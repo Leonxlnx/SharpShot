@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CINEMATIC_WALLPAPERS, ORIGINAL_WALLPAPERS } from "../data";
+import { CINEMATIC_WALLPAPERS, ORIGINAL_WALLPAPERS, SCENE_WALLPAPERS } from "../data";
 import { getDesktopBridge, importLibraryImages, isDesktopBridgeAvailable, openExternalLink } from "../bridge";
 import {
     BACKGROUND_PRESETS,
@@ -482,6 +482,11 @@ export function EditorInspector({
                     <section className="background-browser__group" aria-labelledby="background-originals-heading">
                         <header><h4 id="background-originals-heading">SharpShot originals</h4><span>{ORIGINAL_WALLPAPERS.length} included</span></header>
                         <WallpaperPicker onSelect={(id) => dispatch({ type: "SET_BACKGROUND", id })} selectedId={state.project.backgroundId} wallpapers={ORIGINAL_WALLPAPERS} />
+                    </section>
+
+                    <section className="background-browser__group background-browser__group--scenes" aria-labelledby="background-scenes-heading">
+                        <header><h4 id="background-scenes-heading">SharpShot scenes</h4><span>{SCENE_WALLPAPERS.length} included</span></header>
+                        <WallpaperPicker onSelect={(id) => dispatch({ type: "SET_BACKGROUND", id })} selectedId={state.project.backgroundId} wallpapers={SCENE_WALLPAPERS} />
                     </section>
 
                     <section className="background-browser__group" aria-labelledby="background-cinematic-heading">

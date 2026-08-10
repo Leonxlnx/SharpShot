@@ -62,7 +62,11 @@ describe("Home capture CTA routing", () => {
         expect(html.match(/class="capture-action /g)).toHaveLength(3);
         expect(html).toContain("capture-action--screenshot");
         expect(html).toContain('aria-keyshortcuts="Meta+Shift+D"');
-        expect(html).toContain('class="capture-action__art"');
+        expect(html.match(/<span aria-hidden="true" class="capture-action__art capture-action__art--(?:screenshot|quick|studio)"><\/span>/g)).toHaveLength(3);
+        expect(html).toContain("capture-action__art--screenshot");
+        expect(html).toContain("capture-action__art--quick");
+        expect(html).toContain("capture-action__art--studio");
+        expect(html).not.toMatch(/capture-action__art[^>]*(?:tabindex|role=|aria-label=)/);
         expect(html).toContain('aria-hidden="true" class="capture-action__shortcut"');
         expect(html).toContain(">Recent<");
         expect(html).toContain("No captures yet");

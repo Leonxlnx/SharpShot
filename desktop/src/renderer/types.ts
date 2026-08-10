@@ -45,6 +45,8 @@ export interface Wallpaper {
     /** Lightweight picker artwork. The full source is reserved for the active canvas. */
     thumbnailSource: string;
     source: string;
+    width: number;
+    height: number;
     accent: string;
     textColor: "light" | "dark";
 }

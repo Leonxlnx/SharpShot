@@ -12,6 +12,7 @@ import {
 import { computeRendererPreviewGeometry } from "./preview-geometry";
 import { createEmptyOverlayDocument } from "../shared/overlays";
 import { insertMusicClip } from "./audio-editor";
+import { WALLPAPERS } from "./data";
 
 const media: MediaItem = {
   id: "recording-01", name: "Launch walkthrough.mp4", kind: "video", origin: "recording",
@@ -202,6 +203,45 @@ describe("renderer media adapter", () => {
     const saved = rendererProjectToCanonical(renderer, original);
     expect(saved.canvas.background).toEqual(preset.style);
     expect(canonicalProjectToRenderer(saved).backgroundId).toBe(preset.id);
+  });
+
+  it.each(WALLPAPERS)("round-trips the $name bundled wallpaper", (wallpaper) => {
+    const original = createCanonicalProjectFromVideo(media, probe);
+    const renderer = canonicalProjectToRenderer(original);
+    renderer.backgroundId = wallpaper.id;
+
+    const saved = rendererProjectToCanonical(renderer, original);
+    const bundledKey = decodeURIComponent(new URL(wallpaper.source).pathname.replace(/^\//, ""));
+    expect(saved.canvas.background).toEqual({ kind: "image", assetId: bundledKey, fit: "cover", blurPx: 0, opacity: 1 });
+    expect(saved.assets[bundledKey]).toMatchObject({
+      kind: "image",
+      locator: { kind: "bundled", key: bundledKey },
+      width: wallpaper.width,
+      height: wallpaper.height,
+    });
+    expect(canonicalProjectToRenderer(saved).backgroundId).toBe(wallpaper.id);
+    expect(() => validateProject(saved)).not.toThrow();
+  });
+
+  it("falls back for unknown bundled backgrounds without accepting an unknown renderer id", () => {
+    const original = createCanonicalProjectFromVideo(media, probe);
+    original.assets["unknown-wallpaper"] = {
+      id: "unknown-wallpaper",
+      kind: "image",
+      name: "Unknown wallpaper",
+      locator: { kind: "bundled", key: "unknown-wallpaper" },
+      width: 3_840,
+      height: 2_160,
+    };
+    original.canvas.background = { kind: "image", assetId: "unknown-wallpaper", fit: "cover", blurPx: 0, opacity: 1 };
+
+    const renderer = canonicalProjectToRenderer(original);
+    expect(renderer.backgroundId).toBe("cobalt");
+    renderer.backgroundId = "not-in-the-catalog";
+
+    const saved = rendererProjectToCanonical(renderer, original);
+    expect(saved.canvas.background).toEqual(original.canvas.background);
+    expect(saved.assets["unknown-wallpaper"]).toEqual(original.assets["unknown-wallpaper"]);
   });
 
   it("reopens a registered external image background through the safe media protocol", () => {

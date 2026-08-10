@@ -140,7 +140,7 @@ export function WorkflowsPage({
                 ))}
             </div>
 
-            <main className="recipe-editor">
+            <main className={`recipe-editor recipe-editor--${selected.kind}`}>
                 <header className="recipe-editor__header">
                     <div className="recipe-title-inputs">
                         <input aria-label="Workflow name" className="recipe-name-input" onChange={(event) => update({ name: event.currentTarget.value })} value={selected.name} />

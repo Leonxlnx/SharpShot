@@ -49,6 +49,20 @@ function zoom(overrides: Partial<ZoomSegment> = {}): ZoomSegment {
 }
 
 describe("EditorInspector direct controls", () => {
+    it("shows ten SharpShot scenes between originals and cinematic landscapes", () => {
+        const state: EditorState = { ...structuredClone(INITIAL_EDITOR_STATE), activeTool: "background" };
+        const html = renderInspector(state);
+        const originalsIndex = html.indexOf("SharpShot originals");
+        const scenesIndex = html.indexOf("SharpShot scenes");
+        const cinematicIndex = html.indexOf("Cinematic landscapes");
+        const scenes = html.slice(scenesIndex, cinematicIndex);
+
+        expect(originalsIndex).toBeLessThan(scenesIndex);
+        expect(scenesIndex).toBeLessThan(cinematicIndex);
+        expect(scenes).toContain("10 included");
+        expect(scenes.match(/background-browser__image-frame/g)).toHaveLength(10);
+    });
+
     it("offers text-only external wallpaper sources beside the local import flow", () => {
         const state: EditorState = { ...structuredClone(INITIAL_EDITOR_STATE), activeTool: "background" };
         const html = renderInspector(state);

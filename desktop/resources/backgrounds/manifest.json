@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "license": "SharpShot originals are distributed under MIT. The four Budgie Backgrounds files are unmodified CC0-1.0 assets; see each item's provenance and LICENSE-BUDGIE-BACKGROUNDS-CC0-1.0.txt.",
-  "provenanceNote": "Generated-image sources are identified per original item. The additional cinematic landscapes are pinned, hash-verified CC0 files from Budgie Backgrounds v3.0. Apple artwork is not included.",
+  "provenanceNote": "Generated-image sources are identified per original item. The ten-image Scene Collection records exact prompts and source artifacts in SCENE_COLLECTION.md. The additional cinematic landscapes are pinned, hash-verified CC0 files from Budgie Backgrounds v3.0. Apple artwork is not included.",
   "items": [
     {
       "id": "dusk-fold",
@@ -214,6 +214,236 @@
         "Constraints: Completely original artwork; no logos, no UI, no text, no watermark, no recognizable brand wallpaper, no copied Apple or Tella composition; generous center-safe negative space; crisp enough for a 4K display.",
         "Avoid: literal moon or space scene, origami animals, stationery flat-lay, typography, bright gradients, glossy plastic, busy center, perfect symmetry, lens flare, obvious generative artifacts."
       ]
+    },
+    {
+      "id": "quiet-aperture",
+      "name": "Quiet Aperture",
+      "file": "quiet-aperture.webp",
+      "mood": "graphite steel",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-272f1cbf-9405-46a2-afdc-006c2c46b9e9.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "2276fa85db3311f32ca5df855ba4f681269dccad87360cc8f4b30efb60cd531c"
+      },
+      "thumbnail": {
+        "file": "thumbnails/quiet-aperture.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "e08eb9b34684f67989c6a0b2db33fdb31d09dcd6b961b0a22b3e866b10e5d393"
+      },
+      "promptReference": "SCENE_COLLECTION.md#quiet-aperture"
+    },
+    {
+      "id": "glass-orbit",
+      "name": "Glass Orbit",
+      "file": "glass-orbit.webp",
+      "mood": "smoke ice",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-e05a5e8b-c357-4e6d-9eba-d6e73c719fb8.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "590dcbdd5f80c16cdd443b4c01b197229544c820a3cbbee46bd507fc85d02381"
+      },
+      "thumbnail": {
+        "file": "thumbnails/glass-orbit.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "d5d9ede01a3fb3520102888d13749413359b0750ecbb3ca9da8e72e1a8af393f"
+      },
+      "promptReference": "SCENE_COLLECTION.md#glass-orbit"
+    },
+    {
+      "id": "mineral-current",
+      "name": "Mineral Current",
+      "file": "mineral-current.webp",
+      "mood": "slate mineral teal",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-e39e7245-a4c7-4518-9466-d0565eedc6ac.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "2e93ca2ea171a2541d80a9408c3f3d83ecaa359238b50bf2b32338ddf5257ce5"
+      },
+      "thumbnail": {
+        "file": "thumbnails/mineral-current.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "ae26daaf813c52c49fba16458b1dab62b9759aea4b2c182f0cfd89cee6889e98"
+      },
+      "promptReference": "SCENE_COLLECTION.md#mineral-current"
+    },
+    {
+      "id": "warm-signal",
+      "name": "Warm Signal",
+      "file": "warm-signal.webp",
+      "mood": "charcoal copper",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-06c19f97-8d1a-4ace-9406-02af5ad63c1b.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "7ddae495816034d23abd843792fa9fbb151aafa53da36a799de9a10bc3a63ba1"
+      },
+      "thumbnail": {
+        "file": "thumbnails/warm-signal.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "af9a12fbaaab816073eaa4f0772de93dbab7b31563193955c7d771bdd44b5421"
+      },
+      "promptReference": "SCENE_COLLECTION.md#warm-signal"
+    },
+    {
+      "id": "lunar-fold",
+      "name": "Lunar Fold",
+      "file": "lunar-fold.webp",
+      "mood": "warm ivory",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-5855ff84-2213-4dac-813b-1ad0cf00adfc.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "cb7986f7a6de9eae48847794457a380dc25db9f3819daf0be7370435c96e7512"
+      },
+      "thumbnail": {
+        "file": "thumbnails/lunar-fold.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "272507e1e74b8f22720b5d1a54e5f0ffbe74666e07cf1eb3df8a804094475843"
+      },
+      "promptReference": "SCENE_COLLECTION.md#lunar-fold"
+    },
+    {
+      "id": "cobalt-veil",
+      "name": "Cobalt Veil",
+      "file": "cobalt-veil.webp",
+      "mood": "ink cobalt",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-5edbb9fb-69bd-4446-a10f-ff126c099ae3.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "1b7701c87996a9ef6d1c3b3df75b9b5febc55009eb2b374e4bbb180a9a002420"
+      },
+      "thumbnail": {
+        "file": "thumbnails/cobalt-veil.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "2becb8974cc633dbf589d7644286349781736401ccd1cbd627a2d3bc89cbb4e8"
+      },
+      "promptReference": "SCENE_COLLECTION.md#cobalt-veil"
+    },
+    {
+      "id": "moss-circuit",
+      "name": "Moss Circuit",
+      "file": "moss-circuit.webp",
+      "mood": "gunmetal moss",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-a07b6631-2e75-43cc-8486-0da3dee4535e.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "0d22e55cf0e6ae7f3bf5bb7378108cda54c3e0deba55302e3da7eaa104195b46"
+      },
+      "thumbnail": {
+        "file": "thumbnails/moss-circuit.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "1aaa965cf64151e9fa4d8bdfae2db59c543f5319c780597878ead9a0663d3a2d"
+      },
+      "promptReference": "SCENE_COLLECTION.md#moss-circuit"
+    },
+    {
+      "id": "porcelain-wave",
+      "name": "Porcelain Wave",
+      "file": "porcelain-wave.webp",
+      "mood": "porcelain fog",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-4e368cee-8be1-414e-8e4f-ed3c9b16ab82.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "f5cf321a98696e061f76a4978f06698ff8e9850ea7cad0b1ec6612bb9b70980f"
+      },
+      "thumbnail": {
+        "file": "thumbnails/porcelain-wave.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "d9be6b12246d785db467af3ff53d70f7932aefc51556d2b4f0e1d5ca00779856"
+      },
+      "promptReference": "SCENE_COLLECTION.md#porcelain-wave"
+    },
+    {
+      "id": "crimson-thread",
+      "name": "Crimson Thread",
+      "file": "crimson-thread.webp",
+      "mood": "oxblood graphite",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-19cbe784-4731-49e2-8f23-d517243f4eb4.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "b6c37ebf09763240d74eb296a18f8824449b35ffa8762c841dd4a1de9716d6f1"
+      },
+      "thumbnail": {
+        "file": "thumbnails/crimson-thread.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "80d3801d5259183bc86a2ceba8a215ada89024aaa1d8be4eb5b6299f1d03a6f5"
+      },
+      "promptReference": "SCENE_COLLECTION.md#crimson-thread"
+    },
+    {
+      "id": "sandstone-echo",
+      "name": "Sandstone Echo",
+      "file": "sandstone-echo.webp",
+      "mood": "warm taupe clay",
+      "dimensions": { "width": 2560, "height": 1440 },
+      "centerSafe": "Central 60% is deliberately calm and low-frequency for captured-video framing.",
+      "provenance": {
+        "type": "ai-generated-original",
+        "generator": "OpenAI built-in image_gen tool",
+        "generatedOn": "2026-08-11",
+        "sourceArtifact": "exec-2b78a653-b20e-4982-85c4-62ba30ca8289.png",
+        "thirdPartyInputs": [],
+        "postProcess": "Pinned bundled FFmpeg with Lanczos scaling: 2560x1440 WebP master at q82 and 480x270 WebP thumbnail at q72; no compositing, repainting, or third-party source material.",
+        "sha256": "126c820a7068eb5717281ece6a12943f2366b246a831ec8013c124f228b90015"
+      },
+      "thumbnail": {
+        "file": "thumbnails/sandstone-echo.webp",
+        "dimensions": { "width": 480, "height": 270 },
+        "sha256": "f38113261457203e82d2698771675158ff92cb1f71134e6cdd90bcf1c6095320"
+      },
+      "promptReference": "SCENE_COLLECTION.md#sandstone-echo"
     },
     {
       "id": "lake-sherburne",

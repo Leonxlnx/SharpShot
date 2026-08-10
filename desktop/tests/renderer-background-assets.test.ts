@@ -4,20 +4,31 @@ import { assertRendererBackgroundAssets } from "../renderer.vite.shared.js"
 const thumbnails = [
   "beacon-street-sunset.webp",
   "cobalt-bloom.webp",
+  "cobalt-veil.webp",
+  "crimson-thread.webp",
   "dusk-fold.webp",
   "glacier-glass.webp",
+  "glass-orbit.webp",
   "lake-sherburne.webp",
+  "lunar-fold.webp",
   "lunar-paper.webp",
   "midnight-bloom.webp",
+  "mineral-current.webp",
   "moss-alloy.webp",
+  "moss-circuit.webp",
   "obsidian-tide.webp",
   "ocean-waves.webp",
+  "porcelain-wave.webp",
+  "quiet-aperture.webp",
+  "sandstone-echo.webp",
   "solar-silk.webp",
   "valley-midnight.webp",
+  "warm-signal.webp",
 ]
 
 describe("renderer background asset contract", () => {
   it("accepts all thumbnails without full masters", () => {
+    expect(thumbnails).toHaveLength(22)
     expect(() => assertRendererBackgroundAssets(thumbnails.map((file) => ({
       type: "asset",
       originalFileNames: [`C:\\repo\\desktop\\resources\\backgrounds\\thumbnails\\${file}`],

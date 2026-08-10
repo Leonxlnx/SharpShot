@@ -85,7 +85,7 @@ export function HomePage({
                             onClick={() => launch(captureMode.id)}
                             type="button"
                         >
-                            {captureMode.id === "screenshot" ? <span aria-hidden="true" className="capture-action__art" /> : null}
+                            <span aria-hidden="true" className={`capture-action__art capture-action__art--${captureMode.id}`} />
                             <span className="capture-action__icon" aria-hidden="true"><Icon name={captureMode.icon} size={20} /></span>
                             <span className="capture-action__copy">
                                 <strong>{captureMode.title}</strong>

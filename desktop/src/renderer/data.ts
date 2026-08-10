@@ -10,29 +10,52 @@ import obsidianTideThumbnail from "../../resources/backgrounds/thumbnails/obsidi
 import oceanWavesThumbnail from "../../resources/backgrounds/thumbnails/ocean-waves.webp";
 import solarSilkThumbnail from "../../resources/backgrounds/thumbnails/solar-silk.webp";
 import valleyMidnightThumbnail from "../../resources/backgrounds/thumbnails/valley-midnight.webp";
+import quietApertureThumbnail from "../../resources/backgrounds/thumbnails/quiet-aperture.webp";
+import glassOrbitThumbnail from "../../resources/backgrounds/thumbnails/glass-orbit.webp";
+import mineralCurrentThumbnail from "../../resources/backgrounds/thumbnails/mineral-current.webp";
+import warmSignalThumbnail from "../../resources/backgrounds/thumbnails/warm-signal.webp";
+import lunarFoldThumbnail from "../../resources/backgrounds/thumbnails/lunar-fold.webp";
+import cobaltVeilThumbnail from "../../resources/backgrounds/thumbnails/cobalt-veil.webp";
+import mossCircuitThumbnail from "../../resources/backgrounds/thumbnails/moss-circuit.webp";
+import porcelainWaveThumbnail from "../../resources/backgrounds/thumbnails/porcelain-wave.webp";
+import crimsonThreadThumbnail from "../../resources/backgrounds/thumbnails/crimson-thread.webp";
+import sandstoneEchoThumbnail from "../../resources/backgrounds/thumbnails/sandstone-echo.webp";
 import { backgroundPresetSource } from "./background-gallery";
 import type { CaptureItem, EditorProject, Wallpaper, Workflow } from "./types";
 import { createEmptyOverlayDocument } from "../shared/overlays";
 
 export const ORIGINAL_WALLPAPERS: Wallpaper[] = [
-    { id: "cobalt", name: "Cobalt Bloom", thumbnailSource: cobaltBloomThumbnail, source: bundledBackgroundUrl("cobalt-bloom"), accent: "#1d5cff", textColor: "light" },
-    { id: "lunar", name: "Lunar Paper", thumbnailSource: lunarPaperThumbnail, source: bundledBackgroundUrl("lunar-paper"), accent: "#f2efe7", textColor: "dark" },
-    { id: "midnight", name: "Midnight Bloom", thumbnailSource: midnightBloomThumbnail, source: bundledBackgroundUrl("midnight-bloom"), accent: "#7f94ff", textColor: "light" },
-    { id: "glacier", name: "Glacier Glass", thumbnailSource: glacierGlassThumbnail, source: bundledBackgroundUrl("glacier-glass"), accent: "#95c9e8", textColor: "dark" },
-    { id: "solar", name: "Solar Silk", thumbnailSource: solarSilkThumbnail, source: bundledBackgroundUrl("solar-silk"), accent: "#e9a85e", textColor: "light" },
-    { id: "dusk", name: "Dusk Fold", thumbnailSource: duskFoldThumbnail, source: bundledBackgroundUrl("dusk-fold"), accent: "#b78fd5", textColor: "light" },
-    { id: "moss", name: "Moss Alloy", thumbnailSource: mossAlloyThumbnail, source: bundledBackgroundUrl("moss-alloy"), accent: "#8ea97b", textColor: "light" },
-    { id: "obsidian", name: "Obsidian Tide", thumbnailSource: obsidianTideThumbnail, source: bundledBackgroundUrl("obsidian-tide"), accent: "#5e6670", textColor: "light" },
+    { id: "cobalt", name: "Cobalt Bloom", thumbnailSource: cobaltBloomThumbnail, source: bundledBackgroundUrl("cobalt-bloom"), width: 3840, height: 2160, accent: "#1d5cff", textColor: "light" },
+    { id: "lunar", name: "Lunar Paper", thumbnailSource: lunarPaperThumbnail, source: bundledBackgroundUrl("lunar-paper"), width: 3840, height: 2160, accent: "#f2efe7", textColor: "dark" },
+    { id: "midnight", name: "Midnight Bloom", thumbnailSource: midnightBloomThumbnail, source: bundledBackgroundUrl("midnight-bloom"), width: 1672, height: 941, accent: "#7f94ff", textColor: "light" },
+    { id: "glacier", name: "Glacier Glass", thumbnailSource: glacierGlassThumbnail, source: bundledBackgroundUrl("glacier-glass"), width: 1672, height: 941, accent: "#95c9e8", textColor: "dark" },
+    { id: "solar", name: "Solar Silk", thumbnailSource: solarSilkThumbnail, source: bundledBackgroundUrl("solar-silk"), width: 1672, height: 941, accent: "#e9a85e", textColor: "light" },
+    { id: "dusk", name: "Dusk Fold", thumbnailSource: duskFoldThumbnail, source: bundledBackgroundUrl("dusk-fold"), width: 1672, height: 941, accent: "#b78fd5", textColor: "light" },
+    { id: "moss", name: "Moss Alloy", thumbnailSource: mossAlloyThumbnail, source: bundledBackgroundUrl("moss-alloy"), width: 3840, height: 2160, accent: "#8ea97b", textColor: "light" },
+    { id: "obsidian", name: "Obsidian Tide", thumbnailSource: obsidianTideThumbnail, source: bundledBackgroundUrl("obsidian-tide"), width: 3840, height: 2160, accent: "#5e6670", textColor: "light" },
+];
+
+export const SCENE_WALLPAPERS: Wallpaper[] = [
+    { id: "quiet-aperture", name: "Quiet Aperture", thumbnailSource: quietApertureThumbnail, source: bundledBackgroundUrl("quiet-aperture"), width: 2560, height: 1440, accent: "#6f7f90", textColor: "light" },
+    { id: "glass-orbit", name: "Glass Orbit", thumbnailSource: glassOrbitThumbnail, source: bundledBackgroundUrl("glass-orbit"), width: 2560, height: 1440, accent: "#abb7d1", textColor: "light" },
+    { id: "mineral-current", name: "Mineral Current", thumbnailSource: mineralCurrentThumbnail, source: bundledBackgroundUrl("mineral-current"), width: 2560, height: 1440, accent: "#69a9a4", textColor: "light" },
+    { id: "warm-signal", name: "Warm Signal", thumbnailSource: warmSignalThumbnail, source: bundledBackgroundUrl("warm-signal"), width: 2560, height: 1440, accent: "#d47b49", textColor: "light" },
+    { id: "lunar-fold", name: "Lunar Fold", thumbnailSource: lunarFoldThumbnail, source: bundledBackgroundUrl("lunar-fold"), width: 2560, height: 1440, accent: "#d8ccb9", textColor: "dark" },
+    { id: "cobalt-veil", name: "Cobalt Veil", thumbnailSource: cobaltVeilThumbnail, source: bundledBackgroundUrl("cobalt-veil"), width: 2560, height: 1440, accent: "#5e82c8", textColor: "light" },
+    { id: "moss-circuit", name: "Moss Circuit", thumbnailSource: mossCircuitThumbnail, source: bundledBackgroundUrl("moss-circuit"), width: 2560, height: 1440, accent: "#7f9348", textColor: "light" },
+    { id: "porcelain-wave", name: "Porcelain Wave", thumbnailSource: porcelainWaveThumbnail, source: bundledBackgroundUrl("porcelain-wave"), width: 2560, height: 1440, accent: "#d7d0c3", textColor: "dark" },
+    { id: "crimson-thread", name: "Crimson Thread", thumbnailSource: crimsonThreadThumbnail, source: bundledBackgroundUrl("crimson-thread"), width: 2560, height: 1440, accent: "#a43e59", textColor: "light" },
+    { id: "sandstone-echo", name: "Sandstone Echo", thumbnailSource: sandstoneEchoThumbnail, source: bundledBackgroundUrl("sandstone-echo"), width: 2560, height: 1440, accent: "#b77c57", textColor: "dark" },
 ];
 
 export const CINEMATIC_WALLPAPERS: Wallpaper[] = [
-    { id: "sherburne", name: "Lake Sherburne", thumbnailSource: lakeSherburneThumbnail, source: bundledBackgroundUrl("lake-sherburne"), accent: "#7da7d5", textColor: "light" },
-    { id: "valley-night", name: "Valley Midnight", thumbnailSource: valleyMidnightThumbnail, source: bundledBackgroundUrl("valley-midnight"), accent: "#5b76a4", textColor: "light" },
-    { id: "blue-current", name: "Ocean Waves", thumbnailSource: oceanWavesThumbnail, source: bundledBackgroundUrl("ocean-waves"), accent: "#2e7db5", textColor: "light" },
-    { id: "beacon-sunset", name: "Beacon Street", thumbnailSource: beaconStreetSunsetThumbnail, source: bundledBackgroundUrl("beacon-street-sunset"), accent: "#e69b55", textColor: "light" },
+    { id: "sherburne", name: "Lake Sherburne", thumbnailSource: lakeSherburneThumbnail, source: bundledBackgroundUrl("lake-sherburne"), width: 3840, height: 2160, accent: "#7da7d5", textColor: "light" },
+    { id: "valley-night", name: "Valley Midnight", thumbnailSource: valleyMidnightThumbnail, source: bundledBackgroundUrl("valley-midnight"), width: 3840, height: 2160, accent: "#5b76a4", textColor: "light" },
+    { id: "blue-current", name: "Ocean Waves", thumbnailSource: oceanWavesThumbnail, source: bundledBackgroundUrl("ocean-waves"), width: 3840, height: 2160, accent: "#2e7db5", textColor: "light" },
+    { id: "beacon-sunset", name: "Beacon Street", thumbnailSource: beaconStreetSunsetThumbnail, source: bundledBackgroundUrl("beacon-street-sunset"), width: 3840, height: 2160, accent: "#e69b55", textColor: "light" },
 ];
 
-export const WALLPAPERS: Wallpaper[] = [...ORIGINAL_WALLPAPERS, ...CINEMATIC_WALLPAPERS];
+export const WALLPAPERS: Wallpaper[] = [...ORIGINAL_WALLPAPERS, ...SCENE_WALLPAPERS, ...CINEMATIC_WALLPAPERS];
 
 export function resolveBackgroundSource(
     backgroundId: string,

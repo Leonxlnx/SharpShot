@@ -5,16 +5,26 @@ import type { Plugin, UserConfig } from "vite"
 const BACKGROUND_THUMBNAILS = [
   "beacon-street-sunset.webp",
   "cobalt-bloom.webp",
+  "cobalt-veil.webp",
+  "crimson-thread.webp",
   "dusk-fold.webp",
   "glacier-glass.webp",
+  "glass-orbit.webp",
   "lake-sherburne.webp",
+  "lunar-fold.webp",
   "lunar-paper.webp",
   "midnight-bloom.webp",
+  "mineral-current.webp",
   "moss-alloy.webp",
+  "moss-circuit.webp",
   "obsidian-tide.webp",
   "ocean-waves.webp",
+  "porcelain-wave.webp",
+  "quiet-aperture.webp",
+  "sandstone-echo.webp",
   "solar-silk.webp",
   "valley-midnight.webp",
+  "warm-signal.webp",
 ] as const
 
 type RendererBundleItem = {

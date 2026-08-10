@@ -29,6 +29,7 @@ import type {
   EditorProject as RendererEditorProject,
   Workflow,
 } from "./types";
+import { WALLPAPERS } from "./data";
 import { backgroundPresetIdForStyle, backgroundStyleForPreset } from "./background-gallery";
 import { canonicalizeOverlayDocument, createEmptyOverlayDocument } from "../shared/overlays";
 import { reconcileAudioTimeline } from "./audio-editor";
@@ -519,31 +520,33 @@ function rendererBackground(project: CanonicalEditorProject): string {
   }
   if (asset.locator.kind === "bundled") {
     const key = asset.locator.key.toLocaleLowerCase("en-US");
-    const bundledIds: ReadonlyArray<readonly [string, string]> = [
-      ["cobalt-bloom", "cobalt"],
-      ["lunar-paper", "lunar"],
-      ["midnight-bloom", "midnight"],
-      ["glacier-glass", "glacier"],
-      ["solar-silk", "solar"],
-      ["dusk-fold", "dusk"],
-      ["moss-alloy", "moss"],
-      ["obsidian-tide", "obsidian"],
-    ];
-    return bundledIds.find(([needle]) => key.includes(needle))?.[1] ?? "cobalt";
+    return BUNDLED_RENDERER_BACKGROUNDS.find(([needle]) => key.includes(needle))?.[1] ?? "cobalt";
   }
   return "cobalt";
 }
 
-const RENDERER_BUNDLED_BACKGROUNDS: Readonly<Record<string, string>> = {
-  cobalt: "cobalt-bloom",
-  lunar: "lunar-paper",
-  midnight: "midnight-bloom",
-  glacier: "glacier-glass",
-  solar: "solar-silk",
-  dusk: "dusk-fold",
-  moss: "moss-alloy",
-  obsidian: "obsidian-tide",
-};
+const RENDERER_BUNDLED_BACKGROUNDS = new Map(
+  WALLPAPERS.map((wallpaper) => [wallpaper.id, {
+    key: bundledBackgroundKey(wallpaper.source),
+    width: wallpaper.width,
+    height: wallpaper.height,
+  }] as const),
+);
+const BUNDLED_RENDERER_BACKGROUNDS = [...RENDERER_BUNDLED_BACKGROUNDS]
+  .map(([rendererId, bundled]) => [bundled.key.toLocaleLowerCase("en-US"), rendererId] as const);
+
+function bundledBackgroundKey(source: string): string {
+  try {
+    const url = new URL(source);
+    const key = decodeURIComponent(url.pathname.replace(/^\//, ""));
+    if (url.protocol !== "sharpshot-media:" || url.hostname !== "background" || !SAFE_IDENTIFIER.test(key)) {
+      throw new TypeError("Invalid bundled background source.");
+    }
+    return key;
+  } catch {
+    throw new TypeError("The wallpaper catalog contains an invalid bundled background source.");
+  }
+}
 
 function applyRendererBackground(
   project: CanonicalEditorProject,
@@ -555,15 +558,15 @@ function applyRendererBackground(
     project.canvas.background = presetStyle;
     return;
   }
-  const bundledKey = RENDERER_BUNDLED_BACKGROUNDS[backgroundId];
-  if (bundledKey !== undefined) {
+  const bundled = RENDERER_BUNDLED_BACKGROUNDS.get(backgroundId);
+  if (bundled !== undefined) {
     const asset: ImageAsset = {
-      id: bundledKey,
+      id: bundled.key,
       kind: "image",
-      name: bundledKey,
-      locator: { kind: "bundled", key: bundledKey },
-      width: 3_840,
-      height: 2_160,
+      name: bundled.key,
+      locator: { kind: "bundled", key: bundled.key },
+      width: bundled.width,
+      height: bundled.height,
     };
     project.assets[asset.id] = asset;
     project.canvas.background = { kind: "image", assetId: asset.id, fit: "cover", blurPx: 0, opacity: 1 };

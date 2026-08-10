@@ -12,9 +12,10 @@ Tella, or Apple. Separately licensed CC0 backgrounds are identified below.
 
 ### Original backgrounds
 
-SharpShot Studio includes eight original backgrounds. Four retain the image
-generator's 1672 × 941 source size and four are finished as center-safe
-3840 × 2160 masters:
+SharpShot Studio includes eighteen original backgrounds. Four retain the image
+generator's 1672 × 941 source size, four are finished as center-safe
+3840 × 2160 masters, and ten form the center-safe 2560 × 1440 SharpShot Scene
+Collection:
 
 | File | Display name | Provenance |
 | --- | --- | --- |
@@ -27,10 +28,32 @@ generator's 1672 × 941 source size and four are finished as center-safe
 | `moss-alloy.webp` | Moss Alloy | 3840 × 2160; OpenAI image generation; q100 WebP package; prompt and SHA-256 recorded |
 | `lunar-paper.webp` | Lunar Paper | 3840 × 2160; OpenAI image generation; q100 WebP package; prompt and SHA-256 recorded |
 
-No third-party images were used as generation inputs. The collection manifest,
-prompts, source dimensions, finishing method, and available per-file hashes are
-recorded in
+The Scene Collection was generated with the OpenAI built-in `image_gen` tool
+on 2026-08-11, using no input images or third-party artwork. Each generated
+source was processed with the pinned bundled FFmpeg runtime using Lanczos
+scaling: a 2560 × 1440 WebP master at q82 and a 480 × 270 WebP thumbnail at
+q72.
+
+| Master | Display name |
+| --- | --- |
+| `quiet-aperture.webp` | Quiet Aperture |
+| `glass-orbit.webp` | Glass Orbit |
+| `mineral-current.webp` | Mineral Current |
+| `warm-signal.webp` | Warm Signal |
+| `lunar-fold.webp` | Lunar Fold |
+| `cobalt-veil.webp` | Cobalt Veil |
+| `moss-circuit.webp` | Moss Circuit |
+| `porcelain-wave.webp` | Porcelain Wave |
+| `crimson-thread.webp` | Crimson Thread |
+| `sandstone-echo.webp` | Sandstone Echo |
+
+No third-party images were used as generation inputs. The background manifest
+records source artifacts or source dimensions where available, finishing
+methods, and per-file hashes in
 [`desktop/resources/backgrounds/manifest.json`](desktop/resources/backgrounds/manifest.json).
+The Scene Collection's shared scaffold, exact per-scene prompt blocks, intent,
+and source artifact IDs are recorded in
+[`desktop/resources/backgrounds/SCENE_COLLECTION.md`](desktop/resources/backgrounds/SCENE_COLLECTION.md).
 These files are distributed with SharpShot under the repository's MIT license.
 
 ### Home command surface

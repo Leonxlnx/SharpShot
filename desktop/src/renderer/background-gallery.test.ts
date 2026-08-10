@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { MediaItem } from "../shared/api";
 import {
-  APPLE_WALLPAPER_URL,
   BACKGROUND_PRESETS,
+  WALLPAPER_SOURCES,
   backgroundDisplayName,
   backgroundPresetIdForStyle,
   backgroundStyleForPreset,
@@ -54,9 +54,34 @@ describe("background gallery", () => {
     expect(backgroundDisplayName(second.name)).toBe("Paper texture");
   });
 
-  it("links only to Apple's current official wallpaper guide", () => {
-    const url = new URL(APPLE_WALLPAPER_URL);
-    expect(url).toMatchObject({ protocol: "https:", hostname: "support.apple.com" });
-    expect(url.pathname).toBe("/guide/mac-help/mchlp3013/mac");
+  it("lists the requested external wallpaper sources without bundled artwork", () => {
+    expect(WALLPAPER_SOURCES).toEqual([
+      {
+        id: "512-pixels",
+        name: "512 Pixels",
+        description: "Classic macOS wallpaper archive",
+        url: "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
+      },
+      {
+        id: "applewalls",
+        name: "AppleWalls",
+        description: "Searchable Apple wallpaper archive",
+        url: "https://www.applewalls.com/en/macos-wallpapers",
+      },
+      {
+        id: "basic-apple-guy",
+        name: "Basic Apple Guy",
+        description: "Independent Apple-inspired artwork",
+        url: "https://basicappleguy.com/",
+      },
+      {
+        id: "black-pixel-studio",
+        name: "Black Pixel Studio",
+        description: "Independent wallpaper studio",
+        url: "https://blackpixel.studio/",
+      },
+    ]);
+    expect(WALLPAPER_SOURCES.every(({ url }) => new URL(url).protocol === "https:")).toBe(true);
+    expect(WALLPAPER_SOURCES.every((source) => !("image" in source) && !("thumbnail" in source))).toBe(true);
   });
 });

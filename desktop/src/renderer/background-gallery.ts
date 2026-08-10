@@ -1,7 +1,39 @@
 import type { MediaItem } from "../shared/api";
 import type { BackgroundStyle } from "../shared/project";
 
-export const APPLE_WALLPAPER_URL = "https://support.apple.com/guide/mac-help/mchlp3013/mac";
+export interface WallpaperSource {
+    id: string;
+    name: string;
+    description: string;
+    url: string;
+}
+
+export const WALLPAPER_SOURCES: readonly WallpaperSource[] = [
+    {
+        id: "512-pixels",
+        name: "512 Pixels",
+        description: "Classic macOS wallpaper archive",
+        url: "https://512pixels.net/projects/default-mac-wallpapers-in-5k/",
+    },
+    {
+        id: "applewalls",
+        name: "AppleWalls",
+        description: "Searchable Apple wallpaper archive",
+        url: "https://www.applewalls.com/en/macos-wallpapers",
+    },
+    {
+        id: "basic-apple-guy",
+        name: "Basic Apple Guy",
+        description: "Independent Apple-inspired artwork",
+        url: "https://basicappleguy.com/",
+    },
+    {
+        id: "black-pixel-studio",
+        name: "Black Pixel Studio",
+        description: "Independent wallpaper studio",
+        url: "https://blackpixel.studio/",
+    },
+];
 
 type ColorBackground = Exclude<BackgroundStyle, { kind: "image" }>;
 

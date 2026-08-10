@@ -49,6 +49,20 @@ function zoom(overrides: Partial<ZoomSegment> = {}): ZoomSegment {
 }
 
 describe("EditorInspector direct controls", () => {
+    it("offers text-only external wallpaper sources beside the local import flow", () => {
+        const state: EditorState = { ...structuredClone(INITIAL_EDITOR_STATE), activeTool: "background" };
+        const html = renderInspector(state);
+        const sources = html.slice(html.indexOf('class="background-browser__sources"'));
+
+        expect(sources).toContain("512 Pixels");
+        expect(sources).toContain("AppleWalls");
+        expect(sources).toContain("Basic Apple Guy");
+        expect(sources).toContain("Black Pixel Studio");
+        expect(sources.match(/External · not bundled/g)).toHaveLength(4);
+        expect(sources).toContain("Download from each source, then choose <strong>Import images…</strong> above.");
+        expect(sources).not.toContain("<img");
+    });
+
     it("keeps layout framing direct and moves clip timing into a closed disclosure", () => {
         const state: EditorState = { ...structuredClone(INITIAL_EDITOR_STATE), activeTool: "layout" };
         const html = renderInspector(state);

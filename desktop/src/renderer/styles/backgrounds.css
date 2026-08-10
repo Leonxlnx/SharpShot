@@ -99,7 +99,7 @@
 .background-browser__presets > button:active,
 .background-browser__images > button:active,
 .background-browser__import:active,
-.background-browser__apple button:active {
+.background-browser__source-list button:active {
     transform: translateY(1px) scale(.99);
 }
 
@@ -232,60 +232,104 @@
     color: var(--accent);
 }
 
-.background-browser__apple {
+.background-browser__sources {
     display: grid;
-    gap: 6px;
+    gap: 9px;
     margin-top: 20px;
     border-top: 1px solid var(--separator);
     padding-top: 16px;
 }
 
-.background-browser__apple button {
-    min-height: 51px;
+.background-browser__sources > header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.background-browser__sources > header h4 {
+    margin: 0;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: -.01em;
+}
+
+.background-browser__sources > header span {
+    color: var(--text-tertiary);
+    font-size: 10px;
+}
+
+.background-browser__source-list {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--background-browser-surface);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .26);
+}
+
+.background-browser__source-list button {
+    width: 100%;
+    min-height: 53px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--background-browser-surface);
+    gap: 12px;
+    border-bottom: 1px solid var(--separator);
+    background: transparent;
     color: var(--text);
-    padding: 8px 11px 8px 12px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .36);
+    padding: 9px 10px 9px 12px;
     text-align: left;
-    transition: transform 120ms var(--ease-out), border-color 130ms ease, background-color 130ms ease;
+    transition: transform 120ms var(--ease-out), background-color 130ms ease;
 }
 
-.background-browser__apple button:not(:disabled):hover {
-    border-color: var(--border-strong);
+.background-browser__source-list button:last-child {
+    border-bottom: 0;
+}
+
+.background-browser__source-list button:not(:disabled):hover {
     background: var(--input-focus);
 }
 
-.background-browser__apple button > span:first-child {
+.background-browser__source-list button > span:first-child {
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-.background-browser__apple strong {
+.background-browser__source-list strong {
     font-size: 11px;
     font-weight: 650;
 }
 
-.background-browser__apple small,
-.background-browser__apple p {
+.background-browser__source-list small,
+.background-browser__sources > p {
     color: var(--text-tertiary);
     font-size: 9px;
     line-height: 1.45;
 }
 
-.background-browser__apple button > span:last-child {
+.background-browser__source-meta {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.background-browser__source-meta > span {
     color: var(--text-secondary);
     font-size: 17px;
 }
 
-.background-browser__apple p {
+.background-browser__sources > p {
+    margin: 0;
     padding-inline: 2px;
+}
+
+.background-browser__sources > p strong {
+    color: var(--text-secondary);
+    font-weight: 620;
 }
 
 .background-browser > .range-field {
@@ -299,7 +343,7 @@
     .background-browser__images > button,
     .background-browser__image-frame img,
     .background-browser__import,
-    .background-browser__apple button {
+    .background-browser__source-list button {
         transform: none !important;
     }
 }
@@ -308,7 +352,7 @@
     .background-browser__presets > button,
     .background-browser__image-frame,
     .background-browser__import,
-    .background-browser__apple button {
+    .background-browser__source-list {
         border-width: 2px;
     }
 }

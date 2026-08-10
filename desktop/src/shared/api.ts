@@ -516,15 +516,28 @@ export function parseAllowedExternalUrl(value: unknown): string {
   } catch {
     throw new ValidationError("External URL is invalid.")
   }
-  const allowedHosts = new Set(["www.apple.com", "developer.apple.com", "support.apple.com"])
+  const authority = value.startsWith("https://")
+    ? value.slice("https://".length).split(/[/?#]/, 1)[0] ?? ""
+    : ""
+  const allowedHosts = new Set([
+    "512pixels.net",
+    "www.applewalls.com",
+    "basicappleguy.com",
+    "blackpixel.studio",
+    "www.apple.com",
+    "developer.apple.com",
+    "support.apple.com",
+  ])
   if (
     url.protocol !== "https:" ||
+    authority.length === 0 ||
+    authority.includes(":") ||
     !allowedHosts.has(url.hostname.toLowerCase()) ||
     url.username.length > 0 ||
     url.password.length > 0 ||
-    (url.port.length > 0 && url.port !== "443")
+    url.port.length > 0
   ) {
-    throw new ValidationError("Only approved official Apple HTTPS pages can be opened.")
+    throw new ValidationError("Only approved HTTPS pages can be opened.")
   }
   return url.href
 }

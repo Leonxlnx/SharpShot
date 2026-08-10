@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { CINEMATIC_WALLPAPERS, ORIGINAL_WALLPAPERS } from "../data";
 import { getDesktopBridge, importLibraryImages, isDesktopBridgeAvailable, openExternalLink } from "../bridge";
 import {
-    APPLE_WALLPAPER_URL,
     BACKGROUND_PRESETS,
+    WALLPAPER_SOURCES,
     backgroundDisplayName,
     registeredBackgroundImages,
 } from "../background-gallery";
@@ -511,17 +511,27 @@ export function EditorInspector({
                         </button>
                     </section>
 
-                    <div className="background-browser__apple">
-                        <button
-                            disabled={!canImport}
-                            onClick={() => void openExternalLink(APPLE_WALLPAPER_URL).then((opened) => {
-                                if (!opened) onNotify("Link blocked", "SharpShot only opens approved secure links.");
-                            })}
-                            title={canImport ? "Open the official Apple wallpaper guide" : "Available in the installed desktop app"}
-                            type="button"
-                        ><span><strong>Get Apple wallpapers</strong><small>Open the official Apple guide</small></span><span aria-hidden="true">↗</span></button>
-                        <p>Apple artwork is never downloaded or bundled by SharpShot.</p>
-                    </div>
+                    <section aria-labelledby="background-sources-heading" className="background-browser__sources">
+                        <header><h4 id="background-sources-heading">Wallpaper sources</h4><span>Open in browser</span></header>
+                        <div className="background-browser__source-list">
+                            {WALLPAPER_SOURCES.map((source) => (
+                                <button
+                                    aria-label={`Open ${source.name} in your browser`}
+                                    disabled={!canImport}
+                                    key={source.id}
+                                    onClick={() => void openExternalLink(source.url).then((opened) => {
+                                        if (!opened) onNotify("Link blocked", "SharpShot only opens approved secure links.");
+                                    })}
+                                    title={canImport ? `Open ${source.name}` : "Available in the installed desktop app"}
+                                    type="button"
+                                >
+                                    <span><strong>{source.name}</strong><small>{source.description}</small></span>
+                                    <span className="background-browser__source-meta"><small>External · not bundled</small><span aria-hidden="true">↗</span></span>
+                                </button>
+                            ))}
+                        </div>
+                        <p>Download from each source, then choose <strong>Import images…</strong> above. SharpShot never bundles their artwork.</p>
+                    </section>
                     <RangeField {...continuousEditProps} label="Canvas padding" max={96} min={0} onChange={(value) => dispatch({ type: "SET_PADDING", value })} suffix=" px" value={state.project.padding} />
                 </section>
             ) : null}

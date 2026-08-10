@@ -1,0 +1,30 @@
+# Normalize new text without rewriting the existing working tree in bulk.
+* text=auto
+
+*.cs text eol=crlf
+*.ps1 text eol=crlf
+*.config text eol=crlf
+*.manifest text eol=crlf
+
+*.css text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.txt text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+*.dll binary
+*.exe binary
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.mp3 binary
+*.mp4 binary
+*.png binary
+*.webp binary
+*.zip binary

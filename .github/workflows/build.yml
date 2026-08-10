@@ -26,8 +26,8 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: SharpShot-win-x64
+          name: SharpShot-Quick-1.5.0-win-x64
           path: |
-            artifacts/SharpShot-v*-win-x64.zip
-            artifacts/SharpShot-v*-win-x64.zip.sha256.txt
+            artifacts/native/SharpShot-Quick-1.5.0-win-x64.zip
+            artifacts/native/SharpShot-Quick-1.5.0-win-x64.zip.sha256.txt
           if-no-files-found: error

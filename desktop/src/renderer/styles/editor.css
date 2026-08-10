@@ -1,46 +1,41 @@
 /*
  * SharpShot Studio editor
  *
- * One material system, scoped to the editor. The reference is tactile because
- * raised controls sit in recessed wells under a consistent top light—not
- * because every surface is a different theme or every icon is an image.
+ * A quiet, neutral workspace keeps the recording visually dominant. Depth
+ * comes from close tonal steps and spacing; blue is reserved for selection,
+ * focus, playback and the primary action.
  */
 
 .editor-page {
-    --editor-bg: #07101c;
-    --editor-panel: #0d1826;
-    --editor-panel-raised: #122033;
-    --editor-well: #09131f;
-    --editor-control: #182940;
-    --editor-control-hover: #1e324d;
-    --editor-control-pressed: #0c1725;
-    --editor-border: #23354c;
-    --editor-border-strong: #314761;
-    --editor-separator: #1b2b3e;
-    --editor-text: #f1f5fa;
-    --editor-text-secondary: #aab6c6;
-    --editor-text-muted: #8794a6;
-    --editor-accent: #5f8fff;
-    --editor-accent-hover: #78a2ff;
-    --editor-accent-soft: rgba(95, 143, 255, .14);
-    --editor-accent-border: rgba(95, 143, 255, .56);
-    --editor-action: #ef8350;
-    --editor-action-hover: #f49768;
-    --editor-focus: #82a8ff;
-    --editor-danger: #ff746d;
-    --editor-radius-shell: 22px;
-    --editor-radius-panel: 18px;
-    --editor-radius-control: 11px;
+    --editor-bg: #0d0e10;
+    --editor-panel: #17181a;
+    --editor-panel-raised: #1b1c1e;
+    --editor-well: #111214;
+    --editor-control: #222326;
+    --editor-control-hover: #292a2e;
+    --editor-control-pressed: #191a1c;
+    --editor-border: rgba(255, 255, 255, .075);
+    --editor-border-strong: rgba(255, 255, 255, .13);
+    --editor-separator: rgba(255, 255, 255, .065);
+    --editor-text: #f4f4f5;
+    --editor-text-secondary: #b5b7bc;
+    --editor-text-muted: #85888f;
+    --editor-accent: #4f83ef;
+    --editor-accent-hover: #6594f3;
+    --editor-accent-soft: rgba(79, 131, 239, .14);
+    --editor-accent-border: rgba(79, 131, 239, .62);
+    --editor-action: #3478ee;
+    --editor-action-hover: #4787f2;
+    --editor-focus: #78a2f7;
+    --editor-danger: #ef716c;
+    --editor-radius-shell: 12px;
+    --editor-radius-panel: 11px;
+    --editor-radius-control: 8px;
     --editor-shadow-control:
-        inset 0 1px 0 rgba(255, 255, 255, .07),
-        inset 0 -1px 0 rgba(0, 0, 0, .34),
-        0 2px 4px rgba(0, 0, 0, .28);
-    --editor-shadow-control-pressed:
-        inset 0 2px 4px rgba(0, 0, 0, .42),
-        inset 0 1px 0 rgba(255, 255, 255, .025);
-    --editor-shadow-panel:
         inset 0 1px 0 rgba(255, 255, 255, .045),
-        0 14px 32px rgba(0, 0, 0, .28);
+        0 1px 1px rgba(0, 0, 0, .18);
+    --editor-shadow-control-pressed:
+        inset 0 1px 2px rgba(0, 0, 0, .34);
     --editor-ease: cubic-bezier(.22, 1, .36, 1);
 
     /* Rebind shared controls and the later-loaded background gallery. */
@@ -49,16 +44,16 @@
     --panel-2: var(--editor-panel-raised);
     --elevated: var(--editor-control);
     --hover: var(--editor-control-hover);
-    --active: #243956;
+    --active: #2d2f33;
     --border: var(--editor-border);
     --border-strong: var(--editor-border-strong);
     --separator: var(--editor-separator);
     --text: var(--editor-text);
     --text-secondary: var(--editor-text-secondary);
     --text-tertiary: var(--editor-text-muted);
-    --input: #0c1826;
-    --input-focus: #122237;
-    --recipe-surface: #102033;
+    --input: #121315;
+    --input-focus: #17181b;
+    --recipe-surface: #1a1b1e;
     --selected-surface: var(--editor-accent-soft);
     --control-well: var(--editor-well);
     --accent: var(--editor-accent);
@@ -90,14 +85,12 @@
 }
 
 .editor-page .button--primary {
-    border-color: rgba(255, 255, 255, .12);
+    border-color: rgba(255, 255, 255, .1);
     background: var(--editor-action);
-    color: #1d120d;
+    color: #fff;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .24),
-        inset 0 -1px 0 rgba(84, 34, 10, .28),
-        0 2px 0 #a94d22,
-        0 7px 16px rgba(239, 131, 80, .18);
+        inset 0 1px 0 rgba(255, 255, 255, .18),
+        0 1px 2px rgba(0, 0, 0, .24);
 }
 
 .editor-page .button--primary:not(:disabled):hover {
@@ -110,7 +103,7 @@
 }
 
 .editor-page .button--secondary {
-    border-color: var(--editor-border-strong);
+    border-color: var(--editor-border);
     background: var(--editor-control);
     color: var(--editor-text);
     box-shadow: var(--editor-shadow-control);
@@ -130,9 +123,7 @@
     border-color: var(--editor-border);
     background-color: var(--input);
     color: var(--editor-text);
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, .32),
-        0 1px 0 rgba(255, 255, 255, .035);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .24);
 }
 
 .editor-page input:focus,
@@ -141,7 +132,7 @@
     border-color: var(--editor-accent-border);
     background-color: var(--input-focus);
     box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, .32),
+        inset 0 1px 2px rgba(0, 0, 0, .24),
         0 0 0 3px var(--editor-accent-soft);
 }
 
@@ -153,7 +144,7 @@
     height: 4px;
     border: 1px solid rgba(255, 255, 255, .035);
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--editor-accent), #3a4d66);
+    background: #3a3c40;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, .5);
 }
 
@@ -169,15 +160,22 @@
 /* Project bar */
 
 .editor-commandbar {
-    height: 56px;
+    height: 58px;
     display: grid;
     flex: 0 0 auto;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     border-bottom: 1px solid var(--editor-border);
-    background: var(--editor-panel-raised);
-    padding: 0 14px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045);
+    background: #111214;
+    padding: 0 12px;
+    box-shadow: none;
+    -webkit-app-region: drag;
+}
+
+.editor-commandbar button,
+.editor-commandbar input,
+.editor-commandbar select {
+    -webkit-app-region: no-drag;
 }
 
 .editor-commandbar__left,
@@ -194,7 +192,7 @@
 
 .editor-back {
     min-width: 0;
-    height: 40px;
+    height: 36px;
     display: flex;
     align-items: center;
     gap: 7px;
@@ -267,13 +265,39 @@
 }
 
 .editor-commandbar__right {
+    height: 100%;
     justify-content: flex-end;
     gap: 6px;
 }
 
+.editor-commandbar__right .titlebar__window-controls {
+    height: 100%;
+    grid-template-columns: repeat(3, 42px);
+    margin-right: -12px;
+    margin-left: 4px;
+    border-left: 1px solid var(--editor-separator);
+}
+
+.editor-commandbar__right .titlebar__window-controls button {
+    width: 42px;
+    min-width: 42px;
+    height: 100%;
+    color: var(--editor-text-muted);
+}
+
+.editor-commandbar__right .titlebar__window-controls button:hover {
+    background: var(--editor-control);
+    color: var(--editor-text);
+}
+
+.editor-commandbar__right .titlebar__window-controls .window-close:hover {
+    background: #b53b37;
+    color: #fff;
+}
+
 .editor-commandbar__right > button:not(.export-button) {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     display: grid;
     place-items: center;
     border: 1px solid transparent;
@@ -302,8 +326,8 @@
 }
 
 .export-button {
-    min-height: 40px;
-    height: 40px;
+    min-height: 38px;
+    height: 38px;
     margin-left: 3px;
     border-radius: var(--editor-radius-control);
     padding-inline: 15px;
@@ -315,24 +339,31 @@
     min-height: 0;
     display: grid;
     flex: 1;
-    grid-template-columns: 72px minmax(0, 1fr) 344px;
-    grid-template-rows: minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: minmax(0, 1fr) 344px;
+    grid-template-rows: minmax(260px, 1fr) clamp(210px, 30vh, 290px);
+    gap: 9px;
     overflow: hidden;
     background: var(--editor-bg);
-    padding: 10px;
+    padding: 9px;
+}
+
+.editor-workspace:has(.caption-track):has(.redaction-track) {
+    grid-template-rows: minmax(250px, 1fr) clamp(250px, 33vh, 322px);
 }
 
 .editor-toolrail {
     min-height: 0;
     display: flex;
-    flex-direction: column;
+    flex: 0 0 auto;
+    flex-direction: row;
     align-items: center;
-    gap: 3px;
-    overflow: auto hidden;
+    justify-content: space-between;
+    gap: 1px;
+    overflow: hidden;
     border: 0;
-    background: transparent;
-    padding: 7px 6px;
+    border-bottom: 1px solid var(--editor-separator);
+    background: var(--editor-panel-raised);
+    padding: 6px;
     scrollbar-width: none;
 }
 
@@ -341,14 +372,15 @@
 }
 
 .editor-toolrail > button {
-    width: 56px;
-    min-height: 50px;
+    width: 40px;
+    min-width: 0;
+    min-height: 40px;
     display: flex;
-    flex: 0 0 auto;
-    flex-direction: column;
+    flex: 1 1 0;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 0;
     position: relative;
     border: 0;
     border-radius: 8px;
@@ -365,20 +397,20 @@
 }
 
 .editor-toolrail > button svg {
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
     flex: 0 0 auto;
     stroke-width: 1.7;
 }
 
 .editor-toolrail > button:not(:disabled):hover {
-    background: rgba(95, 143, 255, .06);
+    background: var(--editor-control);
     color: var(--editor-text);
 }
 
 .editor-toolrail > button:not(:disabled):active {
     transform: translateY(1px) scale(.985);
-    background: rgba(95, 143, 255, .1);
+    background: var(--editor-control-pressed);
 }
 
 .editor-toolrail > button.is-active {
@@ -386,27 +418,25 @@
 }
 
 .editor-toolrail > button.is-active::after {
-    width: 4px;
-    height: 4px;
+    width: 3px;
+    height: 3px;
     position: absolute;
-    right: 5px;
+    right: 4px;
+    bottom: 3px;
     border-radius: 50%;
     background: currentColor;
     content: "";
 }
 
 .editor-toolrail > button span {
-    max-width: 56px;
-    overflow: visible;
-    text-overflow: clip;
-    white-space: nowrap;
+    display: none;
 }
 
 .editor-toolrail > button span small {
     display: block;
     margin-top: 2px;
     color: var(--editor-text-muted);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 580;
     letter-spacing: .025em;
     text-transform: none;
@@ -419,14 +449,25 @@
 .editor-main {
     min-width: 0;
     min-height: 0;
+    grid-column: 1;
+    grid-row: 1;
     display: grid;
-    grid-template-rows: minmax(320px, 1fr) clamp(216px, 28vh, 300px);
-    gap: 10px;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
     overflow: hidden;
 }
 
-.editor-main:has(.caption-track):has(.redaction-track) {
-    grid-template-rows: minmax(300px, 1fr) clamp(250px, 31vh, 324px);
+.editor-inspector-panel {
+    min-width: 0;
+    min-height: 0;
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--editor-border);
+    border-radius: var(--editor-radius-panel);
+    background: var(--editor-panel);
 }
 
 /* Stage */
@@ -440,11 +481,9 @@
     overflow: hidden;
     border: 1px solid var(--editor-border);
     border-radius: var(--editor-radius-panel);
-    background:
-        radial-gradient(circle at 50% 44%, rgba(255, 255, 255, .024), transparent 52%),
-        #141414;
-    padding: 24px 28px 34px;
-    box-shadow: var(--editor-shadow-panel);
+    background: #151618;
+    padding: 22px 26px 32px;
+    box-shadow: none;
     container-type: size;
 }
 
@@ -456,12 +495,12 @@
     justify-content: center;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, .14);
-    border-radius: 10px;
+    border-radius: 8px;
     background-position: center;
     background-size: cover;
     box-shadow:
-        0 1px 0 rgba(255, 255, 255, .08),
-        0 24px 64px rgba(0, 0, 0, .42);
+        0 1px 0 rgba(255, 255, 255, .06),
+        0 20px 46px rgba(0, 0, 0, .34);
 }
 
 .demo-recording,
@@ -565,7 +604,7 @@
     box-shadow:
         inset 0 0 0 2px #fff,
         0 0 0 2px var(--editor-focus),
-        0 0 0 6px rgba(255, 177, 140, .2);
+        0 0 0 6px var(--editor-accent-soft);
 }
 
 .editor-redaction-handle {
@@ -574,7 +613,7 @@
     position: absolute;
     z-index: 4;
     display: block;
-    border: 1px solid rgba(88, 39, 16, .76);
+    border: 1px solid #25262a;
     border-radius: 4px;
     background: #f3f3f3;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .46), 0 0 0 1px var(--editor-accent);
@@ -645,7 +684,7 @@
     border-color: var(--editor-border-strong);
     background: var(--editor-control);
     color: var(--editor-text-secondary);
-    font-size: 9px;
+    font-size: 10px;
     padding: 0 5px;
 }
 
@@ -696,7 +735,7 @@
     border-color: #fff;
     box-shadow:
         0 0 0 2px var(--editor-focus),
-        0 0 0 6px rgba(255, 177, 140, .2),
+        0 0 0 6px var(--editor-accent-soft),
         0 5px 14px rgba(0, 0, 0, .26);
 }
 
@@ -749,10 +788,10 @@
     height: 6px;
     position: relative;
     z-index: 1;
-    border: 1px solid #2c1206;
+    border: 1px solid #1b1c1f;
     border-radius: 50%;
     background: var(--editor-accent);
-    box-shadow: 0 0 0 2px rgba(254, 133, 73, .22);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .editor-resize-controls {
@@ -768,7 +807,7 @@
     z-index: 2;
     display: block;
     box-sizing: border-box;
-    border: 1px solid rgba(88, 39, 16, .76);
+    border: 1px solid #25262a;
     background: #f3f3f3;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, .9),
@@ -933,9 +972,9 @@
     display: flex;
     gap: 7px;
     border: 1px solid var(--editor-border-strong);
-    border-radius: 12px;
+    border-radius: 9px;
     background: rgba(25, 25, 25, .96);
-    box-shadow: var(--editor-shadow-control), 0 8px 24px rgba(0, 0, 0, .32);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .3);
     padding: 6px;
     pointer-events: auto;
 }
@@ -950,6 +989,8 @@
 
 .timeline {
     min-height: 0;
+    grid-column: 1 / -1;
+    grid-row: 2;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -957,7 +998,7 @@
     border-radius: var(--editor-radius-panel);
     background: var(--editor-panel);
     color: var(--editor-text);
-    box-shadow: var(--editor-shadow-panel);
+    box-shadow: none;
 }
 
 .timeline-toolbar {
@@ -967,9 +1008,9 @@
     grid-template-columns: 190px minmax(0, 1fr) 150px;
     align-items: center;
     border-bottom: 1px solid var(--editor-separator);
-    background: var(--editor-panel-raised);
+    background: #1a1b1d;
     padding: 0 11px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+    box-shadow: none;
 }
 
 .transport-controls,
@@ -989,7 +1030,7 @@
     display: grid;
     place-items: center;
     border: 1px solid var(--editor-border-strong);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--editor-control);
     color: var(--editor-text);
     box-shadow: var(--editor-shadow-control);
@@ -1038,7 +1079,7 @@
     justify-content: center;
     gap: 6px;
     border: 1px solid transparent;
-    border-radius: 9px;
+    border-radius: 7px;
     background: transparent;
     color: var(--editor-text-secondary);
     font-size: 11px;
@@ -1089,7 +1130,7 @@
 .track-labels {
     display: grid;
     border-right: 1px solid var(--editor-separator);
-    background: #181818;
+    background: #151618;
 }
 
 .track-labels > div:not(.ruler-label) {
@@ -1119,7 +1160,7 @@
 .track-labels small {
     overflow: hidden;
     color: var(--editor-text-muted);
-    font-size: 9px;
+    font-size: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -1142,7 +1183,7 @@
     border-radius: 8px;
     background: var(--editor-control);
     color: var(--editor-text-secondary);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    box-shadow: none;
 }
 
 .timeline-viewport {
@@ -1195,9 +1236,7 @@
     position: relative;
     overflow: hidden;
     border-top: 1px solid var(--editor-separator);
-    background:
-        linear-gradient(90deg, rgba(254, 133, 73, .025), transparent 22%),
-        #191919;
+    background: #141517;
 }
 
 .timeline-zoom-segment {
@@ -1208,24 +1247,23 @@
     display: grid;
     grid-template-columns: 12px minmax(12px, 1fr) 12px;
     overflow: hidden;
-    border: 1px solid rgba(254, 133, 73, .42);
+    border: 1px solid var(--editor-border-strong);
     border-radius: 7px;
-    background: rgba(254, 133, 73, .12);
-    color: #ffc1a3;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    background: #26272a;
+    color: var(--editor-text-secondary);
+    box-shadow: none;
 }
 
 .timeline-zoom-segment:hover {
-    border-color: rgba(254, 133, 73, .7);
-    background: rgba(254, 133, 73, .17);
+    border-color: rgba(255, 255, 255, .22);
+    background: #2c2d31;
 }
 
 .timeline-zoom-segment.is-selected {
     border-color: var(--editor-accent);
-    background: rgba(254, 133, 73, .22);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .08),
-        0 0 0 2px rgba(254, 133, 73, .12);
+    background: var(--editor-accent-soft);
+    color: var(--editor-text);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .timeline-zoom-segment__select {
@@ -1240,7 +1278,7 @@
     color: inherit;
     padding: 0 2px;
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-variant-numeric: tabular-nums;
     font-weight: 650;
     white-space: nowrap;
@@ -1255,7 +1293,7 @@
 }
 
 .caption-track {
-    background: #191919;
+    background: #141517;
 }
 
 .timeline-caption-cue {
@@ -1287,9 +1325,7 @@
 }
 
 .redaction-track {
-    background:
-        linear-gradient(90deg, rgba(255, 255, 255, .018), transparent 24%),
-        #191919;
+    background: #141517;
 }
 
 .timeline-redaction-cue {
@@ -1331,7 +1367,7 @@
     place-items: center;
     border-radius: 0;
     background: rgba(7, 7, 7, .24);
-    color: rgba(255, 210, 187, .72);
+    color: rgba(255, 255, 255, .62);
     padding: 0;
     cursor: ew-resize;
     touch-action: none;
@@ -1351,11 +1387,11 @@
 }
 
 .zoom-trim-handle--start {
-    border-right: 1px solid rgba(254, 133, 73, .22);
+    border-right: 1px solid var(--editor-border);
 }
 
 .zoom-trim-handle--end {
-    border-left: 1px solid rgba(254, 133, 73, .22);
+    border-left: 1px solid var(--editor-border);
 }
 
 .timeline-clip {
@@ -1365,8 +1401,8 @@
     overflow: hidden;
     border: 1px solid var(--editor-border-strong);
     border-radius: 8px;
-    background: #262626;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    background: #26272a;
+    box-shadow: none;
     transition: border-color 120ms ease, box-shadow 120ms ease, transform 90ms var(--editor-ease);
 }
 
@@ -1433,7 +1469,7 @@
     background: rgba(12, 12, 12, .8);
     color: var(--editor-text-secondary);
     font-family: "Cascadia Mono", monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-style: normal;
     padding: 2px 4px;
 }
@@ -1552,27 +1588,25 @@
 }
 
 .audio-track--mic i {
-    background: rgba(154, 171, 217, .42);
+    background: rgba(185, 187, 192, .4);
 }
 
 .timeline-audio-track {
-    background:
-        linear-gradient(90deg, rgba(123, 148, 204, .035), transparent 28%),
-        #191919;
+    background: #141517;
 }
 
 .timeline-audio-clip {
     min-width: 38px;
     height: 22px;
     top: 3px;
-    border-color: rgba(132, 154, 205, .42);
-    background: rgba(112, 135, 187, .13);
-    color: #c6d2ef;
+    border-color: var(--editor-border-strong);
+    background: #292a2e;
+    color: var(--editor-text-secondary);
 }
 
 .timeline-audio-clip:hover {
-    border-color: rgba(151, 176, 231, .72);
-    background: rgba(112, 135, 187, .19);
+    border-color: rgba(255, 255, 255, .22);
+    background: #303135;
 }
 
 .timeline-audio-clip.is-selected {
@@ -1596,11 +1630,11 @@
 }
 
 .audio-trim-handle {
-    color: rgba(210, 221, 247, .68);
+    color: rgba(225, 226, 229, .62);
 }
 
 .timeline-audio-clip.is-selected .audio-trim-handle {
-    color: rgba(255, 222, 205, .84);
+    color: rgba(255, 255, 255, .86);
 }
 
 .timeline-audio-clip--read-only {
@@ -1615,7 +1649,7 @@
     overflow: hidden;
     padding-inline: 7px;
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 620;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1629,7 +1663,7 @@
     bottom: 0;
     pointer-events: none;
     background: var(--editor-accent);
-    box-shadow: 0 0 0 1px rgba(254, 133, 73, .14);
+    box-shadow: 0 0 0 1px rgba(79, 131, 239, .12);
 }
 
 .timeline-playhead i {
@@ -1658,19 +1692,20 @@
 .editor-inspector {
     min-width: 0;
     min-height: 0;
+    flex: 1;
     overflow: auto;
-    border: 1px solid var(--editor-border);
-    border-radius: var(--editor-radius-panel);
+    border: 0;
+    border-radius: 0;
     background: var(--editor-panel);
     color: var(--editor-text);
     padding: 0 18px 28px;
-    box-shadow: var(--editor-shadow-panel);
+    box-shadow: none;
     scrollbar-color: #444 transparent;
     scrollbar-width: thin;
 }
 
 .inspector-header {
-    height: 56px;
+    height: 52px;
     position: sticky;
     z-index: 4;
     top: 0;
@@ -1685,17 +1720,6 @@
     letter-spacing: -.012em;
 }
 
-.inspector-header::after {
-    height: 8px;
-    position: absolute;
-    right: 0;
-    bottom: -9px;
-    left: 0;
-    content: "";
-    background: linear-gradient(to bottom, rgba(26, 26, 26, .72), transparent);
-    pointer-events: none;
-}
-
 .inspector-header h2 {
     margin: 0;
     color: inherit;
@@ -1705,7 +1729,7 @@
 
 .inspector-section {
     border-bottom: 1px solid var(--editor-separator);
-    padding: 18px 0 20px;
+    padding: 16px 0 18px;
 }
 
 .inspector-section:last-child {
@@ -1736,16 +1760,16 @@
     background: var(--editor-well);
     color: var(--editor-text-muted);
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .inspector-section--clip {
-    margin: 12px -6px 0;
+    margin: 10px 0 0;
     border: 1px solid var(--editor-border);
-    border-radius: 14px;
-    background: var(--editor-well);
-    padding: 14px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .32);
+    border-radius: 9px;
+    background: var(--editor-panel-raised);
+    padding: 12px;
+    box-shadow: none;
 }
 
 .inspector-advanced.inspector-section--clip {
@@ -1851,10 +1875,10 @@
     grid-template-columns: 27px minmax(0, 1fr);
     align-items: center;
     border: 1px solid var(--editor-border);
-    border-radius: 10px;
-    background: #202020;
+    border-radius: 8px;
+    background: var(--editor-well);
     padding-left: 9px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .28);
+    box-shadow: none;
 }
 
 .clip-time-fields label > span {
@@ -1898,17 +1922,17 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 3px;
     border: 1px solid var(--editor-border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--editor-well);
     padding: 3px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .32);
+    box-shadow: none;
 }
 
 .speed-control button {
     min-width: 0;
     height: 30px;
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 6px;
     background: transparent;
     color: var(--editor-text-secondary);
     font-family: "Cascadia Mono", monospace;
@@ -1999,16 +2023,16 @@
 
 .layout-mode-grid button {
     min-width: 0;
-    min-height: 66px;
+    min-height: 58px;
     display: flex;
     align-items: center;
     gap: 9px;
     border: 1px solid var(--editor-border);
-    border-radius: 12px;
+    border-radius: 9px;
     background: var(--editor-control);
     color: var(--editor-text-secondary);
     padding: 10px;
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
     text-align: left;
     transition:
         transform 90ms var(--editor-ease),
@@ -2030,9 +2054,7 @@
     border-color: var(--editor-accent-border);
     background: var(--editor-control);
     color: var(--editor-accent);
-    box-shadow:
-        var(--editor-shadow-control),
-        0 0 0 3px var(--editor-accent-soft);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .layout-mode-grid button > span {
@@ -2051,7 +2073,7 @@
 .layout-mode-grid small {
     overflow: hidden;
     color: var(--editor-text-muted);
-    font-size: 9px;
+    font-size: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -2071,12 +2093,12 @@
     justify-content: center;
     gap: 6px;
     border: 1px solid var(--editor-border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--editor-control);
     color: var(--editor-text-secondary);
     font-size: 10px;
     font-weight: 610;
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
     transition:
         transform 90ms var(--editor-ease),
         border-color 120ms ease,
@@ -2109,7 +2131,7 @@
     color: var(--editor-text-secondary);
     font-size: 11px;
     font-weight: 610;
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
     transition:
         transform 90ms var(--editor-ease),
         border-color 120ms ease,
@@ -2172,14 +2194,14 @@
     display: grid;
     place-items: center;
     border: 1px solid var(--editor-border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--editor-control);
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
 }
 
 .cursor-style-row button.is-active {
     border-color: var(--editor-accent-border);
-    box-shadow: var(--editor-shadow-control), 0 0 0 3px var(--editor-accent-soft);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .cursor-swatch {
@@ -2208,10 +2230,10 @@
     gap: 12px;
     margin-top: 12px;
     border: 1px solid var(--editor-border);
-    border-radius: 12px;
-    background: #202020;
+    border-radius: 9px;
+    background: var(--editor-well);
     padding: 10px 11px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .28);
+    box-shadow: none;
 }
 
 .cursor-style-current > span {
@@ -2258,9 +2280,7 @@
 .zoom-segment-row.is-selected {
     border-color: var(--editor-accent-border);
     background: var(--editor-accent-soft);
-    box-shadow:
-        inset 0 1px 3px rgba(0, 0, 0, .3),
-        0 0 0 2px rgba(254, 133, 73, .08);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .zoom-segment-row > .zoom-segment-select {
@@ -2313,10 +2333,10 @@
     gap: 2px;
     margin-top: 10px;
     border: 1px solid var(--editor-border);
-    border-radius: 13px;
+    border-radius: 9px;
     background: var(--editor-well);
     padding: 11px;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, .24);
+    box-shadow: none;
 }
 
 .zoom-preset-control {
@@ -2340,7 +2360,7 @@
     overflow: hidden;
     color: var(--editor-text-muted);
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 500;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2364,9 +2384,9 @@
     background: var(--editor-control);
     color: var(--editor-text-secondary);
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 610;
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
     transition:
         transform 90ms var(--editor-ease),
         border-color 120ms ease,
@@ -2390,7 +2410,7 @@
 .zoom-preset-row button[aria-pressed="true"] {
     border-color: var(--editor-accent-border);
     color: var(--editor-accent);
-    box-shadow: var(--editor-shadow-control), 0 0 0 2px var(--editor-accent-soft);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .zoom-advanced {
@@ -2436,12 +2456,10 @@
 .audio-channel {
     margin-bottom: 14px;
     border: 1px solid var(--editor-border);
-    border-radius: 12px;
-    background: #202020;
+    border-radius: 9px;
+    background: var(--editor-panel-raised);
     padding: 12px;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .045),
-        inset 0 -1px 2px rgba(0, 0, 0, .2);
+    box-shadow: none;
 }
 
 .audio-channel header {
@@ -2513,7 +2531,7 @@
 
 .audio-music-group__heading span {
     color: var(--editor-text-muted);
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .audio-music-cards,
@@ -2539,10 +2557,10 @@
     align-items: center;
     gap: 8px;
     border: 1px solid var(--editor-border);
-    border-radius: 11px;
-    background: #202020;
+    border-radius: 8px;
+    background: var(--editor-panel-raised);
     padding: 7px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+    box-shadow: none;
 }
 
 .audio-music-card__icon {
@@ -2550,7 +2568,7 @@
     height: 24px;
     display: grid;
     place-items: center;
-    color: #bdc9e6;
+    color: var(--editor-text-secondary);
 }
 
 .audio-music-card__copy,
@@ -2585,7 +2603,7 @@
 .audio-music-clip small,
 .audio-music-editor__header small {
     color: var(--editor-text-muted);
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .audio-music-card__add {
@@ -2622,7 +2640,7 @@
 .audio-music-pagination span {
     color: var(--editor-text-muted);
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-variant-numeric: tabular-nums;
 }
 
@@ -2711,7 +2729,7 @@
 .audio-fade-control__heading output {
     color: var(--editor-text-muted);
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 500;
 }
 
@@ -2730,7 +2748,7 @@
     color: var(--editor-text-secondary);
     font-size: 10px;
     font-weight: 610;
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
     transition: transform 90ms var(--editor-ease), border-color 120ms ease, background-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -2749,7 +2767,7 @@
 .audio-fade-presets button[aria-pressed="true"] {
     border-color: var(--editor-accent-border);
     color: var(--editor-accent);
-    box-shadow: var(--editor-shadow-control), 0 0 0 2px var(--editor-accent-soft);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .audio-fade-exact {
@@ -2822,8 +2840,8 @@
     gap: 10px;
     margin-bottom: 10px;
     border: 1px solid var(--editor-border);
-    border-radius: 11px;
-    background: #202020;
+    border-radius: 8px;
+    background: var(--editor-panel-raised);
     padding: 9px 11px;
 }
 
@@ -2842,7 +2860,7 @@
 
 .audio-music-duck small {
     color: var(--editor-text-muted);
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1.35;
 }
 
@@ -2852,7 +2870,7 @@
     border-radius: 999px;
     color: var(--editor-text-muted);
     padding: 3px 7px;
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .mini-wave {
@@ -2872,7 +2890,7 @@
 }
 
 .mini-wave--voice i {
-    background: rgba(154, 171, 217, .45);
+    background: rgba(185, 187, 192, .42);
 }
 
 .caption-toolbar,
@@ -2917,7 +2935,7 @@
 .caption-list__row.is-selected {
     border-color: var(--editor-accent-border);
     background: var(--editor-control);
-    box-shadow: inset 3px 0 0 var(--editor-accent);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .caption-list__row > button:last-child {
@@ -2987,7 +3005,7 @@
 .redact-list__row.is-selected {
     border-color: var(--editor-accent-border);
     background: var(--editor-control);
-    box-shadow: inset 3px 0 0 var(--editor-accent);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .redact-list__select {
@@ -3018,7 +3036,7 @@
 }
 
 .redact-list__select strong { font-size: 11px; font-weight: 600; }
-.redact-list__select small { color: var(--editor-text-muted); font-family: "Cascadia Mono", monospace; font-size: 9px; }
+.redact-list__select small { color: var(--editor-text-muted); font-family: "Cascadia Mono", monospace; font-size: 10px; }
 
 .redact-list__swatch {
     width: 20px;
@@ -3093,7 +3111,7 @@
 .caption-list__limit {
     margin: 2px 4px 0;
     color: var(--editor-text-muted);
-    font-size: 9px;
+    font-size: 10px;
     text-align: center;
 }
 
@@ -3105,7 +3123,7 @@
 .caption-list__select small {
     color: var(--editor-text-muted);
     font-family: "Cascadia Mono", monospace;
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .caption-textarea {
@@ -3121,13 +3139,13 @@
     min-height: 72px;
     resize: vertical;
     border: 1px solid var(--editor-border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--editor-well);
     color: var(--editor-text);
     padding: 9px 10px;
     font: inherit;
     line-height: 1.4;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .28);
+    box-shadow: none;
 }
 
 .caption-textarea textarea:focus {
@@ -3153,15 +3171,15 @@
 .editor-page .segmented-control {
     min-height: 38px;
     border-color: var(--editor-border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--editor-well);
     padding: 3px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .34);
+    box-shadow: none;
 }
 
 .editor-page .segmented-control button {
     min-height: 30px;
-    border-radius: 8px;
+    border-radius: 6px;
     color: var(--editor-text-secondary);
     font-size: 11px;
 }
@@ -3169,7 +3187,7 @@
 .editor-page .segmented-control button.is-active {
     background: var(--editor-control);
     color: var(--editor-text);
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: inset 0 0 0 1px var(--editor-border-strong);
 }
 
 .editor-page .inline-note {
@@ -3246,7 +3264,7 @@
     place-items: center;
     border-radius: 7px;
     background: var(--editor-accent);
-    color: #1d120d;
+    color: #fff;
 }
 
 .wallpaper-source-note {
@@ -3304,11 +3322,11 @@
     grid-template-columns: 36px minmax(0, 1fr);
     gap: 8px;
     border-color: var(--editor-border);
-    border-radius: 11px;
+    border-radius: 8px;
     background: var(--editor-control);
     color: var(--editor-text);
     padding: 7px;
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
 }
 
 .editor-page .background-browser__presets > button:hover {
@@ -3320,19 +3338,19 @@
 .editor-page .background-browser__presets > button.is-active {
     border-color: var(--editor-accent-border);
     background: var(--editor-control);
-    box-shadow: var(--editor-shadow-control), 0 0 0 3px var(--editor-accent-soft);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .editor-page .background-browser__preset-visual {
     width: 36px;
     border-color: rgba(255, 255, 255, .14);
-    border-radius: 9px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 3px 8px rgba(0, 0, 0, .24);
+    border-radius: 7px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
 }
 
 .editor-page .background-browser__images > button {
     gap: 6px;
-    border-radius: 11px;
+    border-radius: 8px;
     color: var(--editor-text-secondary);
     padding-bottom: 2px;
     transition: color 120ms ease;
@@ -3345,19 +3363,15 @@
 .editor-page .background-browser__image-frame {
     aspect-ratio: 16 / 10;
     border-color: var(--editor-border);
-    border-radius: 11px;
+    border-radius: 8px;
     background: var(--editor-well);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .045),
-        0 4px 10px rgba(0, 0, 0, .22);
+    box-shadow: none;
 }
 
 .editor-page .background-browser__images > button:hover .background-browser__image-frame {
     border-color: var(--editor-border-strong);
     filter: brightness(1.025);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .055),
-        0 6px 13px rgba(0, 0, 0, .25);
+    box-shadow: none;
 }
 
 .editor-page .background-browser__images > button:hover img {
@@ -3366,7 +3380,7 @@
 
 .editor-page .background-browser__images > button.is-active .background-browser__image-frame {
     border-color: var(--editor-accent);
-    box-shadow: 0 0 0 3px var(--editor-accent-soft), 0 6px 14px rgba(0, 0, 0, .24);
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
 }
 
 .editor-page .background-browser__images > button > strong {
@@ -3383,10 +3397,8 @@
     border-color: rgba(255, 255, 255, .18);
     border-radius: 7px;
     background: var(--editor-accent);
-    color: #1d120d;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .25),
-        0 3px 8px rgba(0, 0, 0, .32);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .28);
 }
 
 .editor-page .background-browser__presets .background-browser__check {
@@ -3409,7 +3421,7 @@
     border-color: var(--editor-border-strong);
     background: var(--editor-control);
     color: var(--editor-text-secondary);
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
 }
 
 .editor-page .background-browser__import:not(:disabled):hover,
@@ -3457,9 +3469,7 @@
     border-radius: var(--editor-radius-shell);
     background: var(--editor-panel);
     color: var(--editor-text);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .055),
-        -18px 18px 54px rgba(0, 0, 0, .45);
+    box-shadow: -18px 18px 54px rgba(0, 0, 0, .45);
     padding: 0 20px 20px;
     animation: export-sheet-in 220ms var(--editor-ease);
 }
@@ -3488,10 +3498,10 @@
     place-items: center;
     overflow: hidden;
     border: 1px solid var(--editor-border-strong);
-    border-radius: 12px;
+    border-radius: 9px;
     background: var(--editor-control);
     color: var(--editor-accent);
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
 }
 
 .export-icon > svg {
@@ -3544,9 +3554,9 @@
     gap: 9px;
     margin: 18px 0 14px;
     border: 1px solid var(--editor-border);
-    border-radius: 14px;
+    border-radius: 10px;
     background: var(--editor-well);
-    box-shadow: inset 0 2px 7px rgba(0, 0, 0, .34);
+    box-shadow: none;
 }
 
 .export-preview > div {
@@ -3555,10 +3565,10 @@
     display: grid;
     place-items: center;
     border: 1px solid var(--editor-border-strong);
-    border-radius: 12px;
+    border-radius: 9px;
     background: var(--editor-control);
     color: var(--editor-text);
-    box-shadow: var(--editor-shadow-control);
+    box-shadow: none;
 }
 
 .export-preview > span {
@@ -3616,11 +3626,11 @@
     gap: 9px;
     margin-top: 14px;
     border: 1px solid var(--editor-border);
-    border-radius: 12px;
-    background: #202020;
+    border-radius: 9px;
+    background: var(--editor-well);
     color: var(--editor-text-secondary);
     padding: 8px 10px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .28);
+    box-shadow: none;
 }
 
 .export-destination > span {
@@ -3693,8 +3703,8 @@
 .button-spinner {
     width: 13px;
     height: 13px;
-    border: 2px solid rgba(29, 18, 13, .3);
-    border-top-color: #1d120d;
+    border: 2px solid rgba(255, 255, 255, .34);
+    border-top-color: #fff;
     border-radius: 50%;
     animation: button-spin 700ms linear infinite;
 }
@@ -3718,17 +3728,17 @@
 
 @media (max-width: 1180px) {
     .editor-workspace {
-        grid-template-columns: 64px minmax(0, 1fr) 292px;
+        grid-template-columns: minmax(0, 1fr) 292px;
         gap: 8px;
         padding: 8px;
     }
 
     .editor-toolrail {
-        padding-inline: 6px;
+        padding-inline: 4px;
     }
 
     .editor-toolrail > button {
-        width: 50px;
+        width: auto;
     }
 
     .editor-inspector {
@@ -3736,7 +3746,7 @@
     }
 
     .editor-main {
-        gap: 8px;
+        gap: 0;
     }
 
     .editor-stage {
@@ -3773,24 +3783,24 @@
 
 @media (max-width: 1000px) {
     .editor-commandbar {
-        height: 52px;
+        height: 54px;
         padding-inline: 10px;
     }
 
     .editor-workspace {
-        grid-template-columns: 60px minmax(0, 1fr) 272px;
+        grid-template-columns: minmax(0, 1fr) 272px;
         gap: 7px;
         padding: 7px;
     }
 
     .editor-toolrail {
-        gap: 5px;
-        padding: 7px 5px;
+        gap: 0;
+        padding: 5px 3px;
     }
 
     .editor-toolrail > button {
-        width: 48px;
-        min-height: 50px;
+        width: auto;
+        min-height: 38px;
     }
 
     .editor-toolrail > button > span {
@@ -3802,7 +3812,7 @@
     }
 
     .inspector-section--clip {
-        margin-inline: -3px;
+        margin-inline: 0;
         padding: 11px;
     }
 
@@ -3848,7 +3858,7 @@
     }
 
     .editor-page .background-browser__presets small {
-        font-size: 8px;
+        font-size: 10px;
     }
 }
 
@@ -3857,16 +3867,16 @@
         height: 52px;
     }
 
-    .editor-main {
+    .editor-workspace {
         grid-template-rows: minmax(210px, 1fr) 176px;
     }
 
-    .editor-main:has(.caption-track),
-    .editor-main:has(.redaction-track) {
+    .editor-workspace:has(.caption-track),
+    .editor-workspace:has(.redaction-track) {
         grid-template-rows: minmax(210px, 1fr) 210px;
     }
 
-    .editor-main:has(.caption-track):has(.redaction-track) {
+    .editor-workspace:has(.caption-track):has(.redaction-track) {
         grid-template-rows: minmax(210px, 1fr) 244px;
     }
 

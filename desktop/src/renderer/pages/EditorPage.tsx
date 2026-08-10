@@ -5,6 +5,7 @@ import { AudioPreview } from "../components/AudioPreview";
 import { ExportSheet } from "../components/ExportSheet";
 import { Icon, type IconName } from "../components/Icon";
 import { Timeline } from "../components/Timeline";
+import { handleTitlebarDoubleClick, WindowControls } from "../components/TitleBar";
 import { formatTime, projectDuration, type EditorAction } from "../state";
 import type { ScreenTransformPatch } from "../screen-manipulation";
 import type { EditorState } from "../types";
@@ -26,11 +27,13 @@ export function EditorPage({
     state,
     dispatch,
     onClose,
+    onRequestWindowClose,
     onNotify,
     media,
     projectId,
     onPrepareExport,
     sourceHasAudio,
+    statusDetail,
     audioCatalog,
     libraryAudio,
     libraryImages,
@@ -41,11 +44,13 @@ export function EditorPage({
     state: EditorState;
     dispatch: (action: EditorAction) => boolean;
     onClose: () => void;
+    onRequestWindowClose: () => void;
     onNotify: (title: string, detail: string) => void;
     media: MediaItem | null;
     projectId: string | null;
     onPrepareExport: () => Promise<boolean>;
     sourceHasAudio: boolean;
+    statusDetail?: string;
     audioCatalog: readonly BundledAudioTrack[];
     libraryAudio: readonly MediaItem[];
     libraryImages: readonly MediaItem[];
@@ -147,11 +152,11 @@ export function EditorPage({
 
     return (
         <div className="editor-page">
-            <header className="editor-commandbar">
+            <header className="editor-commandbar" onDoubleClick={handleTitlebarDoubleClick}>
                 <div className="editor-commandbar__left">
                     <button className="editor-back" onClick={onClose} type="button"><Icon name="back" size={17} /><span>Library</span></button>
                     <span className="commandbar-divider" />
-                    <div className="project-name"><strong>{state.project.name}</strong><span><i /> Saved locally</span></div>
+                    <div className="project-name"><strong>{state.project.name}</strong><span><i /> {statusDetail ?? "Saved locally"}</span></div>
                 </div>
                 <div className="editor-commandbar__center">
                     <button aria-label={state.playing ? "Pause preview" : "Play preview"} onClick={() => dispatch({ type: "SET_PLAYING", playing: !state.playing })} type="button"><Icon name={state.playing ? "pause" : "play"} size={14} /></button>
@@ -161,22 +166,11 @@ export function EditorPage({
                     <button aria-label="Undo" disabled={state.history.length === 0} onClick={() => dispatch({ type: "UNDO" })} title="Undo (Ctrl+Z)" type="button"><Icon name="undo" size={17} /></button>
                     <button aria-label="Redo" disabled={state.future.length === 0} onClick={() => dispatch({ type: "REDO" })} title="Redo (Ctrl+Y)" type="button"><Icon name="redo" size={17} /></button>
                     <button className="button button--primary export-button" disabled={projectId === null} onClick={() => { void onPrepareExport().then((ready) => { if (ready) dispatch({ type: "OPEN_EXPORT" }); }); }} type="button"><Icon name="export" size={15} /> Export</button>
+                    <WindowControls onRequestClose={onRequestWindowClose} />
                 </div>
             </header>
 
             <div className="editor-workspace">
-                <nav className="editor-toolrail" aria-label="Editor tools">
-                    {TOOLS.map((tool) => {
-                        const available = tool.available;
-                        const unavailableLabel = "Coming soon";
-                        return (
-                            <button aria-label={available ? tool.label : `${tool.label}, ${unavailableLabel.toLowerCase()}`} aria-pressed={state.activeTool === tool.id} className={state.activeTool === tool.id ? "is-active" : ""} disabled={!available} key={tool.id} onClick={() => dispatch({ type: "SET_TOOL", tool: tool.id })} title={available ? tool.label : `${tool.label} · ${unavailableLabel}`} type="button">
-                                <Icon name={tool.icon} size={18} />
-                                <span>{tool.label}{!available ? <small>Soon</small> : null}</span>
-                            </button>
-                        );
-                    })}
-                </nav>
                 <main className="editor-main">
                     <EditorPreview
                         cropMode={state.activeTool === "crop"}
@@ -190,23 +184,37 @@ export function EditorPage({
                         state={state}
                     />
                     <AudioPreview audio={state.project.audio} audioCatalog={audioCatalog} libraryAudio={libraryAudio} playheadSeconds={state.playhead} playing={state.playing} />
-                    <Timeline dispatch={dispatch} sourceHasAudio={sourceHasAudio} state={state} />
                 </main>
-                <EditorInspector
-                    audioCatalog={audioCatalog}
-                    dispatch={dispatch}
-                    libraryAudio={libraryAudio}
-                    libraryImages={libraryImages}
-                    onLibraryAudioImported={onLibraryAudioImported}
-                    onLibraryImagesImported={onLibraryImagesImported}
-                    onNotify={onNotify}
-                    onPrepareAutoZoom={onPrepareExport}
-                    media={media}
-                    mutationsLocked={mutationsLocked}
-                    projectId={projectId}
-                    state={state}
-                    sourceHasAudio={sourceHasAudio}
-                />
+                <div className="editor-inspector-panel">
+                    <nav className="editor-toolrail" aria-label="Editor tools">
+                        {TOOLS.map((tool) => {
+                            const available = tool.available;
+                            const unavailableLabel = "Coming soon";
+                            return (
+                                <button aria-label={available ? tool.label : `${tool.label}, ${unavailableLabel.toLowerCase()}`} aria-pressed={state.activeTool === tool.id} className={state.activeTool === tool.id ? "is-active" : ""} disabled={!available} key={tool.id} onClick={() => dispatch({ type: "SET_TOOL", tool: tool.id })} title={available ? tool.label : `${tool.label} · ${unavailableLabel}`} type="button">
+                                    <Icon name={tool.icon} size={18} />
+                                    <span>{tool.label}{!available ? <small>Soon</small> : null}</span>
+                                </button>
+                            );
+                        })}
+                    </nav>
+                    <EditorInspector
+                        audioCatalog={audioCatalog}
+                        dispatch={dispatch}
+                        libraryAudio={libraryAudio}
+                        libraryImages={libraryImages}
+                        onLibraryAudioImported={onLibraryAudioImported}
+                        onLibraryImagesImported={onLibraryImagesImported}
+                        onNotify={onNotify}
+                        onPrepareAutoZoom={onPrepareExport}
+                        media={media}
+                        mutationsLocked={mutationsLocked}
+                        projectId={projectId}
+                        state={state}
+                        sourceHasAudio={sourceHasAudio}
+                    />
+                </div>
+                <Timeline dispatch={dispatch} sourceHasAudio={sourceHasAudio} state={state} />
             </div>
 
             {state.exportOpen && projectId !== null ? (

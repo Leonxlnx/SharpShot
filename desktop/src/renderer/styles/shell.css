@@ -12,17 +12,17 @@
     inset: 0;
     display: grid;
     place-items: center;
-    background: #08111e;
+    background: var(--base);
     opacity: 1;
     pointer-events: none;
     transition: opacity 180ms ease;
 }
 
 .brand-intro__logo {
-    border-radius: 23px;
+    border-radius: 20px;
     opacity: 0;
     transform: translateY(6px) scale(.94);
-    filter: drop-shadow(0 18px 34px rgba(0, 0, 0, .32));
+    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, .28));
     animation: brand-logo-enter 320ms cubic-bezier(.23, 1, .32, 1) 20ms forwards;
 }
 
@@ -40,10 +40,10 @@
     display: grid;
     grid-template-columns: var(--sidebar-width) minmax(0, 1fr) 142px;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, .055);
-    background: color-mix(in srgb, var(--shell) 94%, transparent);
-    box-shadow: 0 8px 24px rgba(1, 7, 16, .18);
-    backdrop-filter: blur(16px) saturate(112%);
+    border-bottom: 1px solid var(--separator);
+    background: color-mix(in srgb, var(--shell) 93%, transparent);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .1);
+    backdrop-filter: blur(16px) saturate(108%);
     -webkit-app-region: drag;
 }
 
@@ -68,7 +68,7 @@
 .brand-mark {
     display: block;
     flex: 0 0 auto;
-    border-radius: 8px;
+    border-radius: 7px;
     object-fit: cover;
 }
 
@@ -138,14 +138,14 @@
     flex-direction: column;
     justify-content: space-between;
     background: var(--shell);
-    padding: 14px 12px 12px;
+    padding: 12px 8px 10px;
 }
 
 .sidebar__nav,
 .sidebar__bottom {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .sidebar__bottom {
@@ -154,39 +154,25 @@
 
 .sidebar__item {
     width: 100%;
-    min-height: 40px;
+    min-height: 36px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    position: relative;
+    gap: 9px;
     border: 0;
-    border-radius: 8px;
+    border-radius: 6px;
     background: transparent;
     color: var(--text-tertiary);
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 560;
-    letter-spacing: -.006em;
-    padding: 4px 8px;
+    letter-spacing: -.002em;
+    padding: 3px 7px;
     text-align: left;
     transition: transform 90ms var(--ease-out), background-color 140ms ease, color 140ms ease;
 }
 
-.sidebar__item::after {
-    width: 4px;
-    height: 4px;
-    position: absolute;
-    right: 6px;
-    border-radius: 50%;
-    background: var(--brand-blue);
-    content: "";
-    opacity: 0;
-    transform: scale(.6);
-    transition: opacity 140ms ease, transform 180ms var(--ease-out);
-}
-
 .sidebar__icon {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     display: grid;
     place-items: center;
     flex: 0 0 auto;
@@ -201,23 +187,22 @@
 }
 
 .sidebar__item:hover {
-    background: rgba(95, 143, 255, .055);
-    color: var(--text-secondary);
+    background: color-mix(in srgb, var(--text) 5%, transparent);
+    color: var(--text);
 }
 
 .sidebar__item.is-active {
     color: var(--text);
+    font-weight: 620;
 }
 
 .sidebar__item.is-active .sidebar__icon {
     color: var(--brand-blue);
 }
 
-.sidebar__item.is-active::after { opacity: 1; transform: scale(1); }
-
 .sidebar__item:active {
     transform: translateY(1px) scale(.99);
-    background: rgba(95, 143, 255, .09);
+    background: color-mix(in srgb, var(--text) 8%, transparent);
 }
 
 .route-stage {
@@ -227,7 +212,7 @@
     background: var(--base);
 }
 
-.app-shell--editor .route-stage { left: 0; }
+.app-shell--editor .route-stage { inset: 0; }
 .app-shell--closing .sidebar,
 .app-shell--closing .route-stage {
     pointer-events: none;
@@ -267,13 +252,12 @@
 }
 
 @media (max-width: 1040px) {
-    :root { --sidebar-width: 72px; }
+    :root { --sidebar-width: 60px; }
     .titlebar { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) 142px; }
     .titlebar__brand { justify-content: center; padding-inline: 0; }
     .titlebar__brand > span:last-child,
     .sidebar__label { display: none; }
     .sidebar__item { justify-content: center; padding-inline: 5px; }
-    .sidebar__item::after { right: 3px; }
     .page { padding-inline: 28px; }
 }
 

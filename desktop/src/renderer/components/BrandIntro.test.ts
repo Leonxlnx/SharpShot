@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import {
     BRAND_INTRO_EXIT_MS,
+    BRAND_INTRO_MAXIMUM_MS,
     BRAND_INTRO_MINIMUM_MS,
     BRAND_INTRO_REDUCED_EXIT_MS,
     BrandIntro,
@@ -29,10 +30,15 @@ describe("brand intro", () => {
             exitDelayMs: 0,
             exitDurationMs: BRAND_INTRO_EXIT_MS,
         });
+        expect(resolveBrandIntroTiming(false, 0, false)).toEqual({
+            exitDelayMs: BRAND_INTRO_MAXIMUM_MS,
+            exitDurationMs: BRAND_INTRO_EXIT_MS,
+        });
         expect(resolveBrandIntroTiming(true, 0)).toEqual({
             exitDelayMs: 0,
             exitDurationMs: BRAND_INTRO_REDUCED_EXIT_MS,
         });
         expect(BRAND_INTRO_MINIMUM_MS + BRAND_INTRO_EXIT_MS).toBeLessThan(800);
+        expect(BRAND_INTRO_MAXIMUM_MS + BRAND_INTRO_EXIT_MS).toBeLessThanOrEqual(800);
     });
 });

@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { BrandLogo } from "./BrandLogo";
 
 export const BRAND_INTRO_MINIMUM_MS = 360;
+export const BRAND_INTRO_MAXIMUM_MS = 620;
 export const BRAND_INTRO_EXIT_MS = 180;
 export const BRAND_INTRO_REDUCED_EXIT_MS = 80;
 
-export function resolveBrandIntroTiming(reducedMotion: boolean, elapsedMs: number) {
+export function resolveBrandIntroTiming(reducedMotion: boolean, elapsedMs: number, ready = true) {
     return {
-        exitDelayMs: reducedMotion ? 0 : Math.max(0, BRAND_INTRO_MINIMUM_MS - Math.max(0, elapsedMs)),
+        exitDelayMs: reducedMotion ? 0 : Math.max(0, (ready ? BRAND_INTRO_MINIMUM_MS : BRAND_INTRO_MAXIMUM_MS) - Math.max(0, elapsedMs)),
         exitDurationMs: reducedMotion ? BRAND_INTRO_REDUCED_EXIT_MS : BRAND_INTRO_EXIT_MS,
     };
 }
@@ -18,20 +19,25 @@ export function BrandIntro({ ready }: { ready: boolean }) {
     const [visible, setVisible] = useState(true);
 
     useEffect(() => {
-        if (!ready) return undefined;
+        if (exiting) return undefined;
         const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
         const elapsedMs = performance.now() - mountedAt.current;
-        const timing = resolveBrandIntroTiming(reducedMotion, elapsedMs);
-        let removeTimer = 0;
+        const timing = resolveBrandIntroTiming(reducedMotion, elapsedMs, ready);
         const exitTimer = window.setTimeout(() => {
             setExiting(true);
-            removeTimer = window.setTimeout(() => setVisible(false), timing.exitDurationMs);
         }, timing.exitDelayMs);
-        return () => {
-            window.clearTimeout(exitTimer);
-            window.clearTimeout(removeTimer);
-        };
-    }, [ready]);
+        return () => window.clearTimeout(exitTimer);
+    }, [exiting, ready]);
+
+    useEffect(() => {
+        if (!exiting) return undefined;
+        const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+        const removeTimer = window.setTimeout(
+            () => setVisible(false),
+            reducedMotion ? BRAND_INTRO_REDUCED_EXIT_MS : BRAND_INTRO_EXIT_MS,
+        );
+        return () => window.clearTimeout(removeTimer);
+    }, [exiting]);
 
     if (!visible) return null;
     return (

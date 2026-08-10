@@ -29,6 +29,7 @@ import {
 } from "./model-adapter";
 import { Sidebar } from "./components/Sidebar";
 import { BrandIntro } from "./components/BrandIntro";
+import { WorkspaceSkeleton } from "./components/WorkspaceSkeleton";
 import { TitleBar } from "./components/TitleBar";
 import { Toast } from "./components/Toast";
 import { EditorPage } from "./pages/EditorPage";
@@ -680,11 +681,11 @@ export default function App() {
     return (
         <div aria-busy={closeInProgress} className={`app-shell${app.route === "editor" ? " app-shell--editor" : ""}${closeInProgress ? " app-shell--closing" : ""}`}>
             <BrandIntro ready={bootstrapState !== "loading"} />
-            <TitleBar detail={closeInProgress ? "Saving before close…" : titleDetail} onRequestClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} title={ROUTE_TITLES[app.route]} />
+            {app.route !== "editor" ? <TitleBar detail={closeInProgress ? "Saving before close…" : titleDetail} onRequestClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} title={ROUTE_TITLES[app.route]} /> : null}
             {app.route !== "editor" ? <Sidebar onNavigate={navigate} route={app.route} /> : null}
 
             <div className="route-stage">
-                {bootstrapState === "loading" ? <div className="page app-loading"><span className="button-spinner" /><strong>Starting SharpShot…</strong></div> : null}
+                {bootstrapState === "loading" && app.route !== "editor" ? <WorkspaceSkeleton variant="shell" /> : null}
                 {bootstrapState === "error" ? <div className="page app-loading"><strong>SharpShot could not initialize.</strong><span>Restart the desktop app. No demo captures were loaded.</span></div> : null}
                 {bootstrapState === "ready" && app.route === "home" ? (
                     <HomePage captures={captures} onEditWorkflow={editWorkflow} onNavigate={navigate} onOpenEditor={(id) => void openEditor(id)} onRunWorkflow={(workflow) => void runWorkflow(workflow)} workflows={app.workflows} />
@@ -705,7 +706,7 @@ export default function App() {
                     />
                 ) : null}
                 {bootstrapState === "ready" && app.route === "settings" ? <SettingsPage appVersion={appVersion} onUpdate={updateSettings} settings={settings} /> : null}
-                {app.route === "editor" ? editorLoading ? <div className="app-loading app-loading--editor"><span className="button-spinner" /><strong>Preparing your recording…</strong></div> : (
+                {app.route === "editor" ? bootstrapState !== "ready" || editorLoading ? <WorkspaceSkeleton onRequestWindowClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} variant="editor" /> : (
                     <EditorPage
                         audioCatalog={audioCatalog}
                         dispatch={dispatchEditorAction}
@@ -714,12 +715,14 @@ export default function App() {
                         media={activeMedia}
                         mutationsLocked={closeInProgress}
                         onClose={() => { void leaveEditor(); }}
+                        onRequestWindowClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }}
                         onLibraryAudioImported={handleLibraryAudioImported}
                         onLibraryImagesImported={handleLibraryImagesImported}
                         onNotify={notify}
                         onPrepareExport={persistEditorNow}
                         projectId={activeProjectId}
                         sourceHasAudio={sourceHasAudio}
+                        statusDetail={closeInProgress ? "Saving before close…" : titleDetail}
                         state={editor}
                     />
                 ) : null}

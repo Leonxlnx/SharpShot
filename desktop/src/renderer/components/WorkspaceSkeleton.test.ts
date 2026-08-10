@@ -31,6 +31,8 @@ describe("workspace skeleton", () => {
         expect(html).toContain('aria-label="Loading library"');
         expect(html).toContain('class="workspace-skeleton workspace-skeleton--shell"');
         expect(html).toContain('class="workspace-skeleton__shell-page"');
+        expect(html).toContain('workspace-skeleton__shell-card--primary');
+        expect(html).not.toContain('workspace-skeleton__shell-copy');
         expect(html).not.toContain('class="workspace-skeleton__workspace"');
     });
 

@@ -28,15 +28,16 @@ export function WindowControls({ onRequestClose }: { onRequestClose?: () => void
     );
 }
 
-export function TitleBar({ title, detail, onRequestClose }: { title: string; detail?: string; onRequestClose?: () => void }) {
+export function TitleBar({ title, detail, onRequestClose }: { title?: string; detail?: string; onRequestClose?: () => void }) {
+    const centerLabel = [title, detail].filter(Boolean).join(", ");
     return (
         <header className="titlebar" onDoubleClick={handleTitlebarDoubleClick}>
             <div className="titlebar__brand">
                 <BrandMark size={30} />
                 <span>SharpShot</span>
             </div>
-            <div className="titlebar__center" aria-label={detail ? `${title}, ${detail}` : title}>
-                <strong>{title}</strong>
+            <div className="titlebar__center" aria-label={centerLabel || undefined}>
+                {title ? <strong>{title}</strong> : null}
                 {detail ? <small>{detail}</small> : null}
             </div>
             <WindowControls onRequestClose={onRequestClose} />

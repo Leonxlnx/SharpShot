@@ -5,11 +5,10 @@ const PRIMARY_ITEMS: ReadonlyArray<{
     route: Exclude<AppRoute, "editor" | "settings">;
     label: string;
     icon: IconName;
-    index: string;
 }> = [
-    { route: "home", label: "Capture", icon: "capture", index: "01" },
-    { route: "library", label: "Library", icon: "library", index: "02" },
-    { route: "workflows", label: "Workflows", icon: "workflow", index: "03" },
+    { route: "home", label: "Capture", icon: "capture" },
+    { route: "library", label: "Library", icon: "library" },
+    { route: "workflows", label: "Workflows", icon: "workflow" },
 ];
 
 interface SidebarProps {
@@ -20,13 +19,11 @@ interface SidebarProps {
 function NavigationItem({
     active,
     icon,
-    index,
     label,
     onClick,
 }: {
     active: boolean;
     icon: IconName;
-    index: string;
     label: string;
     onClick: () => void;
 }) {
@@ -39,7 +36,6 @@ function NavigationItem({
             title={label}
             type="button"
         >
-            <span className="sidebar__index" aria-hidden="true">{index}</span>
             <span className="sidebar__icon" aria-hidden="true"><Icon name={icon} size={18} /></span>
             <span className="sidebar__label">{label}</span>
         </button>
@@ -54,7 +50,6 @@ export function Sidebar({ route, onNavigate }: SidebarProps) {
                     <NavigationItem
                         active={route === item.route}
                         icon={item.icon}
-                        index={item.index}
                         key={item.route}
                         label={item.label}
                         onClick={() => onNavigate(item.route)}
@@ -65,7 +60,6 @@ export function Sidebar({ route, onNavigate }: SidebarProps) {
                 <NavigationItem
                     active={route === "settings"}
                     icon="settings"
-                    index="04"
                     label="Settings"
                     onClick={() => onNavigate("settings")}
                 />

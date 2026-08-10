@@ -681,7 +681,7 @@ export default function App() {
     return (
         <div aria-busy={closeInProgress} className={`app-shell${app.route === "editor" ? " app-shell--editor" : ""}${closeInProgress ? " app-shell--closing" : ""}`}>
             <BrandIntro ready={bootstrapState !== "loading"} />
-            {app.route !== "editor" ? <TitleBar detail={closeInProgress ? "Saving before close…" : titleDetail} onRequestClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} title={ROUTE_TITLES[app.route]} /> : null}
+            {app.route !== "editor" ? <TitleBar detail={closeInProgress ? "Saving before close…" : titleDetail} onRequestClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} title={app.route === "home" ? undefined : ROUTE_TITLES[app.route]} /> : null}
             {app.route !== "editor" ? <Sidebar onNavigate={navigate} route={app.route} /> : null}
 
             <div className="route-stage">

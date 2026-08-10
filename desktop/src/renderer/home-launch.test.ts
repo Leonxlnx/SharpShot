@@ -1,6 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it, vi } from "vitest";
 import type { Workflow } from "./types";
-import { resolveCaptureLaunch, workflowMatchesLaunchMode } from "./pages/HomePage";
+import { HomePage, resolveCaptureLaunch, workflowMatchesLaunchMode } from "./pages/HomePage";
 
 function videoWorkflow(id: string, after: Workflow["after"], enabled = true): Workflow {
     return {
@@ -39,5 +41,26 @@ describe("Home capture CTA routing", () => {
         expect(resolveCaptureLaunch([disabledQuick, quick, disabledStudio], "quick")).toEqual({ kind: "run", workflow: quick });
         expect(resolveCaptureLaunch([quick, disabledStudio], "studio")).toEqual({ kind: "edit", workflow: disabledStudio });
         expect(resolveCaptureLaunch([quick, disabledStudio], "screenshot")).toEqual({ kind: "configure" });
+    });
+
+    it("keeps the landing surface concise and action-led", () => {
+        const html = renderToStaticMarkup(createElement(HomePage, {
+            workflows: [],
+            captures: [],
+            onRunWorkflow: vi.fn(),
+            onEditWorkflow: vi.fn(),
+            onNavigate: vi.fn(),
+            onOpenEditor: vi.fn(),
+        }));
+
+        expect(html).toContain("<h1>Capture</h1>");
+        expect(html.match(/class="capture-action /g)).toHaveLength(3);
+        expect(html).toContain("capture-action--screenshot");
+        expect(html).toContain(">Recent<");
+        expect(html).toContain("No captures yet");
+        expect(html).not.toContain("Manage workflows");
+        expect(html).not.toContain("home-subtitle");
+        expect(html).not.toContain("Save to Library");
+        expect(html).not.toContain("capture-action__detail");
     });
 });

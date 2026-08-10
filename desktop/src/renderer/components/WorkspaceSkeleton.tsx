@@ -104,18 +104,14 @@ function ShellSkeleton() {
     return (
         <div aria-hidden="true" className="workspace-skeleton__shell-page">
             <header className="workspace-skeleton__shell-header">
-                <div>
-                    <Bone className="workspace-skeleton__shell-title" />
-                    <Bone className="workspace-skeleton__shell-copy" />
-                </div>
-                <Bone className="workspace-skeleton__shell-action" />
+                <Bone className="workspace-skeleton__shell-title" />
             </header>
             <div className="workspace-skeleton__shell-actions">
                 {Array.from({ length: 3 }, (_, index) => (
-                    <div className="workspace-skeleton__shell-card" key={index}>
+                    <div className={`workspace-skeleton__shell-card${index === 0 ? " workspace-skeleton__shell-card--primary" : ""}`} key={index}>
                         <Bone className="workspace-skeleton__shell-card-icon" />
                         <Bone className="workspace-skeleton__heading" />
-                        <Bone className="workspace-skeleton__line" />
+                        <Bone className="workspace-skeleton__shell-shortcut" />
                     </div>
                 ))}
             </div>

@@ -99,7 +99,7 @@ Microsoft's current Windows shortcut reference does not list `Win + Shift + D` a
 
 ## Install Quick Capture
 
-1. When `SharpShot-Quick-1.5.0-win-x64.zip` is listed on [Releases](https://github.com/Leonxlnx/SharpShot/releases), download that exact file. Until then, build it locally with `\.\build.ps1`.
+1. When `SharpShot-Quick-1.5.0-win-x64.zip` is listed on [Releases](https://github.com/Leonxlnx/SharpShot/releases), download that exact file. Until then, build it locally with `.\build.ps1`.
 2. Select **Extract All** and move the extracted `SharpShot` folder somewhere permanent.
 3. Run `SharpShot.exe`.
 4. Right-click the tray icon and enable **Start with Windows** if desired.

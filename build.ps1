@@ -10,19 +10,36 @@ $sourceRoot = Join-Path $repoRoot 'src\SharpShot'
 $toolsRoot = Join-Path $repoRoot 'tools'
 $buildRoot = Join-Path $repoRoot 'build'
 $artifactsRoot = Join-Path $repoRoot 'artifacts'
-$portableRoot = Join-Path $artifactsRoot 'SharpShot'
-$version = '1.2.0'
+$nativeArtifactsRoot = Join-Path $artifactsRoot 'native'
+$portableRoot = Join-Path $nativeArtifactsRoot 'SharpShot'
+$version = '1.5.0'
 
-function Reset-RepoDirectory([string]$path) {
-    $fullPath = [IO.Path]::GetFullPath($path)
-    $requiredPrefix = $repoRoot.TrimEnd('\') + '\'
-    if (-not $fullPath.StartsWith($requiredPrefix, [StringComparison]::OrdinalIgnoreCase)) {
-        throw "Refusing to reset a directory outside the repository: $fullPath"
+. (Join-Path $toolsRoot 'safe-directory.ps1')
+
+function Get-UpperSha256([string]$Path) {
+    $stream = [IO.File]::OpenRead($Path)
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try {
+        return ([BitConverter]::ToString($sha256.ComputeHash($stream))).Replace('-', '')
     }
-    if (Test-Path -LiteralPath $fullPath) {
-        Remove-Item -LiteralPath $fullPath -Recurse -Force
+    finally {
+        $sha256.Dispose()
+        $stream.Dispose()
     }
-    New-Item -ItemType Directory -Path $fullPath -Force | Out-Null
+}
+
+$sourceText = Get-Content -LiteralPath (Join-Path $sourceRoot 'SharpShot.cs') -Raw
+$sharpShotSources = @(Get-ChildItem -LiteralPath $sourceRoot -Filter '*.cs' -File |
+    Sort-Object Name |
+    ForEach-Object FullName)
+$manifestText = Get-Content -LiteralPath (Join-Path $sourceRoot 'app.manifest') -Raw
+$changelogText = Get-Content -LiteralPath (Join-Path $repoRoot 'CHANGELOG.md') -Raw
+if (-not $sourceText.Contains("AssemblyVersion(`"$version.0`")") -or
+    -not $sourceText.Contains("AssemblyFileVersion(`"$version.0`")") -or
+    -not $sourceText.Contains("SharpShot $version\n\n") -or
+    -not $manifestText.Contains("version=`"$version.0`"") -or
+    -not $changelogText.Contains("## $version ")) {
+    throw "Version $version is not synchronized across source, manifest, About text, and changelog."
 }
 
 $compilerCandidates = @(
@@ -34,8 +51,11 @@ if (-not $csc) {
     throw 'The .NET Framework C# compiler was not found. Install .NET Framework 4.8 Developer Pack.'
 }
 
-Reset-RepoDirectory $buildRoot
-Reset-RepoDirectory $artifactsRoot
+Reset-SafeDirectoryExact -TrustedRoot $repoRoot -Path $buildRoot -RequiredRelativePath 'build'
+Reset-SafeDirectoryExact `
+    -TrustedRoot $repoRoot `
+    -Path $nativeArtifactsRoot `
+    -RequiredRelativePath 'artifacts\native'
 New-Item -ItemType Directory -Path $portableRoot -Force | Out-Null
 
 & $csc /nologo /target:exe /optimize+ /warn:4 `
@@ -56,7 +76,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Icon generation failed.' }
     /reference:System.Drawing.dll `
     /reference:System.Windows.Forms.dll `
     /out:"$portableRoot\SharpShot.exe" `
-    "$sourceRoot\SharpShot.cs"
+    $sharpShotSources
 if ($LASTEXITCODE -ne 0) { throw 'SharpShot compilation failed.' }
 
 Copy-Item -LiteralPath "$sourceRoot\SharpShot.exe.config" -Destination "$portableRoot\SharpShot.exe.config"
@@ -81,16 +101,46 @@ if (-not $SkipTests) {
 $checksumLines = Get-ChildItem -LiteralPath $portableRoot -File |
     Sort-Object Name |
     ForEach-Object {
-        $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash
+        $hash = Get-UpperSha256 $_.FullName
         "$hash  $($_.Name)"
     }
 $checksumLines | Set-Content -LiteralPath "$portableRoot\SHA256SUMS.txt" -Encoding ascii
 
-$zipPath = Join-Path $artifactsRoot "SharpShot-v$version-win-x64.zip"
+$zipPath = Join-Path $nativeArtifactsRoot "SharpShot-Quick-$version-win-x64.zip"
 Compress-Archive -LiteralPath $portableRoot -DestinationPath $zipPath -CompressionLevel Optimal
-$zipHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $zipPath).Hash
+
+$verifyRoot = Join-Path $buildRoot 'package-verify'
+New-Item -ItemType Directory -Path $verifyRoot -Force | Out-Null
+Expand-Archive -LiteralPath $zipPath -DestinationPath $verifyRoot
+$verifiedPortableRoot = Join-Path $verifyRoot 'SharpShot'
+$expectedNames = @('LICENSE', 'README.md', 'SHA256SUMS.txt', 'SharpShot.exe', 'SharpShot.exe.config')
+$actualNames = @(Get-ChildItem -LiteralPath $verifiedPortableRoot -File | Sort-Object Name | ForEach-Object Name)
+if ($actualNames.Count -ne $expectedNames.Count -or (Compare-Object $expectedNames $actualNames)) {
+    throw 'The portable ZIP does not contain the exact expected file set.'
+}
+foreach ($line in Get-Content -LiteralPath (Join-Path $verifiedPortableRoot 'SHA256SUMS.txt')) {
+    $parts = $line -split '  ', 2
+    if ($parts.Count -ne 2) { throw "Invalid inner checksum line: $line" }
+    $verifiedFile = Join-Path $verifiedPortableRoot $parts[1]
+    if (-not (Test-Path -LiteralPath $verifiedFile)) { throw "Checksummed file is missing: $($parts[1])" }
+    $actualHash = Get-UpperSha256 $verifiedFile
+    if ($actualHash -ne $parts[0]) { throw "Inner checksum mismatch: $($parts[1])" }
+}
+
+if (-not $SkipTests) {
+    $packagedTestRoot = Join-Path $buildRoot 'packaged-self-test'
+    $packagedTest = Start-Process `
+        -FilePath (Join-Path $verifiedPortableRoot 'SharpShot.exe') `
+        -ArgumentList @('--self-test', ('"' + $packagedTestRoot + '"')) `
+        -Wait -PassThru -WindowStyle Hidden
+    if ($packagedTest.ExitCode -ne 0) {
+        throw "Packaged SharpShot self-test failed with exit code $($packagedTest.ExitCode)."
+    }
+}
+
+$zipHash = Get-UpperSha256 $zipPath
 $checksumPath = "$zipPath.sha256.txt"
 "$zipHash  $(Split-Path -Leaf $zipPath)" | Set-Content -LiteralPath $checksumPath -Encoding ascii
 
 Write-Host "Built: $zipPath"
-Get-FileHash -Algorithm SHA256 -LiteralPath $zipPath | Format-List Path, Hash
+Write-Host "SHA-256: $zipHash"

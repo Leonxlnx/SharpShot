@@ -4,6 +4,7 @@ import { WindowControls } from "./TitleBar";
 export type WorkspaceSkeletonProps = {
     variant: "shell" | "editor";
     label?: string;
+    error?: boolean;
     onRequestWindowClose?: () => void;
 };
 
@@ -11,18 +12,19 @@ function Bone({ className = "" }: { className?: string }) {
     return <span aria-hidden="true" className={`workspace-skeleton__bone ${className}`} />;
 }
 
-export function WorkspaceSkeleton({ variant, label, onRequestWindowClose }: WorkspaceSkeletonProps) {
+export function WorkspaceSkeleton({ variant, label, error = false, onRequestWindowClose }: WorkspaceSkeletonProps) {
     const status = label ?? (variant === "editor" ? "Preparing your recording…" : "Starting SharpShot…");
 
     return (
         <section
-            aria-busy="true"
+            aria-busy={error ? "false" : "true"}
             aria-label={status}
-            className={`workspace-skeleton workspace-skeleton--${variant}`}
+            className={`workspace-skeleton workspace-skeleton--${variant}${error ? " workspace-skeleton--error" : ""}`}
             role="status"
         >
             <span className="workspace-skeleton__status">{status}</span>
             {variant === "editor" ? <EditorSkeleton onRequestWindowClose={onRequestWindowClose} /> : <ShellSkeleton />}
+            {error ? <div className="workspace-skeleton__error" role="alert"><strong>SharpShot could not initialize.</strong><span>Restart the desktop app. Your local captures and projects were not changed.</span></div> : null}
         </section>
     );
 }

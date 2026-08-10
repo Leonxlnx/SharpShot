@@ -706,7 +706,7 @@ export default function App() {
                     />
                 ) : null}
                 {bootstrapState === "ready" && app.route === "settings" ? <SettingsPage appVersion={appVersion} onUpdate={updateSettings} settings={settings} /> : null}
-                {app.route === "editor" ? bootstrapState !== "ready" || editorLoading ? <WorkspaceSkeleton label={bootstrapState === "error" ? "SharpShot could not initialize. Restart the desktop app." : undefined} onRequestWindowClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} variant="editor" /> : (
+                {app.route === "editor" ? bootstrapState !== "ready" || editorLoading ? <WorkspaceSkeleton error={bootstrapState === "error"} label={bootstrapState === "error" ? "SharpShot could not initialize. Restart the desktop app." : undefined} onRequestWindowClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} variant="editor" /> : (
                     <EditorPage
                         audioCatalog={audioCatalog}
                         dispatch={dispatchEditorAction}

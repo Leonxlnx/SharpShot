@@ -33,4 +33,14 @@ describe("workspace skeleton", () => {
         expect(html).toContain('class="workspace-skeleton__shell-page"');
         expect(html).not.toContain('class="workspace-skeleton__workspace"');
     });
+
+    it("shows a settled visible error while preserving editor window chrome", () => {
+        const html = renderToStaticMarkup(createElement(WorkspaceSkeleton, { error: true, label: "Startup failed", variant: "editor" }));
+
+        expect(html).toContain('aria-busy="false"');
+        expect(html).toContain('workspace-skeleton--error');
+        expect(html).toContain('role="alert"');
+        expect(html).toContain("SharpShot could not initialize.");
+        expect(html).toContain('aria-label="Close window"');
+    });
 });

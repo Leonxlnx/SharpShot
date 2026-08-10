@@ -8,6 +8,7 @@
     overflow: hidden;
     background: var(--base, #101113);
     color: transparent;
+    position: relative;
 }
 
 .workspace-skeleton__status {
@@ -26,6 +27,36 @@
     border-radius: 6px;
     background: var(--skeleton-bone);
     animation: workspace-skeleton-breathe 1.65s ease-in-out infinite;
+}
+
+.workspace-skeleton--error .workspace-skeleton__bone {
+    animation: none;
+    opacity: .42;
+}
+
+.workspace-skeleton__error {
+    position: absolute;
+    z-index: 4;
+    inset: 58px 0 0;
+    display: grid;
+    place-content: center;
+    gap: 7px;
+    padding: 32px;
+    background: color-mix(in srgb, var(--base, #101113) 94%, transparent);
+    color: var(--text-primary, #f3f4f5);
+    text-align: center;
+}
+
+.workspace-skeleton__error strong {
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.workspace-skeleton__error span {
+    max-width: 420px;
+    color: var(--text-secondary, #a7aaae);
+    font-size: 12px;
+    line-height: 1.55;
 }
 
 .workspace-skeleton__commandbar {

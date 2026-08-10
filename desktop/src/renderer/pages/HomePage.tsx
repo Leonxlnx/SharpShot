@@ -31,6 +31,11 @@ export function resolveCaptureLaunch(workflows: readonly Workflow[], mode: Launc
     return { kind: workflow.enabled ? "run" : "edit", workflow };
 }
 
+function ariaShortcut(keys: readonly string[]): string | undefined {
+    if (keys.length === 0) return undefined;
+    return keys.map((key) => key === "Win" ? "Meta" : key === "Ctrl" ? "Control" : key).join("+");
+}
+
 export function HomePage({
     workflows,
     captures,
@@ -73,18 +78,20 @@ export function HomePage({
                     const shortcutLabel = shortcut.length > 0 ? shortcut.join(" + ") : target.kind === "run" ? "No shortcut" : "Configure";
                     return (
                         <button
+                            aria-keyshortcuts={runnable ? ariaShortcut(shortcut) : undefined}
                             aria-label={`${runnable ? "Start" : "Configure"} ${captureMode.title.toLowerCase()}`}
                             className={`capture-action capture-action--${captureMode.id}`}
                             key={captureMode.id}
                             onClick={() => launch(captureMode.id)}
                             type="button"
                         >
+                            {captureMode.id === "screenshot" ? <span aria-hidden="true" className="capture-action__art" /> : null}
                             <span className="capture-action__icon" aria-hidden="true"><Icon name={captureMode.icon} size={20} /></span>
                             <span className="capture-action__copy">
                                 <strong>{captureMode.title}</strong>
                             </span>
                             <span className="capture-action__meta">
-                                <span aria-label={shortcut.length > 0 ? shortcut.join(" plus ") : shortcutLabel} className="capture-action__shortcut">{shortcutLabel}</span>
+                                <span aria-hidden="true" className="capture-action__shortcut">{shortcutLabel}</span>
                             </span>
                         </button>
                     );

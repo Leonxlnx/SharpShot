@@ -113,9 +113,9 @@
 
 .capture-actions {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(250px, .8fr);
-    grid-template-rows: repeat(2, minmax(82px, 1fr));
-    gap: 10px;
+    grid-template-columns: minmax(420px, 1.45fr) minmax(280px, .95fr);
+    grid-template-rows: repeat(2, 82px);
+    gap: 12px;
 }
 
 .capture-action {
@@ -126,6 +126,7 @@
     align-items: center;
     gap: 11px;
     position: relative;
+    isolation: isolate;
     overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -133,8 +134,10 @@
     color: var(--text);
     padding: 14px 16px;
     text-align: left;
-    transition: transform 120ms var(--ease-out), background-color 140ms ease, border-color 140ms ease;
+    transition: transform 120ms var(--ease-out), background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
+
+.capture-action > :not(.capture-action__art) { position: relative; z-index: 2; }
 
 .capture-action__icon {
     width: 28px;
@@ -142,6 +145,7 @@
     display: grid;
     place-items: center;
     color: var(--text-secondary);
+    transition: color 160ms ease, transform 160ms var(--ease-out);
 }
 
 .capture-action__copy {
@@ -163,32 +167,72 @@
 .capture-action__shortcut {
     display: inline-flex;
     align-items: center;
-    min-height: 26px;
-    border: 1px solid var(--border);
+    min-height: 24px;
+    border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
     border-radius: 6px;
-    background: var(--control-well);
+    background: color-mix(in srgb, var(--control-well) 72%, transparent);
     color: var(--text-tertiary);
     font-family: "Cascadia Mono", Consolas, monospace;
     font-size: 10.5px;
     font-weight: 600;
     line-height: 1;
-    padding: 0 8px;
+    padding: 0 7px;
     white-space: nowrap;
 }
 
 .capture-action--screenshot {
     grid-row: 1 / 3;
-    grid-template-columns: 42px minmax(0, 1fr);
-    grid-template-rows: 1fr auto;
-    min-height: 174px;
-    align-items: start;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    min-height: 176px;
+    align-content: start;
+    align-items: center;
+    gap: 13px;
+    border-color: color-mix(in srgb, var(--border-strong) 72%, transparent);
+    background: #151719;
+    color: #f3f4f6;
     padding: 20px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045), 0 14px 34px rgba(0, 0, 0, .12);
 }
 
 .capture-action--screenshot .capture-action__icon { width: 42px; height: 42px; color: var(--accent); }
-.capture-action--screenshot .capture-action__copy { align-self: start; padding-top: 7px; }
-.capture-action--screenshot .capture-action__copy strong { font-size: 22px; font-weight: 600; letter-spacing: -.025em; }
-.capture-action--screenshot .capture-action__meta { grid-column: 2; grid-row: 2; align-self: end; justify-self: start; }
+.capture-action--screenshot .capture-action__copy strong { font-size: 21px; font-weight: 600; letter-spacing: -.025em; }
+.capture-action--screenshot .capture-action__meta { grid-column: 3; justify-self: end; }
+.capture-action--screenshot .capture-action__shortcut {
+    border-color: rgba(255, 255, 255, .09);
+    background: rgba(5, 7, 9, .48);
+    color: rgba(236, 239, 244, .72);
+}
+
+.capture-action__art {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(21, 23, 25, .96) 0%, rgba(21, 23, 25, .6) 42%, rgba(12, 14, 16, .18) 100%),
+        url("../assets/capture-command-surface.jpg") center / cover no-repeat;
+    opacity: .62;
+    transform: scale(1.01);
+    transition: opacity 180ms ease, transform 260ms var(--ease-out);
+}
+
+.capture-action__art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(118, 151, 219, .32) 0 1px, transparent 1.35px);
+    background-size: 14px 14px;
+    mask-image: radial-gradient(circle at 76% 48%, #000 0, rgba(0, 0, 0, .72) 24%, transparent 58%);
+    opacity: 0;
+    transform: scale(.985);
+    transition: opacity 180ms ease, transform 220ms var(--ease-out);
+}
+
+.capture-action--quick:hover .capture-action__icon,
+.capture-action--quick:focus-visible .capture-action__icon { transform: translateX(1px); }
+
+.capture-action:focus-visible .capture-action__icon { color: var(--accent); }
+.capture-action--screenshot:focus-visible .capture-action__art { opacity: .79; transform: scale(1.018); }
+.capture-action--screenshot:focus-visible .capture-action__art::after { opacity: .38; transform: scale(1); }
 
 .capture-action:active {
     transform: scale(.99);
@@ -781,6 +825,9 @@
     .workflow-row__main:hover { background: var(--hover); }
     .capture-action:hover { border-color: var(--border-strong); background: var(--panel-2); }
     .capture-action:hover .capture-action__icon { color: var(--accent); }
+    .capture-action--screenshot:hover { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 16px 38px rgba(0, 0, 0, .16); }
+    .capture-action--screenshot:hover .capture-action__art { opacity: .79; transform: scale(1.018); }
+    .capture-action--screenshot:hover .capture-action__art::after { opacity: .38; transform: scale(1); }
     .home-recent:hover .home-recent__visual { border-color: var(--border-strong); opacity: .94; }
     .capture-card:hover .capture-card__visual { border-color: var(--border-strong); transform: translateY(-1px); }
     .capture-card:hover .capture-card__actions { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
@@ -793,18 +840,6 @@
 @media (max-width: 1100px) {
     .home-recent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .home-recent:nth-child(n + 3) { display: none; }
-    .capture-action:not(.capture-action--screenshot) {
-        grid-template-columns: 28px minmax(0, 1fr);
-        grid-template-rows: auto auto;
-        align-content: center;
-        row-gap: 4px;
-    }
-    .capture-action:not(.capture-action--screenshot) .capture-action__icon { grid-row: 1 / 3; }
-    .capture-action:not(.capture-action--screenshot) .capture-action__meta {
-        grid-column: 2;
-        grid-row: 2;
-        justify-self: start;
-    }
     .recipe-core { grid-template-columns: 1fr; }
     .recipe-block { min-height: auto; }
 }
@@ -827,6 +862,12 @@
     .home-section { margin-top: 24px; }
     .workflow-gallery > button { height: 52px; }
     .recipe-editor__header { min-height: 82px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .capture-action__art,
+    .capture-action__art::after,
+    .capture-action__icon { transition: none; transform: none; }
 }
 
 @media (prefers-reduced-transparency: reduce) {

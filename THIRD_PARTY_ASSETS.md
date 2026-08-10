@@ -33,6 +33,20 @@ recorded in
 [`desktop/resources/backgrounds/manifest.json`](desktop/resources/backgrounds/manifest.json).
 These files are distributed with SharpShot under the repository's MIT license.
 
+### Home command surface
+
+`desktop/src/renderer/assets/capture-command-surface.jpg` is original SharpShot
+interface artwork created with OpenAI image generation on 2026-08-11. No input
+images or third-party artwork were used. The prompt requested a text-free,
+near-black graphite capture surface with a restrained optical-aperture contour,
+fine material grain, muted steel-blue edge light, and generous negative space;
+it explicitly excluded logos, UI controls, neon, glossy blobs, and purple
+gradients. The generated source was deterministically scaled, cropped,
+horizontally flipped, and encoded as a 1600 × 520 JPEG with the pinned bundled
+FFmpeg runtime. Its SHA-256 is
+`96112164706d9a11e6e257048a1fa881f7781360c1fd3b4ef45645cb1cc2924d`.
+It is distributed with SharpShot under the repository's MIT license.
+
 ### CC0 cinematic landscape backgrounds
 
 SharpShot Studio also includes four unmodified 3840 × 2160 JPEG files from

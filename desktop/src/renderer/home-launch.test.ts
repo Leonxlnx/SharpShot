@@ -44,8 +44,13 @@ describe("Home capture CTA routing", () => {
     });
 
     it("keeps the landing surface concise and action-led", () => {
+        const screenshot: Workflow = {
+            ...videoWorkflow("screenshot", ["Save to Library", "Copy"]),
+            kind: "screenshot",
+            shortcuts: [["Win", "Shift", "D"]],
+        };
         const html = renderToStaticMarkup(createElement(HomePage, {
-            workflows: [],
+            workflows: [screenshot],
             captures: [],
             onRunWorkflow: vi.fn(),
             onEditWorkflow: vi.fn(),
@@ -56,11 +61,24 @@ describe("Home capture CTA routing", () => {
         expect(html).toContain("<h1>Capture</h1>");
         expect(html.match(/class="capture-action /g)).toHaveLength(3);
         expect(html).toContain("capture-action--screenshot");
+        expect(html).toContain('aria-keyshortcuts="Meta+Shift+D"');
+        expect(html).toContain('class="capture-action__art"');
+        expect(html).toContain('aria-hidden="true" class="capture-action__shortcut"');
         expect(html).toContain(">Recent<");
         expect(html).toContain("No captures yet");
         expect(html).not.toContain("Manage workflows");
         expect(html).not.toContain("home-subtitle");
         expect(html).not.toContain("Save to Library");
         expect(html).not.toContain("capture-action__detail");
+
+        const disabledHtml = renderToStaticMarkup(createElement(HomePage, {
+            workflows: [{ ...screenshot, enabled: false }],
+            captures: [],
+            onRunWorkflow: vi.fn(),
+            onEditWorkflow: vi.fn(),
+            onNavigate: vi.fn(),
+            onOpenEditor: vi.fn(),
+        }));
+        expect(disabledHtml).not.toContain("aria-keyshortcuts");
     });
 });

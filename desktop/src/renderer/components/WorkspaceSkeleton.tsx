@@ -35,10 +35,6 @@ function EditorSkeleton({ onRequestWindowClose }: { onRequestWindowClose?: () =>
                     <Bone className="workspace-skeleton__icon" />
                     <Bone className="workspace-skeleton__project" />
                 </div>
-                <div className="workspace-skeleton__command-group workspace-skeleton__command-group--center">
-                    <Bone className="workspace-skeleton__control workspace-skeleton__control--wide" />
-                    <Bone className="workspace-skeleton__control" />
-                </div>
                 <div className="workspace-skeleton__command-group workspace-skeleton__command-group--end">
                     <Bone className="workspace-skeleton__icon" />
                     <Bone className="workspace-skeleton__icon" />
@@ -63,8 +59,10 @@ function EditorSkeleton({ onRequestWindowClose }: { onRequestWindowClose?: () =>
                 </main>
 
                 <aside className="workspace-skeleton__inspector">
-                    <div className="workspace-skeleton__inspector-tabs">
-                        {Array.from({ length: 8 }, (_, index) => <Bone className="workspace-skeleton__icon" key={index} />)}
+                    <div className="workspace-skeleton__inspector-picker">
+                        <Bone className="workspace-skeleton__picker-icon" />
+                        <Bone className="workspace-skeleton__picker-label" />
+                        <Bone className="workspace-skeleton__picker-field" />
                     </div>
                     <div className="workspace-skeleton__inspector-content">
                         <Bone className="workspace-skeleton__heading" />

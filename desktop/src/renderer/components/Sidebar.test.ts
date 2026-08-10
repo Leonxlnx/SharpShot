@@ -11,6 +11,9 @@ describe("sidebar navigation", () => {
             expect(html).toContain(`aria-label="${label}"`);
             expect(html).toContain(`title="${label}"`);
         }
+        for (const index of ["01", "02", "03", "04"]) {
+            expect(html).toContain(`<span class="sidebar__index" aria-hidden="true">${index}</span>`);
+        }
         expect(html.match(/aria-current="page"/g)).toHaveLength(1);
         expect(html).toContain('aria-label="Application settings"');
     });

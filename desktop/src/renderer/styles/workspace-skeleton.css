@@ -31,7 +31,7 @@
 .workspace-skeleton__commandbar {
     height: 58px;
     display: grid;
-    grid-template-columns: minmax(220px, 1fr) auto minmax(220px, 1fr);
+    grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr);
     align-items: center;
     gap: 18px;
     border-bottom: 1px solid var(--border, rgba(255, 255, 255, .07));
@@ -52,7 +52,6 @@
     gap: 9px;
 }
 
-.workspace-skeleton__command-group--center { justify-content: center; }
 .workspace-skeleton__command-group--end { justify-content: flex-end; }
 .workspace-skeleton__icon { width: 34px; height: 34px; }
 .workspace-skeleton__project { width: min(180px, 52%); height: 12px; }
@@ -69,7 +68,7 @@
     min-height: 0;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 344px;
-    grid-template-rows: minmax(260px, 1fr) minmax(176px, 28vh);
+    grid-template-rows: minmax(260px, 1fr) clamp(176px, 24vh, 224px);
     gap: 8px;
     padding: 8px;
 }
@@ -104,9 +103,11 @@
 .workspace-skeleton__track { width: 66%; height: 42px; }
 .workspace-skeleton__track--primary { width: 100%; }
 
-.workspace-skeleton__inspector { grid-column: 2; grid-row: 1; display: grid; grid-template-rows: 48px minmax(0, 1fr); }
-.workspace-skeleton__inspector-tabs { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: center; gap: 2px; border-bottom: 1px solid var(--border, rgba(255, 255, 255, .07)); padding: 6px 8px; }
-.workspace-skeleton__inspector-tabs .workspace-skeleton__icon { width: 28px; height: 28px; justify-self: center; }
+.workspace-skeleton__inspector { grid-column: 2; grid-row: 1; display: grid; grid-template-rows: 54px minmax(0, 1fr); }
+.workspace-skeleton__inspector-picker { display: grid; grid-template-columns: 18px 24px minmax(0, 1fr); align-items: center; gap: 10px; border-bottom: 1px solid var(--border, rgba(255, 255, 255, .07)); padding: 8px 12px; }
+.workspace-skeleton__picker-icon { width: 18px; height: 18px; }
+.workspace-skeleton__picker-label { width: 24px; height: 8px; }
+.workspace-skeleton__picker-field { width: 100%; height: 34px; }
 .workspace-skeleton__inspector-content { min-height: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px; }
 .workspace-skeleton__option-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .workspace-skeleton__option { width: 100%; height: 46px; border-radius: 8px; }

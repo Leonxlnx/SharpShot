@@ -8,7 +8,7 @@
 }
 
 .workflow-row {
-    min-height: 76px;
+    min-height: 78px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 44px;
     align-items: center;
@@ -38,10 +38,10 @@
     place-items: center;
     flex: 0 0 auto;
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 8px;
     background: var(--elevated);
     color: var(--text-secondary);
-    box-shadow: var(--shadow-raised);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
 }
 
 .workflow-icon--video { color: var(--accent); }
@@ -49,10 +49,10 @@
 .workflow-row__summary { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .workflow-row__identity strong { overflow: hidden; font-size: 13px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
 .workflow-row__identity small,
-.workflow-row__summary small { overflow: hidden; color: var(--text-tertiary); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.workflow-row__summary > span { color: var(--text-secondary); font-size: 11px; }
+.workflow-row__summary small { overflow: hidden; color: var(--text-tertiary); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.workflow-row__summary > span { color: var(--text-secondary); font-size: 12px; }
 .workflow-row__shortcut { display: flex; align-items: center; gap: 6px; }
-.workflow-row__shortcut > small { color: var(--text-tertiary); font-size: 10px; }
+.workflow-row__shortcut > small { color: var(--text-tertiary); font-size: 11px; }
 
 .type-badge,
 .duration-badge {
@@ -81,7 +81,7 @@
     min-height: 23px;
     border-radius: 7px;
     font-family: "Cascadia Mono", monospace;
-    font-size: 9px;
+    font-size: 10px;
     padding: 0 7px;
 }
 
@@ -93,7 +93,7 @@
     border-radius: 10px;
     background: var(--panel-2);
     color: var(--text-tertiary);
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.45;
     padding: 10px 11px;
 }
@@ -107,7 +107,7 @@
 .capture-actions {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 14px;
 }
 
 .capture-action {
@@ -121,7 +121,7 @@
     position: relative;
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: var(--radius-panel);
     background: var(--panel);
     color: var(--text);
     padding: 16px;
@@ -137,10 +137,10 @@
     place-items: center;
     align-self: start;
     border: 1px solid var(--border);
-    border-radius: 11px;
+    border-radius: 9px;
     background: var(--elevated);
     color: var(--text-secondary);
-    box-shadow: var(--shadow-raised);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
 }
 
 .capture-action__copy {
@@ -152,8 +152,8 @@
     padding-top: 2px;
 }
 
-.capture-action__copy strong { font-size: 14px; font-weight: 640; letter-spacing: -.015em; }
-.capture-action__copy small { overflow: hidden; color: var(--text-tertiary); font-size: 11px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.capture-action__copy strong { font-size: 14.5px; font-weight: 650; letter-spacing: -.015em; }
+.capture-action__copy small { overflow: hidden; color: var(--text-tertiary); font-size: 11.5px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
 .capture-action__arrow {
     grid-column: 3;
     grid-row: 1;
@@ -178,7 +178,7 @@
     min-width: 0;
     overflow: hidden;
     color: var(--text-tertiary);
-    font-size: 10px;
+    font-size: 11px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -189,7 +189,7 @@
     box-shadow: var(--shadow-inset);
 }
 
-.home-section { margin-top: 32px; }
+.home-section { margin-top: 36px; }
 .home-section-heading {
     min-height: 34px;
     display: flex;
@@ -199,12 +199,12 @@
     margin-bottom: 11px;
 }
 
-.home-section-heading h2 { font-size: 17px; }
+.home-section-heading h2 { font-size: 18px; }
 .home-shortcut-grid,
 .home-recent-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 11px;
+    gap: 14px;
 }
 
 .home-shortcut {
@@ -214,7 +214,7 @@
     align-items: stretch;
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 13px;
+    border-radius: 11px;
     background: var(--panel);
     box-shadow: var(--shadow-raised);
     transition: border-color 140ms ease, background-color 140ms ease;
@@ -242,14 +242,14 @@
     place-items: center;
     flex: 0 0 auto;
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 8px;
     background: var(--elevated);
     color: var(--text-secondary);
 }
 
 .home-shortcut__copy { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.home-shortcut__copy strong { overflow: hidden; font-size: 12px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
-.home-shortcut__copy small { overflow: hidden; color: var(--text-tertiary); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.home-shortcut__copy strong { overflow: hidden; font-size: 12.5px; font-weight: 630; text-overflow: ellipsis; white-space: nowrap; }
+.home-shortcut__copy small { overflow: hidden; color: var(--text-tertiary); font-size: 10.5px; text-overflow: ellipsis; white-space: nowrap; }
 .home-shortcut__edit {
     width: 38px;
     flex: 0 0 auto;
@@ -299,7 +299,7 @@
     position: relative;
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 13px;
+    border-radius: 11px;
     background: var(--panel);
     box-shadow: var(--shadow-raised);
     transition: transform 150ms var(--ease-out), border-color 150ms ease, box-shadow 150ms ease;
@@ -322,15 +322,15 @@
     background: rgba(10, 11, 12, .8);
     color: #fff;
     font-family: "Cascadia Mono", monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-style: normal;
     padding: 3px 7px;
     backdrop-filter: blur(8px);
 }
 
 .home-recent__copy { min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 0 2px; }
-.home-recent__copy strong { overflow: hidden; font-size: 12px; font-weight: 610; text-overflow: ellipsis; white-space: nowrap; }
-.home-recent__copy small { overflow: hidden; color: var(--text-tertiary); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.home-recent__copy strong { overflow: hidden; font-size: 12.5px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
+.home-recent__copy small { overflow: hidden; color: var(--text-tertiary); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Library */
 .library-page {
@@ -348,7 +348,7 @@
     align-items: center;
     gap: 7px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     background: var(--input);
     color: var(--text-tertiary);
     padding: 0 10px;
@@ -393,13 +393,13 @@
     border-radius: 7px;
     background: transparent;
     color: var(--text-tertiary);
-    font-size: 11px;
-    font-weight: 590;
+    font-size: 11.5px;
+    font-weight: 600;
     padding: 0 13px;
 }
 
 .filter-tabs button.is-active { background: var(--elevated); color: var(--text); box-shadow: var(--shadow-raised); }
-.library-result-count { margin-right: auto; color: var(--text-tertiary); font-size: 10px; }
+.library-result-count { margin-right: auto; color: var(--text-tertiary); font-size: 11px; }
 .view-toggle { display: flex; align-items: center; gap: 5px; }
 .view-toggle .button { min-height: 34px; margin-right: 4px; }
 .library-content { min-height: 0; display: flex; flex: 1; gap: 18px; }
@@ -422,7 +422,7 @@
     position: relative;
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 13px;
+    border-radius: 11px;
     background: var(--panel);
     box-shadow: var(--shadow-raised);
     transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms var(--ease-out);
@@ -438,8 +438,8 @@
 
 .capture-card.is-selected .capture-card__visual { border-color: var(--accent-border); box-shadow: 0 0 0 3px var(--accent-fill), var(--shadow-raised); }
 .capture-card__copy { min-width: 0; display: flex; flex-direction: column; gap: 1px; padding: 0 2px; }
-.capture-card__copy strong { overflow: hidden; font-size: 12px; font-weight: 610; text-overflow: ellipsis; white-space: nowrap; }
-.capture-card__copy small { color: var(--text-tertiary); font-size: 10px; }
+.capture-card__copy strong { overflow: hidden; font-size: 12.5px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
+.capture-card__copy small { color: var(--text-tertiary); font-size: 11px; }
 .capture-card__actions {
     position: absolute;
     top: 8px;
@@ -503,7 +503,7 @@
     flex-direction: column;
     overflow: auto;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: var(--radius-panel);
     background: var(--panel);
     box-shadow: var(--shadow-raised);
     padding: 0 18px 18px;
@@ -524,19 +524,19 @@
     border-radius: 7px;
     background: rgba(12, 13, 14, .8);
     color: rgba(255, 255, 255, .9);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 620;
     padding: 4px 7px;
     backdrop-filter: blur(8px);
 }
 .capture-inspector__title { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--separator); padding: 14px 0; }
 .capture-inspector__title > div { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-.capture-inspector__title strong { overflow: hidden; font-size: 12px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
-.capture-inspector__title small { color: var(--text-tertiary); font-size: 10px; }
+.capture-inspector__title strong { overflow: hidden; font-size: 12.5px; font-weight: 630; text-overflow: ellipsis; white-space: nowrap; }
+.capture-inspector__title small { color: var(--text-tertiary); font-size: 11px; }
 .metadata-list { display: flex; flex-direction: column; gap: 0; margin: 0; padding: 8px 0; }
 .metadata-list > div { min-height: 35px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-.metadata-list dt { color: var(--text-tertiary); font-size: 10px; }
-.metadata-list dd { overflow: hidden; margin: 0; color: var(--text-secondary); font-size: 10px; font-variant-numeric: tabular-nums; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+.metadata-list dt { color: var(--text-tertiary); font-size: 11px; }
+.metadata-list dd { overflow: hidden; margin: 0; color: var(--text-secondary); font-size: 11px; font-variant-numeric: tabular-nums; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
 .capture-inspector__actions { display: grid; gap: 7px; margin-top: auto; padding-top: 12px; }
 .capture-inspector__actions .button { width: 100%; min-height: 36px; }
 
@@ -575,7 +575,7 @@
 
 .screenshot-viewer__panel > header > span { min-width: 0; display: flex; flex-direction: column; }
 .screenshot-viewer__panel > header strong { overflow: hidden; font-size: 12px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
-.screenshot-viewer__panel > header small { color: var(--text-tertiary); font-size: 10px; }
+.screenshot-viewer__panel > header small { color: var(--text-tertiary); font-size: 11px; }
 .screenshot-viewer__image { min-height: 0; display: grid; place-items: center; flex: 1; overflow: auto; background: #090a0b; padding: 18px; }
 .screenshot-viewer__image img { max-width: 100%; max-height: calc(100vh - 154px); display: block; object-fit: contain; box-shadow: 0 12px 40px rgba(0, 0, 0, .4); }
 
@@ -593,7 +593,7 @@
     gap: 4px;
     overflow-x: auto;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius-panel);
     background: var(--control-well);
     margin-bottom: 14px;
     padding: 5px;
@@ -610,7 +610,7 @@
     align-content: center;
     gap: 1px 9px;
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: 8px;
     background: transparent;
     color: var(--text-secondary);
     padding: 8px 10px;
@@ -630,15 +630,15 @@
 
 .workflow-gallery > button.is-active { border-color: var(--border); background: var(--elevated); color: var(--text); box-shadow: var(--shadow-raised); }
 .workflow-gallery > button.is-active > span { background: var(--accent-fill); color: var(--accent); }
-.workflow-gallery strong { overflow: hidden; align-self: end; font-size: 11px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
-.workflow-gallery small { overflow: hidden; color: var(--text-tertiary); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
-.workflow-gallery em { position: absolute; top: 5px; right: 6px; color: var(--text-tertiary); font-size: 8px; font-style: normal; }
+.workflow-gallery strong { overflow: hidden; align-self: end; font-size: 12px; font-weight: 630; text-overflow: ellipsis; white-space: nowrap; }
+.workflow-gallery small { overflow: hidden; color: var(--text-tertiary); font-size: 10.5px; text-overflow: ellipsis; white-space: nowrap; }
+.workflow-gallery em { position: absolute; top: 5px; right: 6px; color: var(--text-tertiary); font-size: 10px; font-style: normal; }
 
 .recipe-editor {
     max-width: 1080px;
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: var(--radius-panel);
     background: var(--panel);
     box-shadow: var(--shadow-panel), inset 0 1px 0 rgba(255, 255, 255, .035);
 }
@@ -666,14 +666,14 @@
     display: flex;
     flex-direction: column;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 10px;
     background: var(--recipe-surface);
     padding: 18px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .025);
 }
 
 .recipe-block h2 { font-size: 18px; }
-.recipe-block > p { margin-top: 4px; color: var(--text-tertiary); font-size: 11px; }
+.recipe-block > p { margin-top: 5px; color: var(--text-tertiary); font-size: 12px; line-height: 1.4; }
 .shortcut-stack { display: flex; flex-direction: column; gap: 6px; margin-top: 17px; }
 .shortcut-entry {
     min-height: 49px;
@@ -688,7 +688,7 @@
 }
 
 .shortcut-entry > span { min-width: 0; display: flex; align-items: center; gap: 8px; }
-.shortcut-entry small { color: var(--text-tertiary); font-size: 9px; }
+.shortcut-entry small { color: var(--text-tertiary); font-size: 10.5px; }
 .shortcut-entry .icon-button { width: 30px; height: 30px; }
 .shortcut-recorder {
     min-height: 40px;
@@ -700,8 +700,8 @@
     border-radius: 10px;
     background: transparent;
     color: var(--text-tertiary);
-    font-size: 10px;
-    font-weight: 590;
+    font-size: 11px;
+    font-weight: 600;
     transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
@@ -729,8 +729,8 @@
 .after-action-list > button.is-required:disabled { border-color: var(--border); background: var(--panel-2); color: var(--text-secondary); opacity: 1; cursor: default; }
 .after-action-list > button.is-required .after-action-check { border-color: var(--border-strong); background: var(--elevated); color: var(--text-secondary); }
 .after-action-list > button > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-.after-action-list strong { overflow: hidden; font-size: 10px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
-.after-action-list small { overflow: hidden; color: var(--text-tertiary); font-size: 9px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+.after-action-list strong { overflow: hidden; font-size: 11px; font-weight: 630; text-overflow: ellipsis; white-space: nowrap; }
+.after-action-list small { overflow: hidden; color: var(--text-tertiary); font-size: 10.5px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
 
 .recipe-disclosures { border-top: 1px solid var(--separator); padding: 0 22px; }
 .recipe-disclosures details { border-bottom: 1px solid var(--separator); }
@@ -749,7 +749,7 @@
 .recipe-disclosures summary > span > svg { color: var(--text-secondary); }
 .recipe-disclosures summary > span > span { display: flex; flex-direction: column; }
 .recipe-disclosures summary strong { color: var(--text); font-size: 12px; font-weight: 620; }
-.recipe-disclosures summary small { margin-top: 2px; color: var(--text-tertiary); font-size: 10px; }
+.recipe-disclosures summary small { margin-top: 2px; color: var(--text-tertiary); font-size: 11px; }
 .recipe-disclosures summary > svg { color: var(--text-tertiary); transition: transform 160ms var(--ease-out); }
 .recipe-disclosures details[open] summary > svg { transform: rotate(90deg); }
 .recipe-fields { border-top: 1px solid var(--separator); padding: 0 0 7px 28px; }
@@ -763,7 +763,7 @@
 .settings-section {
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: var(--radius-panel);
     background: var(--panel);
     box-shadow: var(--shadow-raised);
 }
@@ -791,7 +791,7 @@
 }
 
 .settings-section header h2 { font-size: 15px; }
-.settings-section header p { margin-top: 2px; color: var(--text-tertiary); font-size: 10px; }
+.settings-section header p { margin-top: 3px; color: var(--text-tertiary); font-size: 11px; }
 .settings-fields { padding: 0 17px; }
 .settings-about {
     min-height: 68px;
@@ -800,16 +800,16 @@
     justify-content: space-between;
     gap: 22px;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 10px;
     background: color-mix(in srgb, var(--panel) 70%, transparent);
     padding: 13px 17px;
 }
 
 .settings-about > span { display: flex; flex-direction: column; gap: 2px; }
 .settings-about > span:last-child { align-items: flex-end; text-align: right; }
-.settings-about strong { color: var(--text-secondary); font-size: 11px; font-weight: 610; }
-.settings-about small { color: var(--text-tertiary); font-size: 9px; }
-.settings-folder-button { min-width: 132px; min-height: 34px; font-size: 11px; }
+.settings-about strong { color: var(--text-secondary); font-size: 12px; font-weight: 620; }
+.settings-about small { color: var(--text-tertiary); font-size: 10.5px; }
+.settings-folder-button { min-width: 132px; min-height: 36px; font-size: 11.5px; }
 
 .app-loading {
     min-height: 50vh;
@@ -837,10 +837,8 @@
 }
 
 @media (max-width: 1100px) {
-    .capture-actions,
     .home-shortcut-grid,
     .home-recent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .capture-actions .capture-action:last-child { grid-column: 1 / -1; }
     .recipe-core { grid-template-columns: 1fr; }
     .recipe-block { min-height: auto; }
 }

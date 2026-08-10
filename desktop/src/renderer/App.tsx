@@ -686,7 +686,7 @@ export default function App() {
 
             <div className="route-stage">
                 {bootstrapState === "loading" && app.route !== "editor" ? <WorkspaceSkeleton variant="shell" /> : null}
-                {bootstrapState === "error" ? <div className="page app-loading"><strong>SharpShot could not initialize.</strong><span>Restart the desktop app. No demo captures were loaded.</span></div> : null}
+                {bootstrapState === "error" && app.route !== "editor" ? <div className="page app-loading"><strong>SharpShot could not initialize.</strong><span>Restart the desktop app. No demo captures were loaded.</span></div> : null}
                 {bootstrapState === "ready" && app.route === "home" ? (
                     <HomePage captures={captures} onEditWorkflow={editWorkflow} onNavigate={navigate} onOpenEditor={(id) => void openEditor(id)} onRunWorkflow={(workflow) => void runWorkflow(workflow)} workflows={app.workflows} />
                 ) : null}
@@ -706,7 +706,7 @@ export default function App() {
                     />
                 ) : null}
                 {bootstrapState === "ready" && app.route === "settings" ? <SettingsPage appVersion={appVersion} onUpdate={updateSettings} settings={settings} /> : null}
-                {app.route === "editor" ? bootstrapState !== "ready" || editorLoading ? <WorkspaceSkeleton onRequestWindowClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} variant="editor" /> : (
+                {app.route === "editor" ? bootstrapState !== "ready" || editorLoading ? <WorkspaceSkeleton label={bootstrapState === "error" ? "SharpShot could not initialize. Restart the desktop app." : undefined} onRequestWindowClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} variant="editor" /> : (
                     <EditorPage
                         audioCatalog={audioCatalog}
                         dispatch={dispatchEditorAction}

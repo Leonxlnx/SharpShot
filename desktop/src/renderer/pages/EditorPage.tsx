@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { EditorInspector } from "../components/EditorInspector";
 import { EditorPreview } from "../components/EditorPreview";
 import { AudioPreview } from "../components/AudioPreview";
+import { EditorToolPicker } from "../components/EditorToolPicker";
 import { ExportSheet } from "../components/ExportSheet";
-import { Icon, type IconName } from "../components/Icon";
+import { Icon } from "../components/Icon";
 import { Timeline } from "../components/Timeline";
 import { handleTitlebarDoubleClick, WindowControls } from "../components/TitleBar";
 import { formatTime, projectDuration, type EditorAction } from "../state";
@@ -12,16 +13,6 @@ import type { EditorState } from "../types";
 import type { BundledAudioTrack, MediaItem } from "../../shared/api";
 import { playbackDeltaForFrame } from "../playback-clock";
 import { setSafeRedactionArea } from "../safe-redaction";
-const TOOLS: Array<{ id: EditorState["activeTool"]; label: string; icon: IconName; available: boolean }> = [
-    { id: "canvas", label: "Canvas", icon: "canvas", available: true },
-    { id: "background", label: "Background", icon: "background", available: true },
-    { id: "layout", label: "Layout", icon: "layout", available: true },
-    { id: "crop", label: "Crop", icon: "crop", available: true },
-    { id: "zoom", label: "Zoom", icon: "zoom", available: true },
-    { id: "audio", label: "Audio", icon: "audio", available: true },
-    { id: "captions", label: "Captions", icon: "captions", available: true },
-    { id: "annotations", label: "Redact", icon: "redact", available: true },
-];
 
 export function EditorPage({
     state,
@@ -186,18 +177,7 @@ export function EditorPage({
                     <AudioPreview audio={state.project.audio} audioCatalog={audioCatalog} libraryAudio={libraryAudio} playheadSeconds={state.playhead} playing={state.playing} />
                 </main>
                 <div className="editor-inspector-panel">
-                    <nav className="editor-toolrail" aria-label="Editor tools">
-                        {TOOLS.map((tool) => {
-                            const available = tool.available;
-                            const unavailableLabel = "Coming soon";
-                            return (
-                                <button aria-label={available ? tool.label : `${tool.label}, ${unavailableLabel.toLowerCase()}`} aria-pressed={state.activeTool === tool.id} className={state.activeTool === tool.id ? "is-active" : ""} disabled={!available} key={tool.id} onClick={() => dispatch({ type: "SET_TOOL", tool: tool.id })} title={available ? tool.label : `${tool.label} · ${unavailableLabel}`} type="button">
-                                    <Icon name={tool.icon} size={18} />
-                                    <span>{tool.label}{!available ? <small>Soon</small> : null}</span>
-                                </button>
-                            );
-                        })}
-                    </nav>
+                    <EditorToolPicker activeTool={state.activeTool} onSelect={(tool) => dispatch({ type: "SET_TOOL", tool })} />
                     <EditorInspector
                         audioCatalog={audioCatalog}
                         dispatch={dispatch}

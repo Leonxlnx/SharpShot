@@ -8,25 +8,25 @@
 
 .editor-page {
     --editor-bg: #0d0e10;
-    --editor-panel: #17181a;
-    --editor-panel-raised: #1b1c1e;
+    --editor-panel: #18191b;
+    --editor-panel-raised: #1d1e21;
     --editor-well: #111214;
-    --editor-control: #222326;
-    --editor-control-hover: #292a2e;
-    --editor-control-pressed: #191a1c;
-    --editor-border: rgba(255, 255, 255, .075);
-    --editor-border-strong: rgba(255, 255, 255, .13);
-    --editor-separator: rgba(255, 255, 255, .065);
+    --editor-control: #222428;
+    --editor-control-hover: #282a2e;
+    --editor-control-pressed: #1a1b1e;
+    --editor-border: rgba(255, 255, 255, .085);
+    --editor-border-strong: rgba(255, 255, 255, .16);
+    --editor-separator: rgba(255, 255, 255, .07);
     --editor-text: #f4f4f5;
-    --editor-text-secondary: #b5b7bc;
-    --editor-text-muted: #85888f;
-    --editor-accent: #4f83ef;
-    --editor-accent-hover: #6594f3;
-    --editor-accent-soft: rgba(79, 131, 239, .14);
-    --editor-accent-border: rgba(79, 131, 239, .62);
-    --editor-action: #3478ee;
-    --editor-action-hover: #4787f2;
-    --editor-focus: #78a2f7;
+    --editor-text-secondary: #b9bcc1;
+    --editor-text-muted: #90949b;
+    --editor-accent: #6687cc;
+    --editor-accent-hover: #7898d6;
+    --editor-accent-soft: rgba(102, 135, 204, .12);
+    --editor-accent-border: rgba(120, 152, 214, .5);
+    --editor-action: #587dc7;
+    --editor-action-hover: #698bd0;
+    --editor-focus: #88a7e3;
     --editor-danger: #ef716c;
     --editor-radius-shell: 12px;
     --editor-radius-panel: 11px;
@@ -44,7 +44,7 @@
     --panel-2: var(--editor-panel-raised);
     --elevated: var(--editor-control);
     --hover: var(--editor-control-hover);
-    --active: #2d2f33;
+    --active: #2e3135;
     --border: var(--editor-border);
     --border-strong: var(--editor-border-strong);
     --separator: var(--editor-separator);
@@ -85,12 +85,12 @@
 }
 
 .editor-page .button--primary {
-    border-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .08);
     background: var(--editor-action);
     color: #fff;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .18),
-        0 1px 2px rgba(0, 0, 0, .24);
+        inset 0 1px 0 rgba(255, 255, 255, .14),
+        0 1px 2px rgba(0, 0, 0, .22);
 }
 
 .editor-page .button--primary:not(:disabled):hover {
@@ -250,7 +250,7 @@
     display: flex;
     align-items: center;
     color: var(--editor-text-secondary);
-    font-size: 11px;
+    font-size: 11.5px;
     line-height: 1.2;
 }
 
@@ -340,110 +340,76 @@
     display: grid;
     flex: 1;
     grid-template-columns: minmax(0, 1fr) 344px;
-    grid-template-rows: minmax(260px, 1fr) clamp(210px, 30vh, 290px);
+    grid-template-rows: minmax(260px, 1fr) clamp(176px, 24vh, 224px);
     gap: 9px;
     overflow: hidden;
     background: var(--editor-bg);
     padding: 9px;
 }
 
-.editor-workspace:has(.caption-track):has(.redaction-track) {
-    grid-template-rows: minmax(250px, 1fr) clamp(250px, 33vh, 322px);
+.editor-workspace:has(.caption-track, .redaction-track, .audio-track) {
+    grid-template-rows: minmax(250px, 1fr) clamp(210px, 28vh, 254px);
+}
+
+.editor-workspace:has(.caption-track):has(.redaction-track),
+.editor-workspace:has(.caption-track):has(.audio-track),
+.editor-workspace:has(.redaction-track):has(.audio-track) {
+    grid-template-rows: minmax(250px, 1fr) clamp(244px, 32vh, 294px);
 }
 
 .editor-toolrail {
-    min-height: 0;
-    display: flex;
+    min-height: 54px;
+    display: grid;
     flex: 0 0 auto;
-    flex-direction: row;
+    grid-template-columns: 20px minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
-    gap: 1px;
-    overflow: hidden;
+    gap: 10px;
     border: 0;
     border-bottom: 1px solid var(--editor-separator);
-    background: var(--editor-panel-raised);
-    padding: 6px;
-    scrollbar-width: none;
+    background: color-mix(in srgb, var(--editor-panel-raised) 72%, var(--editor-bg));
+    padding: 8px 12px;
 }
 
-.editor-toolrail::-webkit-scrollbar {
-    display: none;
-}
-
-.editor-toolrail > button {
-    width: 40px;
-    min-width: 0;
-    min-height: 40px;
-    display: flex;
-    flex: 1 1 0;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    position: relative;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--editor-text-secondary);
-    font-size: 11px;
-    font-weight: 560;
-    letter-spacing: -.008em;
-    line-height: 1;
-    transition:
-        transform 90ms var(--editor-ease),
-        background-color 120ms ease,
-        color 120ms ease;
-}
-
-.editor-toolrail > button svg {
-    width: 19px;
-    height: 19px;
-    flex: 0 0 auto;
-    stroke-width: 1.7;
-}
-
-.editor-toolrail > button:not(:disabled):hover {
-    background: var(--editor-control);
-    color: var(--editor-text);
-}
-
-.editor-toolrail > button:not(:disabled):active {
-    transform: translateY(1px) scale(.985);
-    background: var(--editor-control-pressed);
-}
-
-.editor-toolrail > button.is-active {
+.editor-toolrail__icon {
     color: var(--editor-accent);
+    stroke-width: 1.8;
 }
 
-.editor-toolrail > button.is-active::after {
-    width: 3px;
-    height: 3px;
-    position: absolute;
-    right: 4px;
-    bottom: 3px;
-    border-radius: 50%;
-    background: currentColor;
-    content: "";
+.editor-toolpicker {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 9px;
 }
 
-.editor-toolrail > button span {
-    display: none;
-}
-
-.editor-toolrail > button span small {
-    display: block;
-    margin-top: 2px;
+.editor-toolpicker > span {
     color: var(--editor-text-muted);
-    font-size: 10px;
-    font-weight: 580;
-    letter-spacing: .025em;
-    text-transform: none;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .01em;
 }
 
-.editor-toolrail > button:disabled {
-    opacity: .4;
+.editor-toolpicker select {
+    width: 100%;
+    min-width: 0;
+    min-height: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--editor-text);
+    font-size: 12.5px;
+    font-weight: 630;
+    letter-spacing: -.008em;
+    padding-block: 0;
+    padding-left: 8px;
+    box-shadow: none;
+    transition: background-color 120ms ease;
+}
+
+.editor-toolpicker select:hover {
+    background-color: var(--editor-control);
 }
 
 .editor-main {
@@ -1051,7 +1017,7 @@
     align-items: center;
     gap: 5px;
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 11px;
+    font-size: 11.5px;
     font-variant-numeric: tabular-nums;
     line-height: 1;
 }
@@ -1063,7 +1029,7 @@
 
 .timecode small {
     color: var(--editor-text-muted);
-    font-size: 10px;
+    font-size: 10.5px;
 }
 
 .edit-controls {
@@ -1082,8 +1048,8 @@
     border-radius: 7px;
     background: transparent;
     color: var(--editor-text-secondary);
-    font-size: 11px;
-    font-weight: 590;
+    font-size: 11.5px;
+    font-weight: 600;
     padding: 0 9px;
     transition:
         transform 90ms var(--editor-ease),
@@ -1151,8 +1117,8 @@
 .track-labels strong {
     overflow: hidden;
     color: var(--editor-text);
-    font-size: 11px;
-    font-weight: 610;
+    font-size: 11.5px;
+    font-weight: 620;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -1160,7 +1126,7 @@
 .track-labels small {
     overflow: hidden;
     color: var(--editor-text-muted);
-    font-size: 10px;
+    font-size: 10.5px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -1729,7 +1695,7 @@
 
 .inspector-section {
     border-bottom: 1px solid var(--editor-separator);
-    padding: 16px 0 18px;
+    padding: 18px 0 20px;
 }
 
 .inspector-section:last-child {
@@ -1737,10 +1703,10 @@
 }
 
 .inspector-section__intro {
-    margin: 0 0 16px;
+    margin: 0 0 17px;
     color: var(--editor-text-secondary);
-    font-size: 11px;
-    line-height: 1.4;
+    font-size: 12px;
+    line-height: 1.45;
 }
 
 .inspector-section__intro--counted {
@@ -1760,7 +1726,7 @@
     background: var(--editor-well);
     color: var(--editor-text-muted);
     font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-    font-size: 10px;
+    font-size: 10.5px;
 }
 
 .inspector-section--clip {
@@ -1789,8 +1755,8 @@
     border-radius: 8px;
     color: var(--editor-text-secondary);
     cursor: pointer;
-    font-size: 10px;
-    font-weight: 610;
+    font-size: 11px;
+    font-weight: 620;
     list-style: none;
     padding: 0 4px;
 }
@@ -1851,15 +1817,15 @@
 .inspector-section--clip header strong {
     overflow: hidden;
     color: var(--editor-text);
-    font-size: 12px;
-    font-weight: 620;
+    font-size: 12.5px;
+    font-weight: 630;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .inspector-section--clip header small {
     color: var(--editor-text-muted);
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .clip-time-fields {
@@ -1883,7 +1849,7 @@
 
 .clip-time-fields label > span {
     color: var(--editor-text-muted);
-    font-size: 10px;
+    font-size: 10.5px;
 }
 
 .clip-time-fields input {
@@ -1912,8 +1878,8 @@
     align-items: center;
     gap: 6px;
     color: var(--editor-text-secondary);
-    font-size: 11px;
-    font-weight: 580;
+    font-size: 11.5px;
+    font-weight: 590;
 }
 
 .speed-control > div {
@@ -1936,7 +1902,7 @@
     background: transparent;
     color: var(--editor-text-secondary);
     font-family: "Cascadia Mono", monospace;
-    font-size: 10px;
+    font-size: 10.5px;
     transition: background-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -1970,10 +1936,10 @@
 }
 
 .inspector-section__heading p {
-    margin-top: 4px;
+    margin-top: 5px;
     color: var(--editor-text-secondary);
-    font-size: 11px;
-    line-height: 1.4;
+    font-size: 12px;
+    line-height: 1.45;
 }
 
 .editor-inspector .range-field {
@@ -1989,7 +1955,7 @@
 .editor-inspector .range-field__header output {
     color: var(--editor-text-secondary);
     font-family: "Cascadia Mono", monospace;
-    font-size: 10px;
+    font-size: 10.5px;
 }
 
 .select-field {
@@ -2011,7 +1977,7 @@
 .select-field input {
     min-width: 116px;
     min-height: 38px;
-    font-size: 11px;
+    font-size: 11.5px;
 }
 
 .layout-mode-grid {
@@ -2054,7 +2020,7 @@
     border-color: var(--editor-accent-border);
     background: var(--editor-control);
     color: var(--editor-accent);
-    box-shadow: 0 0 0 2px var(--editor-accent-soft);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
 }
 
 .layout-mode-grid button > span {
@@ -2066,14 +2032,14 @@
 
 .layout-mode-grid strong {
     color: inherit;
-    font-size: 12px;
-    font-weight: 620;
+    font-size: 12.5px;
+    font-weight: 630;
 }
 
 .layout-mode-grid small {
     overflow: hidden;
     color: var(--editor-text-muted);
-    font-size: 10px;
+    font-size: 10.5px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -2096,8 +2062,8 @@
     border-radius: 8px;
     background: var(--editor-control);
     color: var(--editor-text-secondary);
-    font-size: 10px;
-    font-weight: 610;
+    font-size: 11px;
+    font-weight: 620;
     box-shadow: none;
     transition:
         transform 90ms var(--editor-ease),
@@ -2129,8 +2095,8 @@
     border-radius: var(--editor-radius-control);
     background: var(--editor-control);
     color: var(--editor-text-secondary);
-    font-size: 11px;
-    font-weight: 610;
+    font-size: 11.5px;
+    font-weight: 620;
     box-shadow: none;
     transition:
         transform 90ms var(--editor-ease),
@@ -2141,9 +2107,9 @@
 
 .inspector-upload:not(:disabled):hover,
 .inspector-reset:not(:disabled):hover {
-    border-color: var(--editor-accent-border);
+    border-color: var(--editor-border-strong);
     background: var(--editor-control-hover);
-    color: var(--editor-accent);
+    color: var(--editor-text);
 }
 
 .inspector-upload:not(:disabled):active,
@@ -2173,13 +2139,13 @@
 
 .inspector-toggle strong {
     color: var(--editor-text);
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 12.5px;
+    font-weight: 620;
 }
 
 .inspector-toggle small {
     color: var(--editor-text-muted);
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .cursor-style-row {
@@ -3723,6 +3689,62 @@
     to { transform: rotate(360deg); }
 }
 
+/* Keep image choices image-led and source cards readable without adding
+   another elevated-card layer inside the inspector. */
+.editor-page .background-browser__group > header h4,
+.editor-page .background-browser__sources > header h4 {
+    font-size: 12.5px;
+}
+
+.editor-page .background-browser__group > header span,
+.editor-page .background-browser__sources > header span {
+    font-size: 10.5px;
+}
+
+.editor-page .background-browser__presets > button,
+.editor-page .background-browser__source-list,
+.editor-page .background-browser__import {
+    border-radius: 9px;
+    box-shadow: none;
+}
+
+.editor-page .background-browser__presets small,
+.editor-page .background-browser__source-list small,
+.editor-page .background-browser__sources > p {
+    font-size: 10.5px;
+}
+
+.editor-page .background-browser__source-list strong {
+    font-size: 11.5px;
+}
+
+.editor-page .background-browser__source-list button {
+    min-height: 58px;
+    padding-block: 10px;
+}
+
+.editor-page .background-browser__source-list button:disabled {
+    opacity: 1;
+}
+
+.editor-page .background-browser__import {
+    font-size: 11.5px;
+}
+
+.editor-page .background-browser__import:not(:disabled):hover {
+    border-color: var(--editor-border-strong);
+    background: var(--editor-control-hover);
+    color: var(--editor-text);
+}
+
+.editor-page .background-browser__image-frame {
+    border-radius: 10px;
+}
+
+.editor-page .background-browser__images > button.is-active .background-browser__image-frame {
+    box-shadow: 0 0 0 2px var(--editor-accent-soft);
+}
+
 /* Responsive geometry. Keep these after every base rule so they cannot be
    defeated by another appended theme. The app's minimum width is 940px. */
 
@@ -3734,11 +3756,7 @@
     }
 
     .editor-toolrail {
-        padding-inline: 4px;
-    }
-
-    .editor-toolrail > button {
-        width: auto;
+        padding-inline: 10px;
     }
 
     .editor-inspector {
@@ -3794,17 +3812,8 @@
     }
 
     .editor-toolrail {
-        gap: 0;
-        padding: 5px 3px;
-    }
-
-    .editor-toolrail > button {
-        width: auto;
-        min-height: 38px;
-    }
-
-    .editor-toolrail > button > span {
-        display: none;
+        gap: 8px;
+        padding-inline: 9px;
     }
 
     .editor-inspector {
@@ -3860,6 +3869,19 @@
     .editor-page .background-browser__presets small {
         font-size: 10px;
     }
+
+    .editor-page .background-browser__source-list button {
+        min-height: 72px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+        gap: 5px;
+    }
+
+    .editor-page .background-browser__source-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
 
 @media (max-height: 720px) {
@@ -3871,12 +3893,13 @@
         grid-template-rows: minmax(210px, 1fr) 176px;
     }
 
-    .editor-workspace:has(.caption-track),
-    .editor-workspace:has(.redaction-track) {
+    .editor-workspace:has(.caption-track, .redaction-track, .audio-track) {
         grid-template-rows: minmax(210px, 1fr) 210px;
     }
 
-    .editor-workspace:has(.caption-track):has(.redaction-track) {
+    .editor-workspace:has(.caption-track):has(.redaction-track),
+    .editor-workspace:has(.caption-track):has(.audio-track),
+    .editor-workspace:has(.redaction-track):has(.audio-track) {
         grid-template-rows: minmax(210px, 1fr) 244px;
     }
 
@@ -3915,7 +3938,6 @@
 
     .editor-back:active,
     .editor-commandbar__right button:active,
-    .editor-toolrail > button:active,
     .transport-play:active,
     .edit-controls button:active,
     .layout-mode-grid button:active,
@@ -3951,7 +3973,6 @@
         background-image: none;
     }
 
-    .editor-toolrail > button.is-active,
     .timeline-clip.is-selected,
     .editor-page .background-browser__images > button.is-active .background-browser__image-frame {
         box-shadow: 0 0 0 2px var(--editor-accent);
@@ -3971,7 +3992,6 @@
 }
 
 @media (forced-colors: active) {
-    .editor-toolrail > button.is-active,
     .timeline-clip.is-selected,
     .editor-screen-shell.is-selected::after,
     .editor-crop-selection {

@@ -13,11 +13,15 @@ describe("workspace skeleton", () => {
         expect(html).toContain('class="workspace-skeleton workspace-skeleton--editor"');
         expect(html).toContain('class="workspace-skeleton__workspace"');
         expect(html).toContain('class="workspace-skeleton__inspector"');
+        expect(html).toContain('class="workspace-skeleton__inspector-picker"');
+        expect(html).toContain('class="workspace-skeleton__bone workspace-skeleton__picker-field"');
+        expect(html).not.toContain('class="workspace-skeleton__inspector-tabs"');
         expect(html).toContain('class="workspace-skeleton__timeline"');
         expect(html).toContain('aria-hidden="true"');
         expect(html).toContain('aria-label="Minimize window"');
         expect(html).toContain('aria-label="Maximize or restore window"');
         expect(html).toContain('aria-label="Close window"');
+        expect(html).not.toContain('workspace-skeleton__command-group--center');
         expect(html).not.toContain('aria-hidden="true" class="workspace-skeleton__commandbar"');
     });
 

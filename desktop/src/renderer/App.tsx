@@ -28,6 +28,7 @@ import {
     workflowStoreToRenderer,
 } from "./model-adapter";
 import { Sidebar } from "./components/Sidebar";
+import { BrandIntro } from "./components/BrandIntro";
 import { TitleBar } from "./components/TitleBar";
 import { Toast } from "./components/Toast";
 import { EditorPage } from "./pages/EditorPage";
@@ -678,6 +679,7 @@ export default function App() {
 
     return (
         <div aria-busy={closeInProgress} className={`app-shell${app.route === "editor" ? " app-shell--editor" : ""}${closeInProgress ? " app-shell--closing" : ""}`}>
+            <BrandIntro ready={bootstrapState !== "loading"} />
             <TitleBar detail={closeInProgress ? "Saving before close…" : titleDetail} onRequestClose={() => { if (!closeInProgressRef.current) sendWindowAction("close"); }} title={ROUTE_TITLES[app.route]} />
             {app.route !== "editor" ? <Sidebar onNavigate={navigate} route={app.route} /> : null}
 

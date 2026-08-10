@@ -49,6 +49,8 @@ class FakeBrowserWindow extends TinyEmitter {
   destroyed = false
   minimized = false
   maximized = false
+  showCalls = 0
+  focusCalls = 0
 
   constructor(_options: unknown) {
     super()
@@ -62,8 +64,8 @@ class FakeBrowserWindow extends TinyEmitter {
   minimize(): void { this.minimized = true }
   maximize(): void { this.maximized = true }
   unmaximize(): void { this.maximized = false }
-  show(): void {}
-  focus(): void {}
+  show(): void { this.showCalls += 1 }
+  focus(): void { this.focusCalls += 1 }
   loadURL(url: string): Promise<void> {
     electronState.loadedUrls.push(url)
     return electronState.loadError === null ? Promise.resolve() : Promise.reject(electronState.loadError)
@@ -119,6 +121,25 @@ describe("WindowManager close handshake", () => {
     electronState.loadError = null
     electronState.loadedUrls.length = 0
     vi.useRealTimers()
+  })
+
+  it("keeps a cold window hidden until its first frame is ready", () => {
+    const manager = new WindowManager({ preloadPath: "C:\\app\\preload\\index.cjs" })
+    const window = manager.show("home") as unknown as FakeBrowserWindow
+
+    manager.show("settings")
+    expect(window.showCalls).toBe(0)
+    expect(window.focusCalls).toBe(0)
+    expect(window.webContents.sent).toEqual([])
+
+    window.emit("ready-to-show")
+    expect(window.showCalls).toBe(1)
+    expect(window.focusCalls).toBe(1)
+
+    expect(manager.rendererReady()).toBe(true)
+    expect(window.webContents.sent).toEqual([
+      { channel: IPC_EVENTS.navigate, value: "settings" },
+    ])
   })
 
   it("keeps a native-close window alive until the renderer confirms durable saves", async () => {

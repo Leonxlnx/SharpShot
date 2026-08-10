@@ -1,13 +1,10 @@
 import type { MouseEvent } from "react";
 import { sendWindowAction } from "../bridge";
+import { BrandLogo } from "./BrandLogo";
 import { Icon } from "./Icon";
 
 export function BrandMark({ size = 24 }: { size?: number }) {
-    return (
-        <span className="brand-mark" style={{ width: size, height: size }} aria-hidden="true">
-            <Icon name="capture" size={Math.max(16, Math.round(size * .56))} />
-        </span>
-    );
+    return <BrandLogo className="brand-mark" size={size} />;
 }
 
 function handleTitlebarDoubleClick(event: MouseEvent<HTMLElement>) {

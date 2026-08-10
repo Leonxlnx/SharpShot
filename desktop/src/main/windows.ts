@@ -149,6 +149,7 @@ export class WindowManager {
   private readonly onCloseFlushFailed?: (error: Error) => void
   private readonly reportDiagnostic: RuntimeDiagnosticReporter
   private mainWindow: BrowserWindow | null = null
+  private revealReadyWindow: BrowserWindow | null = null
   private pendingRoute: AppRoute = "home"
   private routeReadyWindow: BrowserWindow | null = null
   private allowNextWindowClose = false
@@ -189,8 +190,10 @@ export class WindowManager {
       this.mainWindow = window
     }
     if (window.isMinimized()) window.restore()
-    window.show()
-    window.focus()
+    if (this.revealReadyWindow === window) {
+      window.show()
+      window.focus()
+    }
     this.sendPendingRoute(window)
     return window
   }
@@ -280,6 +283,7 @@ export class WindowManager {
     this.rejectRendererFlush(new Error("The editor window closed before its final save completed."))
     const window = this.window
     this.mainWindow = null
+    this.revealReadyWindow = null
     this.routeReadyWindow = null
     if (window !== null) window.destroy()
   }
@@ -320,7 +324,10 @@ export class WindowManager {
       if (!window.isDestroyed()) window.destroy()
     })
     window.once("ready-to-show", () => {
-      if (!window.isDestroyed()) window.show()
+      if (window.isDestroyed()) return
+      this.revealReadyWindow = window
+      window.show()
+      window.focus()
     })
     window.on("close", (event) => {
       if (this.allowNextWindowClose) {
@@ -345,6 +352,7 @@ export class WindowManager {
     window.on("closed", () => {
       this.rejectRendererFlush(new Error("The editor window closed before its final save completed."))
       if (this.mainWindow === window) this.mainWindow = null
+      if (this.revealReadyWindow === window) this.revealReadyWindow = null
       if (this.routeReadyWindow === window) this.routeReadyWindow = null
       this.onWindowClosed?.()
     })

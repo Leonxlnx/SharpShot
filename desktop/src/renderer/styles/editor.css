@@ -7,24 +7,26 @@
  */
 
 .editor-page {
-    --editor-bg: #0f0f0f;
-    --editor-panel: #1a1a1a;
-    --editor-panel-raised: #222;
-    --editor-well: #151515;
-    --editor-control: #2b2b2b;
-    --editor-control-hover: #323232;
-    --editor-control-pressed: #171717;
-    --editor-border: #323232;
-    --editor-border-strong: #3e3e3e;
-    --editor-separator: #262626;
-    --editor-text: #ededed;
-    --editor-text-secondary: #a3a3a3;
-    --editor-text-muted: #6f6f6f;
-    --editor-accent: #fe8549;
-    --editor-accent-hover: #ff9664;
-    --editor-accent-soft: rgba(254, 133, 73, .14);
-    --editor-accent-border: rgba(254, 133, 73, .58);
-    --editor-focus: #ffb18c;
+    --editor-bg: #07101c;
+    --editor-panel: #0d1826;
+    --editor-panel-raised: #122033;
+    --editor-well: #09131f;
+    --editor-control: #182940;
+    --editor-control-hover: #1e324d;
+    --editor-control-pressed: #0c1725;
+    --editor-border: #23354c;
+    --editor-border-strong: #314761;
+    --editor-separator: #1b2b3e;
+    --editor-text: #f1f5fa;
+    --editor-text-secondary: #aab6c6;
+    --editor-text-muted: #8794a6;
+    --editor-accent: #5f8fff;
+    --editor-accent-hover: #78a2ff;
+    --editor-accent-soft: rgba(95, 143, 255, .14);
+    --editor-accent-border: rgba(95, 143, 255, .56);
+    --editor-action: #ef8350;
+    --editor-action-hover: #f49768;
+    --editor-focus: #82a8ff;
     --editor-danger: #ff746d;
     --editor-radius-shell: 22px;
     --editor-radius-panel: 18px;
@@ -47,16 +49,16 @@
     --panel-2: var(--editor-panel-raised);
     --elevated: var(--editor-control);
     --hover: var(--editor-control-hover);
-    --active: #383838;
+    --active: #243956;
     --border: var(--editor-border);
     --border-strong: var(--editor-border-strong);
     --separator: var(--editor-separator);
     --text: var(--editor-text);
     --text-secondary: var(--editor-text-secondary);
     --text-tertiary: var(--editor-text-muted);
-    --input: #202020;
-    --input-focus: #262626;
-    --recipe-surface: #202020;
+    --input: #0c1826;
+    --input-focus: #122237;
+    --recipe-surface: #102033;
     --selected-surface: var(--editor-accent-soft);
     --control-well: var(--editor-well);
     --accent: var(--editor-accent);
@@ -89,17 +91,17 @@
 
 .editor-page .button--primary {
     border-color: rgba(255, 255, 255, .12);
-    background: var(--editor-accent);
+    background: var(--editor-action);
     color: #1d120d;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, .24),
         inset 0 -1px 0 rgba(84, 34, 10, .28),
         0 2px 0 #a94d22,
-        0 7px 16px rgba(254, 133, 73, .18);
+        0 7px 16px rgba(239, 131, 80, .18);
 }
 
 .editor-page .button--primary:not(:disabled):hover {
-    background: var(--editor-accent-hover);
+    background: var(--editor-action-hover);
 }
 
 .editor-page .button--primary:not(:disabled):active {
@@ -126,7 +128,7 @@
 .editor-page select,
 .editor-page textarea {
     border-color: var(--editor-border);
-    background-color: #202020;
+    background-color: var(--input);
     color: var(--editor-text);
     box-shadow:
         inset 0 1px 3px rgba(0, 0, 0, .32),
@@ -137,7 +139,7 @@
 .editor-page select:focus,
 .editor-page textarea:focus {
     border-color: var(--editor-accent-border);
-    background-color: #262626;
+    background-color: var(--input-focus);
     box-shadow:
         inset 0 1px 3px rgba(0, 0, 0, .32),
         0 0 0 3px var(--editor-accent-soft);
@@ -151,7 +153,7 @@
     height: 4px;
     border: 1px solid rgba(255, 255, 255, .035);
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--editor-accent), #454545);
+    background: linear-gradient(90deg, var(--editor-accent), #3a4d66);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, .5);
 }
 
@@ -159,7 +161,7 @@
     width: 15px;
     height: 15px;
     margin-top: -6px;
-    border: 2px solid #202020;
+    border: 2px solid var(--input);
     background: #ededed;
     box-shadow: 0 2px 7px rgba(0, 0, 0, .48);
 }
@@ -326,13 +328,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 3px;
     overflow: auto hidden;
-    border: 1px solid var(--editor-border);
-    border-radius: var(--editor-radius-panel);
-    background: var(--editor-panel);
-    padding: 9px 7px;
-    box-shadow: var(--editor-shadow-panel);
+    border: 0;
+    background: transparent;
+    padding: 7px 6px;
     scrollbar-width: none;
 }
 
@@ -342,26 +342,26 @@
 
 .editor-toolrail > button {
     width: 56px;
-    min-height: 52px;
+    min-height: 50px;
     display: flex;
     flex: 0 0 auto;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    border: 1px solid transparent;
-    border-radius: 12px;
+    position: relative;
+    border: 0;
+    border-radius: 8px;
     background: transparent;
     color: var(--editor-text-secondary);
-    font-size: 10px;
-    font-weight: 610;
+    font-size: 11px;
+    font-weight: 560;
+    letter-spacing: -.008em;
     line-height: 1;
     transition:
         transform 90ms var(--editor-ease),
-        border-color 120ms ease,
         background-color 120ms ease,
-        color 120ms ease,
-        box-shadow 120ms ease;
+        color 120ms ease;
 }
 
 .editor-toolrail > button svg {
@@ -372,25 +372,27 @@
 }
 
 .editor-toolrail > button:not(:disabled):hover {
-    border-color: var(--editor-border);
-    background: var(--editor-control);
+    background: rgba(95, 143, 255, .06);
     color: var(--editor-text);
-    box-shadow: var(--editor-shadow-control);
 }
 
 .editor-toolrail > button:not(:disabled):active {
     transform: translateY(1px) scale(.985);
-    box-shadow: var(--editor-shadow-control-pressed);
+    background: rgba(95, 143, 255, .1);
 }
 
 .editor-toolrail > button.is-active {
-    border-color: var(--editor-accent-border);
-    background: var(--editor-control);
     color: var(--editor-accent);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .07),
-        inset 3px 0 0 var(--editor-accent),
-        0 3px 8px rgba(0, 0, 0, .22);
+}
+
+.editor-toolrail > button.is-active::after {
+    width: 4px;
+    height: 4px;
+    position: absolute;
+    right: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    content: "";
 }
 
 .editor-toolrail > button span {
@@ -404,8 +406,8 @@
     display: block;
     margin-top: 2px;
     color: var(--editor-text-muted);
-    font-size: 8px;
-    font-weight: 620;
+    font-size: 9px;
+    font-weight: 580;
     letter-spacing: .025em;
     text-transform: none;
 }

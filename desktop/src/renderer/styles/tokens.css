@@ -1,38 +1,43 @@
 :root {
     color-scheme: dark;
-    font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    font-family: "Segoe UI Variable", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 
-    --base: #0e0f10;
-    --shell: #111214;
-    --panel: #18191b;
-    --panel-2: #1e2022;
-    --elevated: #25272a;
-    --hover: #2a2c2f;
-    --active: #303337;
+    --base: #08111e;
+    --shell: #0c1624;
+    --panel: #101c2b;
+    --panel-2: #142235;
+    --elevated: #18283d;
+    --hover: #1c2e46;
+    --active: #213550;
     --border: rgba(255, 255, 255, .09);
     --border-strong: rgba(255, 255, 255, .16);
     --separator: rgba(255, 255, 255, .07);
-    --text: #f2f2ef;
-    --text-secondary: #b7b8b4;
-    --text-tertiary: #92938f;
-    --input: #131416;
-    --input-focus: #181a1c;
-    --recipe-surface: #141517;
-    --selected-surface: rgba(239, 118, 47, .1);
-    --control-well: #0b0c0d;
-    --accent: #ef762f;
-    --accent-strong: #fa8840;
-    --accent-fill: rgba(239, 118, 47, .12);
-    --accent-border: rgba(239, 118, 47, .48);
+    --text: #f3f6fb;
+    --text-secondary: #adb8c8;
+    --text-tertiary: #8794a6;
+    --input: #0a1421;
+    --input-focus: #101d2d;
+    --recipe-surface: #0e1928;
+    --selected-surface: rgba(239, 131, 80, .1);
+    --control-well: #060e19;
+    --brand-blue: #5f8fff;
+    --brand-blue-strong: #77a1ff;
+    --brand-blue-fill: rgba(95, 143, 255, .13);
+    --brand-blue-border: rgba(95, 143, 255, .48);
+    --accent: #ef8350;
+    --accent-strong: #f59667;
+    --accent-fill: rgba(239, 131, 80, .13);
+    --accent-border: rgba(239, 131, 80, .48);
+    --focus-ring: #82a8ff;
     --recording: #ff625c;
     --success: #65c994;
     --warning: #e9a64c;
 
     /* Compatibility aliases consumed by the editor while its shell stays neutral. */
-    --cobalt: var(--accent);
+    --cobalt: var(--brand-blue);
     --material-ivory: var(--panel);
     --material-ivory-highlight: var(--elevated);
     --material-ivory-shadow: #090a0b;
@@ -99,7 +104,7 @@ select,
 textarea { outline: none; }
 
 :focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--accent) 82%, white) !important;
+    outline: 2px solid var(--focus-ring) !important;
     outline-offset: 2px;
 }
 
@@ -108,7 +113,7 @@ h1, h2, h3, p { margin: 0; }
 
 h1,
 h2 {
-    font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+    font-family: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
     text-wrap: balance;
 }
 

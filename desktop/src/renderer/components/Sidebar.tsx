@@ -56,14 +56,14 @@ export function Sidebar({ route, onNavigate }: SidebarProps) {
                     />
                 ))}
             </nav>
-            <div className="sidebar__bottom">
+            <nav className="sidebar__bottom" aria-label="Application settings">
                 <NavigationItem
                     active={route === "settings"}
                     icon="settings"
                     label="Settings"
                     onClick={() => onNavigate("settings")}
                 />
-            </div>
+            </nav>
         </aside>
     );
 }

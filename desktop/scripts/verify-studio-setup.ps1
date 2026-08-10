@@ -7,6 +7,12 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+# npm can launch Windows PowerShell with PowerShell 7's PSModulePath. Import the
+# built-in security module by its PSHOME path so Authenticode checks do not rely
+# on module auto-discovery inherited from the parent shell.
+$securityModulePath = Join-Path $PSHOME 'Modules\Microsoft.PowerShell.Security\Microsoft.PowerShell.Security.psd1'
+Import-Module -Name $securityModulePath -ErrorAction Stop
+
 $desktopRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $desktopRoot '..'))
 $artifactsRoot = Join-Path $repoRoot 'artifacts\desktop'

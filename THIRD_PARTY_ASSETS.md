@@ -177,7 +177,7 @@ Quick Capture contains no FFmpeg runtime and is outside this block.
 
 ## Electron desktop runtime
 
-SharpShot Studio 0.2.0-alpha.1 pins Electron 43.3.0 and React 19.2.8. Exact direct and
+SharpShot Studio 0.2.0-alpha.1 pins Electron 43.8.11 and React 19.2.8. Exact direct and
 transitive JavaScript dependency versions are locked in
 [`desktop/package-lock.json`](desktop/package-lock.json); the authoritative
 declared package identity and versions are in

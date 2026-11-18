@@ -37,12 +37,12 @@
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
     "@vitejs/plugin-react": "5.1.4",
-    "electron": "43.3.0",
+    "electron": "43.8.11",
     "electron-builder": "26.15.3",
     "electron-vite": "5.0.0",
     "typescript": "7.0.2",
-    "vite": "7.3.6",
-    "vitest": "4.1.10"
+    "vite": "7.3.8",
+    "vitest": "4.1.12"
   },
   "engines": {
     "node": ">=22.12.0"

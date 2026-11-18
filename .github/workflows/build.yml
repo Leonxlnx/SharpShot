@@ -34,7 +34,7 @@ jobs:
         shell: pwsh
         run: |
           npm ci
-          npm audit --audit-level=high
+          npm run audit:gate
 
       - name: Restore and verify native and media runtimes
         working-directory: desktop

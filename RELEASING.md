@@ -46,7 +46,7 @@ blocked. From the repository root on Windows, run:
 Push-Location .\desktop
 try {
     npm ci
-    npm audit --audit-level=high
+    npm run audit:gate
     npm run release:verify-static
     npm test
     npm run media:vendor

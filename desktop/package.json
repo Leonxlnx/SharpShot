@@ -23,6 +23,7 @@
     "media:smoke": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-ffmpeg.ps1 -SmokeTest",
     "media:verify-package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-packaged-ffmpeg.ps1 -LatestZip",
     "setup:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-studio-setup.ps1 -LatestSetup",
+    "audit:gate": "node scripts/audit-gate.mjs",
     "release:verify-static": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-release-contract.ps1",
     "package:dir": "npm run native:vendor && npm run media:verify && npm run build && npm run native:verify && electron-builder --dir && npm run native:verify && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-packaged-ffmpeg.ps1 -PackagePath ../artifacts/desktop/win-unpacked",
     "package:zip": "npm run native:vendor && npm run media:verify && npm run build && npm run native:verify && electron-builder --win zip && npm run native:verify && npm run media:verify-package",

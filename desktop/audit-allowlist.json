@@ -1,0 +1,11 @@
+{
+  "$comment": "High/critical advisories the audit gate (scripts/audit-gate.mjs) tolerates. Each entry needs a reason and an expiry; renew only after re-checking for a patched release.",
+  "advisories": [
+    {
+      "id": "GHSA-fc5q-39xc-vjpf",
+      "package": "picomatch",
+      "reason": "ReDoS via attacker-controlled extglob patterns. No patched picomatch exists yet (latest 4.0.7 is affected). picomatch is only reached through build tooling (vite, vitest, tinyglobby, electron-builder) matching trusted repository globs; it is not a runtime dependency and is not shipped in the app.",
+      "expires": "2027-01-31"
+    }
+  ]
+}

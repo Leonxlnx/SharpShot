@@ -87,7 +87,7 @@ if ($nativeBuild.Contains('Reset-RepoDirectory $artifactsRoot')) {
 $release = Get-Content -LiteralPath (Join-Path $repoRoot 'release.ps1') -Raw
 foreach ($required in @(
     "studio-v`$studioVersion",
-    'npm.cmd'' @(''audit'', ''--audit-level=high'')',
+    'npm.cmd'' @(''run'', ''audit:gate'')',
     'npm.cmd'' @(''test'')',
     'npm.cmd'' @(''run'', ''media:smoke'')',
     'npm.cmd'' @(''run'', ''package:win'')',

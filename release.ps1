@@ -83,7 +83,7 @@ Write-Host "Building SharpShot Quick $quickVersion..."
 Push-Location $desktopRoot
 try {
     Invoke-Checked 'npm.cmd' @('ci')
-    Invoke-Checked 'npm.cmd' @('audit', '--audit-level=high')
+    Invoke-Checked 'npm.cmd' @('run', 'audit:gate')
     Invoke-Checked 'npm.cmd' @('run', 'release:verify-static')
     Invoke-Checked 'npm.cmd' @('test')
     Invoke-Checked 'npm.cmd' @('run', 'media:vendor')

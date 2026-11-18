@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' sharpshot-media: data: blob:; media-src 'self' sharpshot-media: blob:; font-src 'self' data:; connect-src 'self' ws: http:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        />
+        <meta name="color-scheme" content="dark" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>SharpShot Studio</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/renderer/main.tsx"></script>
+    </body>
+</html>

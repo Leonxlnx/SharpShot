@@ -1,0 +1,54 @@
+appId: com.leonlin.sharpshot.studio
+productName: SharpShot Studio
+copyright: Copyright © 2026 Leonxlnx
+
+directories:
+  output: ../artifacts/desktop
+  buildResources: resources
+
+files:
+  - out/main/**/*
+  - out/preload/**/*
+  - out/renderer/**/*
+  - package.json
+
+extraResources:
+  - from: resources
+    to: .
+    filter:
+      - "**/*"
+      - "!icons/tactile/**"
+  - from: ../LICENSE
+    to: LICENSE
+  - from: ../THIRD_PARTY_ASSETS.md
+    to: THIRD_PARTY_ASSETS.md
+
+asar: true
+compression: maximum
+npmRebuild: false
+removePackageScripts: true
+electronDist: node_modules/electron/dist
+
+win:
+  icon: resources/icons/sharpshot-studio.ico
+  executableName: SharpShot Studio
+  requestedExecutionLevel: asInvoker
+  signAndEditExecutable: true
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: zip
+      arch: [x64]
+
+nsis:
+  artifactName: SharpShot-Studio-Setup-${version}-win-${arch}.${ext}
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: false
+  createStartMenuShortcut: true
+  shortcutName: SharpShot Studio
+  deleteAppDataOnUninstall: false
+
+artifactName: SharpShot-Studio-${version}-win-${arch}.${ext}

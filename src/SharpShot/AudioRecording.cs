@@ -1379,6 +1379,38 @@ namespace SharpShot
                 catch { }
             }
 
+            string resultPath = Path.Combine(outputFolder, "audio-result-self-test.ini");
+            try
+            {
+                if (File.Exists(resultPath)) File.Delete(resultPath);
+                string systemPath = Path.Combine(outputFolder, "system stem.wav");
+                string microphonePath = Path.Combine(outputFolder, "microphone stem.wav");
+                StudioOneShot.TryWriteResult(
+                    resultPath,
+                    "completed",
+                    Path.Combine(outputFolder, "video.mp4"),
+                    1280,
+                    720,
+                    1000,
+                    false,
+                    null,
+                    null,
+                    systemPath,
+                    microphonePath);
+                string result = File.ReadAllText(resultPath);
+                string expectedSystem = "systemAudioPath64=" + Convert.ToBase64String(
+                    System.Text.Encoding.UTF8.GetBytes(systemPath));
+                string expectedMicrophone = "microphonePath64=" + Convert.ToBase64String(
+                    System.Text.Encoding.UTF8.GetBytes(microphonePath));
+                if (result.IndexOf(expectedSystem, StringComparison.Ordinal) < 0 ||
+                    result.IndexOf(expectedMicrophone, StringComparison.Ordinal) < 0)
+                    throw new InvalidDataException("Studio result omitted an audio stem path.");
+            }
+            finally
+            {
+                try { if (File.Exists(resultPath)) File.Delete(resultPath); }
+                catch { }
+            }
         }
 
         internal static void VerifyLive(string outputFolder)

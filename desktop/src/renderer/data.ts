@@ -1,0 +1,224 @@
+import cobaltBloomThumbnail from "../../resources/backgrounds/thumbnails/cobalt-bloom.webp";
+import beaconStreetSunsetThumbnail from "../../resources/backgrounds/thumbnails/beacon-street-sunset.webp";
+import duskFoldThumbnail from "../../resources/backgrounds/thumbnails/dusk-fold.webp";
+import glacierGlassThumbnail from "../../resources/backgrounds/thumbnails/glacier-glass.webp";
+import lunarPaperThumbnail from "../../resources/backgrounds/thumbnails/lunar-paper.webp";
+import lakeSherburneThumbnail from "../../resources/backgrounds/thumbnails/lake-sherburne.webp";
+import midnightBloomThumbnail from "../../resources/backgrounds/thumbnails/midnight-bloom.webp";
+import mossAlloyThumbnail from "../../resources/backgrounds/thumbnails/moss-alloy.webp";
+import obsidianTideThumbnail from "../../resources/backgrounds/thumbnails/obsidian-tide.webp";
+import oceanWavesThumbnail from "../../resources/backgrounds/thumbnails/ocean-waves.webp";
+import solarSilkThumbnail from "../../resources/backgrounds/thumbnails/solar-silk.webp";
+import valleyMidnightThumbnail from "../../resources/backgrounds/thumbnails/valley-midnight.webp";
+import quietApertureThumbnail from "../../resources/backgrounds/thumbnails/quiet-aperture.webp";
+import glassOrbitThumbnail from "../../resources/backgrounds/thumbnails/glass-orbit.webp";
+import mineralCurrentThumbnail from "../../resources/backgrounds/thumbnails/mineral-current.webp";
+import warmSignalThumbnail from "../../resources/backgrounds/thumbnails/warm-signal.webp";
+import lunarFoldThumbnail from "../../resources/backgrounds/thumbnails/lunar-fold.webp";
+import cobaltVeilThumbnail from "../../resources/backgrounds/thumbnails/cobalt-veil.webp";
+import mossCircuitThumbnail from "../../resources/backgrounds/thumbnails/moss-circuit.webp";
+import porcelainWaveThumbnail from "../../resources/backgrounds/thumbnails/porcelain-wave.webp";
+import crimsonThreadThumbnail from "../../resources/backgrounds/thumbnails/crimson-thread.webp";
+import sandstoneEchoThumbnail from "../../resources/backgrounds/thumbnails/sandstone-echo.webp";
+import { backgroundPresetSource } from "./background-gallery";
+import type { CaptureItem, EditorProject, Wallpaper, Workflow } from "./types";
+import { createEmptyOverlayDocument } from "../shared/overlays";
+
+export const ORIGINAL_WALLPAPERS: Wallpaper[] = [
+    { id: "cobalt", name: "Cobalt Bloom", thumbnailSource: cobaltBloomThumbnail, source: bundledBackgroundUrl("cobalt-bloom"), width: 3840, height: 2160, accent: "#1d5cff", textColor: "light" },
+    { id: "lunar", name: "Lunar Paper", thumbnailSource: lunarPaperThumbnail, source: bundledBackgroundUrl("lunar-paper"), width: 3840, height: 2160, accent: "#f2efe7", textColor: "dark" },
+    { id: "midnight", name: "Midnight Bloom", thumbnailSource: midnightBloomThumbnail, source: bundledBackgroundUrl("midnight-bloom"), width: 1672, height: 941, accent: "#7f94ff", textColor: "light" },
+    { id: "glacier", name: "Glacier Glass", thumbnailSource: glacierGlassThumbnail, source: bundledBackgroundUrl("glacier-glass"), width: 1672, height: 941, accent: "#95c9e8", textColor: "dark" },
+    { id: "solar", name: "Solar Silk", thumbnailSource: solarSilkThumbnail, source: bundledBackgroundUrl("solar-silk"), width: 1672, height: 941, accent: "#e9a85e", textColor: "light" },
+    { id: "dusk", name: "Dusk Fold", thumbnailSource: duskFoldThumbnail, source: bundledBackgroundUrl("dusk-fold"), width: 1672, height: 941, accent: "#b78fd5", textColor: "light" },
+    { id: "moss", name: "Moss Alloy", thumbnailSource: mossAlloyThumbnail, source: bundledBackgroundUrl("moss-alloy"), width: 3840, height: 2160, accent: "#8ea97b", textColor: "light" },
+    { id: "obsidian", name: "Obsidian Tide", thumbnailSource: obsidianTideThumbnail, source: bundledBackgroundUrl("obsidian-tide"), width: 3840, height: 2160, accent: "#5e6670", textColor: "light" },
+];
+
+export const SCENE_WALLPAPERS: Wallpaper[] = [
+    { id: "quiet-aperture", name: "Quiet Aperture", thumbnailSource: quietApertureThumbnail, source: bundledBackgroundUrl("quiet-aperture"), width: 2560, height: 1440, accent: "#6f7f90", textColor: "light" },
+    { id: "glass-orbit", name: "Glass Orbit", thumbnailSource: glassOrbitThumbnail, source: bundledBackgroundUrl("glass-orbit"), width: 2560, height: 1440, accent: "#abb7d1", textColor: "light" },
+    { id: "mineral-current", name: "Mineral Current", thumbnailSource: mineralCurrentThumbnail, source: bundledBackgroundUrl("mineral-current"), width: 2560, height: 1440, accent: "#69a9a4", textColor: "light" },
+    { id: "warm-signal", name: "Warm Signal", thumbnailSource: warmSignalThumbnail, source: bundledBackgroundUrl("warm-signal"), width: 2560, height: 1440, accent: "#d47b49", textColor: "light" },
+    { id: "lunar-fold", name: "Lunar Fold", thumbnailSource: lunarFoldThumbnail, source: bundledBackgroundUrl("lunar-fold"), width: 2560, height: 1440, accent: "#d8ccb9", textColor: "dark" },
+    { id: "cobalt-veil", name: "Cobalt Veil", thumbnailSource: cobaltVeilThumbnail, source: bundledBackgroundUrl("cobalt-veil"), width: 2560, height: 1440, accent: "#5e82c8", textColor: "light" },
+    { id: "moss-circuit", name: "Moss Circuit", thumbnailSource: mossCircuitThumbnail, source: bundledBackgroundUrl("moss-circuit"), width: 2560, height: 1440, accent: "#7f9348", textColor: "light" },
+    { id: "porcelain-wave", name: "Porcelain Wave", thumbnailSource: porcelainWaveThumbnail, source: bundledBackgroundUrl("porcelain-wave"), width: 2560, height: 1440, accent: "#d7d0c3", textColor: "dark" },
+    { id: "crimson-thread", name: "Crimson Thread", thumbnailSource: crimsonThreadThumbnail, source: bundledBackgroundUrl("crimson-thread"), width: 2560, height: 1440, accent: "#a43e59", textColor: "light" },
+    { id: "sandstone-echo", name: "Sandstone Echo", thumbnailSource: sandstoneEchoThumbnail, source: bundledBackgroundUrl("sandstone-echo"), width: 2560, height: 1440, accent: "#b77c57", textColor: "dark" },
+];
+
+export const CINEMATIC_WALLPAPERS: Wallpaper[] = [
+    { id: "sherburne", name: "Lake Sherburne", thumbnailSource: lakeSherburneThumbnail, source: bundledBackgroundUrl("lake-sherburne"), width: 3840, height: 2160, accent: "#7da7d5", textColor: "light" },
+    { id: "valley-night", name: "Valley Midnight", thumbnailSource: valleyMidnightThumbnail, source: bundledBackgroundUrl("valley-midnight"), width: 3840, height: 2160, accent: "#5b76a4", textColor: "light" },
+    { id: "blue-current", name: "Ocean Waves", thumbnailSource: oceanWavesThumbnail, source: bundledBackgroundUrl("ocean-waves"), width: 3840, height: 2160, accent: "#2e7db5", textColor: "light" },
+    { id: "beacon-sunset", name: "Beacon Street", thumbnailSource: beaconStreetSunsetThumbnail, source: bundledBackgroundUrl("beacon-street-sunset"), width: 3840, height: 2160, accent: "#e69b55", textColor: "light" },
+];
+
+export const WALLPAPERS: Wallpaper[] = [...ORIGINAL_WALLPAPERS, ...SCENE_WALLPAPERS, ...CINEMATIC_WALLPAPERS];
+
+export function resolveBackgroundSource(
+    backgroundId: string,
+    bundledProtocolAvailable = hasDesktopBridge(),
+): string {
+    const wallpaper = WALLPAPERS.find((item) => item.id === backgroundId);
+    return (wallpaper === undefined ? undefined : bundledProtocolAvailable ? wallpaper.source : wallpaper.thumbnailSource)
+        ?? backgroundPresetSource(backgroundId)
+        ?? (backgroundId.startsWith("sharpshot-media:") || backgroundId.startsWith("blob:") || backgroundId.startsWith("data:") ? backgroundId : bundledProtocolAvailable ? bundledBackgroundUrl("cobalt-bloom") : cobaltBloomThumbnail);
+}
+
+function bundledBackgroundUrl(id: string): string {
+    return `sharpshot-media://background/${encodeURIComponent(id)}`;
+}
+
+function hasDesktopBridge(): boolean {
+    return typeof window !== "undefined" && Boolean((window as unknown as { sharpShot?: unknown }).sharpShot);
+}
+
+export const DEFAULT_WORKFLOWS: Workflow[] = [
+    {
+        id: "quick-screenshot",
+        name: "Quick Screenshot",
+        description: "Pixel-perfect region capture",
+        kind: "screenshot",
+        target: "Region",
+        shortcuts: [["Win", "Shift", "D"]],
+        enabled: true,
+        quality: "Lossless",
+        cursor: false,
+        systemAudio: false,
+        microphone: false,
+        countdown: 0,
+        after: ["Save to Library", "Copy"],
+    },
+    {
+        id: "quick-video",
+        name: "Quick Clip",
+        description: "Record, copy, keep moving",
+        kind: "video",
+        target: "Region",
+        shortcuts: [["Win", "Shift", "A"]],
+        enabled: true,
+        fps: 60,
+        quality: "High",
+        cursor: true,
+        systemAudio: true,
+        microphone: false,
+        countdown: 3,
+        after: ["Save to Library", "Copy"],
+    },
+    {
+        id: "video-studio",
+        name: "Studio Clip",
+        description: "Record into a polished project",
+        kind: "video",
+        target: "Region",
+        shortcuts: [["Win", "Shift", "E"]],
+        enabled: true,
+        fps: 60,
+        quality: "High",
+        cursor: true,
+        systemAudio: true,
+        microphone: true,
+        countdown: 3,
+        after: ["Save to Library", "Open Editor"],
+    },
+];
+
+export const CAPTURES: CaptureItem[] = [
+    {
+        id: "capture-1",
+        name: "Product walkthrough",
+        kind: "video",
+        createdLabel: "Today, 17:42",
+        dimensions: "1920 × 1080",
+        duration: "00:24",
+        size: "18.4 MB",
+        workflow: "Studio Clip",
+        thumbnail: midnightBloomThumbnail,
+        accent: "#8198ff",
+    },
+    {
+        id: "capture-2",
+        name: "Checkout interaction",
+        kind: "video",
+        createdLabel: "Today, 16:18",
+        dimensions: "1280 × 720",
+        duration: "00:12",
+        size: "7.8 MB",
+        workflow: "Quick Clip",
+        thumbnail: duskFoldThumbnail,
+        accent: "#bc8bd0",
+    },
+    {
+        id: "capture-3",
+        name: "Dashboard detail",
+        kind: "screenshot",
+        createdLabel: "Today, 14:03",
+        dimensions: "1640 × 924",
+        size: "1.2 MB",
+        workflow: "Quick Screenshot",
+        thumbnail: glacierGlassThumbnail,
+        accent: "#94cae6",
+    },
+    {
+        id: "capture-4",
+        name: "Landing page hero",
+        kind: "screenshot",
+        createdLabel: "Yesterday, 22:51",
+        dimensions: "1512 × 982",
+        size: "1.6 MB",
+        workflow: "Quick Screenshot",
+        thumbnail: solarSilkThumbnail,
+        accent: "#e2a05a",
+    },
+    {
+        id: "capture-5",
+        name: "Search prototype",
+        kind: "video",
+        createdLabel: "Yesterday, 19:27",
+        dimensions: "1920 × 1080",
+        duration: "00:38",
+        size: "25.1 MB",
+        workflow: "Studio Clip",
+        thumbnail: glacierGlassThumbnail,
+        accent: "#96c8df",
+    },
+    {
+        id: "capture-6",
+        name: "Pricing comparison",
+        kind: "screenshot",
+        createdLabel: "Friday, 11:09",
+        dimensions: "1440 × 900",
+        size: "980 KB",
+        workflow: "Quick Screenshot",
+        thumbnail: midnightBloomThumbnail,
+        accent: "#8296ee",
+    },
+];
+
+export const INITIAL_PROJECT: EditorProject = {
+    name: "Product walkthrough",
+    sourceDuration: 24,
+    clips: [
+        { id: "clip-a", name: "Intro", sourceStart: 0, sourceEnd: 7.8, speed: 1, color: "#7897e8" },
+        { id: "clip-b", name: "Demo", sourceStart: 8.4, sourceEnd: 18.6, speed: 1, color: "#8b8fe8" },
+        { id: "clip-c", name: "Finish", sourceStart: 19.1, sourceEnd: 24, speed: 1, color: "#9b82d8" },
+    ],
+    zoomSegments: [],
+    overlays: createEmptyOverlayDocument(),
+    backgroundId: "cobalt",
+    aspectRatio: "16:9",
+    padding: 46,
+    cornerRadius: 16,
+    shadow: 52,
+    fitMode: "fit",
+    scale: 100,
+    offsetX: 0,
+    offsetY: 0,
+    cursorScale: 1,
+    hideCursorIdle: true,
+    clickEmphasis: true,
+    systemVolume: 82,
+    microphoneVolume: 74,
+};

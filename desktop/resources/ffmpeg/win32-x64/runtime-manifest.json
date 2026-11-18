@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "runtime": "FFmpeg",
+  "version": "n8.1.2-34-g9b6c8969e0-20260731",
+  "platform": "win32-x64",
+  "license": "LGPL-3.0-or-later",
+  "complianceStatus": "blocked-incomplete-third-party-inventory",
+  "releaseTag": "autobuild-2026-07-31-14-10",
+  "archiveName": "ffmpeg-n8.1.2-34-g9b6c8969e0-win64-lgpl-shared-8.1.zip",
+  "archiveRoot": "ffmpeg-n8.1.2-34-g9b6c8969e0-win64-lgpl-shared-8.1",
+  "archiveUrl": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-07-31-14-10/ffmpeg-n8.1.2-34-g9b6c8969e0-win64-lgpl-shared-8.1.zip",
+  "archiveBytes": 70508781,
+  "archiveSha256": "c222a490dde4e7059f45495deef6bfb98dbcacc2b43df5b607546252037aa95c",
+  "ffmpegCommit": "9b6c8969e05b4f0b29f0f85cd501be6b3e582e6b",
+  "buildScriptsCommit": "a99e8230eae00d1cee38f23076a7a1f55cd984e2",
+  "files": [
+    {
+      "name": "avcodec-62.dll",
+      "archivePath": "bin/avcodec-62.dll",
+      "bytes": 70876672,
+      "sha256": "4b9f8f2dcf6ff62f8a3136f31afdd31f90c24625ce8ea618951e356a7a5a8ce2"
+    },
+    {
+      "name": "avdevice-62.dll",
+      "archivePath": "bin/avdevice-62.dll",
+      "bytes": 3699712,
+      "sha256": "51e3fc99da896f3b16ccb381369df8de4e263e8eb0ea7564b950e117e314863b"
+    },
+    {
+      "name": "avfilter-11.dll",
+      "archivePath": "bin/avfilter-11.dll",
+      "bytes": 29817856,
+      "sha256": "d1f8efbabe72ca1786feb6613f76690514c1d0c4bde03d3731c84cd145b1d0ef"
+    },
+    {
+      "name": "avformat-62.dll",
+      "archivePath": "bin/avformat-62.dll",
+      "bytes": 22070784,
+      "sha256": "148cfc25efafb0b63998740685e7789636309bb8a8304cbde3241bda66dbc77b"
+    },
+    {
+      "name": "avutil-60.dll",
+      "archivePath": "bin/avutil-60.dll",
+      "bytes": 2937856,
+      "sha256": "93ba0919a68532a718edc8de25c5f4c48a68e5ce3609fd128602c129783fab73"
+    },
+    {
+      "name": "ffmpeg.exe",
+      "archivePath": "bin/ffmpeg.exe",
+      "bytes": 542208,
+      "sha256": "cfa7457eab838db74cb8888ccaf46549a931a2913312e8dede423a26ddac33d5"
+    },
+    {
+      "name": "ffprobe.exe",
+      "archivePath": "bin/ffprobe.exe",
+      "bytes": 227840,
+      "sha256": "51b5386857751698dcd679613a61306a45f2466189e41cd6a78ba96b37d2ddda"
+    },
+    {
+      "name": "swresample-6.dll",
+      "archivePath": "bin/swresample-6.dll",
+      "bytes": 723968,
+      "sha256": "a7a66dffe5a5611ef7f7879ab4def1d9f18eaed5dafcdb0e9ac8191461f4dda5"
+    },
+    {
+      "name": "swscale-9.dll",
+      "archivePath": "bin/swscale-9.dll",
+      "bytes": 12570624,
+      "sha256": "65656f162298df89fda00ddedb5669f4233a6a1e6bd159e093168732be62d91d"
+    },
+    {
+      "name": "FFMPEG-LGPL-3.0.txt",
+      "archivePath": "LICENSE.txt",
+      "bytes": 7651,
+      "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+    },
+    {
+      "name": "GNU-GPL-3.0.txt",
+      "archivePath": null,
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "name": "COMPLIANCE-BLOCKED.md",
+      "archivePath": null,
+      "bytes": 3115,
+      "sha256": "48b655e3d6996740ea56ec387f2c4f62108364badbe67e1adc11dd7c9e717555"
+    },
+    {
+      "name": "THIRD_PARTY_NOTICES.md",
+      "archivePath": null,
+      "bytes": 5561,
+      "sha256": "9f20056ea6206a661a71fadfe779f2286577945fd43d53b6e196c15ab3bb8b55"
+    },
+    {
+      "name": "BUILD_CONFIGURATION.txt",
+      "archivePath": null,
+      "bytes": 2216,
+      "sha256": "05f878e6f608611050a5cbbb955c1527daf8cfda25f9c1918527906204c074f6"
+    }
+  ],
+  "requiredEncoders": ["h264_mf", "aac", "gif"],
+  "requiredMuxers": ["mp4", "gif"],
+  "requiredFilters": [
+    "aformat",
+    "alphamerge",
+    "amix",
+    "anullsrc",
+    "apad",
+    "aresample",
+    "ass",
+    "asetpts",
+    "atempo",
+    "atrim",
+    "color",
+    "colorchannelmixer",
+    "concat",
+    "crop",
+    "drawbox",
+    "format",
+    "fps",
+    "gblur",
+    "geq",
+    "gradients",
+    "null",
+    "nullsrc",
+    "overlay",
+    "pad",
+    "palettegen",
+    "paletteuse",
+    "scale",
+    "setpts",
+    "split",
+    "trim",
+    "volume"
+  ]
+}

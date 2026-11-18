@@ -1,0 +1,176 @@
+name: Draft Studio prerelease
+
+on:
+  push:
+    tags:
+      - studio-v*
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing studio-v… tag to build
+        required: true
+        type: string
+
+concurrency:
+  group: studio-release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  EXPECTED_RELEASE_TAG: studio-v0.2.0-alpha.1
+  GH_REPO: ${{ github.repository }}
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: windows-2025
+    timeout-minutes: 60
+
+    steps:
+      - name: Validate exact release tag
+        shell: pwsh
+        env:
+          REQUESTED_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+        run: |
+          if ($env:REQUESTED_TAG -cne $env:EXPECTED_RELEASE_TAG) {
+            throw "Expected exact tag $env:EXPECTED_RELEASE_TAG; received $env:REQUESTED_TAG"
+          }
+
+      - name: Check out the release tag
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.12.0
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Build and verify every release asset
+        shell: pwsh
+        run: ./release.ps1
+
+      - name: Upload verified release assets
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: SharpShot-Studio-0.2.0-alpha.1-release
+          path: artifacts/release/*
+          if-no-files-found: error
+          retention-days: 14
+
+  draft:
+    needs: build
+    permissions:
+      contents: write
+    runs-on: windows-2025
+    timeout-minutes: 10
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Download verified assets
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: SharpShot-Studio-0.2.0-alpha.1-release
+          path: release-assets
+
+      - name: Recheck transfer and create draft prerelease
+        shell: pwsh
+        run: |
+          if ($env:RELEASE_TAG -cne $env:EXPECTED_RELEASE_TAG) {
+            throw "Expected exact tag $env:EXPECTED_RELEASE_TAG; received $env:RELEASE_TAG"
+          }
+          $expectedPackages = @(
+            'SharpShot-Studio-Setup-0.2.0-alpha.1-win-x64.exe'
+            'SharpShot-Studio-0.2.0-alpha.1-win-x64.zip'
+            'SharpShot-Quick-1.5.0-win-x64.zip'
+          ) | Sort-Object
+          $expectedChecksums = @($expectedPackages + 'release-manifest.json') | Sort-Object
+          $expected = @($expectedChecksums + 'SHA256SUMS.txt') | Sort-Object
+          $actual = @(Get-ChildItem release-assets -File | ForEach-Object Name | Sort-Object)
+          if ($actual.Count -ne $expected.Count -or (Compare-Object $expected $actual)) {
+            throw 'Downloaded release artifact does not match the five-file allowlist.'
+          }
+
+          $checksumLines = @(Get-Content release-assets/SHA256SUMS.txt)
+          if ($checksumLines.Count -ne 4) {
+            throw "SHA256SUMS.txt must contain exactly four non-self entries, found $($checksumLines.Count)."
+          }
+          $checksumEntries = foreach ($line in $checksumLines) {
+            if ($line -notmatch '^([0-9a-f]{64})  ([^\\/]+)$') { throw "Invalid checksum: $line" }
+            $name = $Matches[2]
+            if ((Split-Path -Leaf $name) -cne $name -or $name -ceq 'SHA256SUMS.txt') {
+              throw "Checksum names must be expected non-self leaf names: $name"
+            }
+            [pscustomobject]@{ name = $name; sha256 = $Matches[1] }
+          }
+          $checksumNames = @($checksumEntries | ForEach-Object name)
+          if (@($checksumNames | Sort-Object -Unique).Count -ne 4 -or
+              (Compare-Object $expectedChecksums @($checksumNames | Sort-Object))) {
+            throw 'SHA256SUMS.txt must contain each expected name exactly once.'
+          }
+          foreach ($entry in $checksumEntries) {
+            $path = Join-Path release-assets $entry.name
+            $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant()
+            if ($hash -cne $entry.sha256) { throw "Checksum mismatch: $($entry.name)" }
+          }
+
+          $manifest = Get-Content release-assets/release-manifest.json -Raw | ConvertFrom-Json
+          $remoteCommit = gh api "repos/$env:GH_REPO/commits/$env:RELEASE_TAG" --jq .sha
+          if ($LASTEXITCODE -ne 0 -or $remoteCommit -notmatch '^[0-9a-f]{40}$') {
+            throw 'Unable to resolve the release tag to an exact repository commit.'
+          }
+          $expectedRepository = "https://github.com/$env:GH_REPO"
+          if ($manifest.schemaVersion -ne 1 -or
+              $manifest.tag -cne $env:RELEASE_TAG -or
+              $manifest.platform -cne 'win32-x64' -or
+              $manifest.prerelease -ne $true -or
+              $manifest.source.repository -cne $expectedRepository -or
+              $manifest.source.commit -cne $remoteCommit -or
+              $manifest.source.license -cne "$expectedRepository/blob/$env:RELEASE_TAG/LICENSE" -or
+              $manifest.mediaRuntime.component -cne 'FFmpeg' -or
+              $manifest.mediaRuntime.complianceStatus -cne 'verified' -or
+              $manifest.PSObject.Properties.Name -contains 'generatedAtUtc') {
+            throw 'Release manifest tag, source commit, platform, or stable metadata is invalid.'
+          }
+          $manifestPackages = @($manifest.packages)
+          $manifestNames = @($manifestPackages | ForEach-Object file)
+          if ($manifestPackages.Count -ne 3 -or
+              @($manifestNames | Sort-Object -Unique).Count -ne 3 -or
+              (Compare-Object $expectedPackages @($manifestNames | Sort-Object))) {
+            throw 'Release manifest must describe each package exactly once.'
+          }
+          foreach ($package in $manifestPackages) {
+            $path = Join-Path release-assets $package.file
+            $checksum = @($checksumEntries | Where-Object name -CEQ $package.file)
+            if ($checksum.Count -ne 1 -or
+                $package.platform -cne 'win32-x64' -or
+                $package.authenticode -cne 'unsigned' -or
+                [long]$package.bytes -ne (Get-Item -LiteralPath $path).Length -or
+                $package.sha256 -cne $checksum[0].sha256 -or
+                $package.sha256 -cne (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant()) {
+              throw "Release manifest asset mismatch: $($package.file)"
+            }
+          }
+          $notes = @"
+          Windows x64 prerelease. Choose one download:
+
+          - **Full installer (recommended):** `SharpShot-Studio-Setup-0.2.0-alpha.1-win-x64.exe`
+          - **Full portable:** `SharpShot-Studio-0.2.0-alpha.1-win-x64.zip`
+          - **Quick Capture:** `SharpShot-Quick-1.5.0-win-x64.zip` for the smallest screenshot/quick-recording utility
+
+          Do not run Full Studio and Quick Capture simultaneously: both own the same global capture shortcuts. These builds are unsigned, so Windows can show an Unknown publisher or SmartScreen warning. Verify `SHA256SUMS.txt` before running anything.
+
+          Source: https://github.com/Leonxlnx/SharpShot/tree/$env:RELEASE_TAG
+          MIT license: https://github.com/Leonxlnx/SharpShot/blob/$env:RELEASE_TAG/LICENSE
+
+          Full Studio is drafted only after both the canonical and packaged FFmpeg manifests report `complianceStatus: verified`. Runtime provenance, license texts, and the reviewed third-party inventory ship with the package and source tree.
+          "@
+          $assets = Get-ChildItem release-assets -File | Sort-Object Name | ForEach-Object FullName
+          gh release create $env:RELEASE_TAG @assets --repo $env:GH_REPO `
+            --verify-tag --draft --prerelease --latest=false `
+            --title "SharpShot Studio 0.2.0-alpha.1" --notes $notes

@@ -48,6 +48,16 @@ namespace SharpShot
                 return SelfTest.Run(output, liveSelfTest);
             }
 
+            if (StudioHotkeyHost.CanHandle(args))
+                return StudioHotkeyHost.Run(args);
+
+            // Studio launches the proven native picker/recorder as a short-lived
+            // helper. One-shot commands deliberately bypass the tray singleton:
+            // the Electron shell owns workflows while this process owns only the
+            // selected capture and exits as soon as its result is durable.
+            if (StudioOneShot.CanHandle(args))
+                return StudioOneShot.Run(args);
+
             bool createdNew;
             _singleInstance = new Mutex(true, MutexName, out createdNew);
             if (!createdNew)
@@ -2418,11 +2428,16 @@ namespace SharpShot
                 VerifyAutoScaleBoundaries();
                 report.Add("PASS: Auto Crisp scale boundaries are deterministic");
 
+                VerifyStudioCommandReader();
+                report.Add("PASS: Studio recording stops on command, parent stdin EOF, or stdin error");
+
                 VerifyOptionalRecordingArtifactFailure(outputFolder);
                 report.Add("PASS: optional cursor metadata failure preserves finalized recording media");
 
                 VerifyRecordingPolicy(outputFolder);
-                report.Add("PASS: recording source-to-output policy is deterministic");
+                report.Add("PASS: recording source-to-output, cursor, and Studio clipboard policy is deterministic");
+                StudioHotkeyHostSelfTest.Verify();
+                report.Add("PASS: Studio hotkey host protocol and exact-chord policy are deterministic");
                 VerifyDesktopDuplicationInterop();
                 report.Add("PASS: Desktop Duplication interop layouts match the x64 Windows ABI");
                 AudioRecordingSelfTest.Verify(outputFolder);
@@ -2621,6 +2636,19 @@ namespace SharpShot
                 throw new InvalidOperationException(
                     "An unencodable extreme aspect ratio was silently distorted.");
 
+            string dimensionResultPath = Path.Combine(
+                outputFolder, "recording-dimensions-result.ini");
+            StudioOneShot.TryWriteResult(
+                dimensionResultPath, "completed", "oversize.mp4", 4096, 2304,
+                1000, false, null, null, null, null, 7680, 4320);
+            string[] dimensionResult = File.ReadAllLines(dimensionResultPath);
+            if (Array.IndexOf(dimensionResult, "sourceWidth=7680") < 0 ||
+                Array.IndexOf(dimensionResult, "sourceHeight=4320") < 0 ||
+                Array.IndexOf(dimensionResult, "width=4096") < 0 ||
+                Array.IndexOf(dimensionResult, "height=2304") < 0)
+                throw new InvalidDataException(
+                    "Studio result omitted recording source-to-output dimensions.");
+
             if (RecordingPolicy.GetFrameRate(1280, 720) != 60 ||
                 RecordingPolicy.GetFrameRate(1282, 720) != 30 ||
                 RecordingPolicy.GetFrameRate(1920, 1080) != 30)
@@ -2670,9 +2698,59 @@ namespace SharpShot
             if (!invalidFrameRateRejected)
                 throw new InvalidOperationException("Unsupported recording FPS was accepted.");
 
-            RecordingCursorPolicy visibleCursor = new RecordingCursorPolicy(true, false);
-            if (!visibleCursor.IncludeInVideo || visibleCursor.CaptureEditableMetadata)
-                throw new InvalidOperationException("Quick recording cursor policy changed.");
+            RecordingCursorPolicy defaultCursor =
+                StudioOneShot.ResolveRecordingCursorPolicy(null, null);
+            RecordingCursorPolicy hiddenCursor =
+                StudioOneShot.ResolveRecordingCursorPolicy("false", "false");
+            RecordingCursorPolicy visibleCursor =
+                StudioOneShot.ResolveRecordingCursorPolicy("true", "false");
+            RecordingCursorPolicy editableCursor =
+                StudioOneShot.ResolveRecordingCursorPolicy("false", "true");
+            RecordingCursorPolicy independentCursor =
+                StudioOneShot.ResolveRecordingCursorPolicy("true", "true");
+            if (!defaultCursor.IncludeInVideo || defaultCursor.CaptureEditableMetadata ||
+                hiddenCursor.IncludeInVideo || hiddenCursor.CaptureEditableMetadata ||
+                !visibleCursor.IncludeInVideo || visibleCursor.CaptureEditableMetadata ||
+                editableCursor.IncludeInVideo || !editableCursor.CaptureEditableMetadata ||
+                !independentCursor.IncludeInVideo || !independentCursor.CaptureEditableMetadata)
+                throw new InvalidOperationException("Recording cursor policy changed.");
+
+            StudioScreenshotClipboardPlan compactClipboard =
+                StudioOneShot.ResolveScreenshotClipboardPlan(null, true);
+            StudioScreenshotClipboardPlan processedClipboard =
+                StudioOneShot.ResolveScreenshotClipboardPlan(null, false);
+            StudioScreenshotClipboardPlan disabledCompactClipboard =
+                StudioOneShot.ResolveScreenshotClipboardPlan("false", true);
+            StudioScreenshotClipboardPlan disabledProcessedClipboard =
+                StudioOneShot.ResolveScreenshotClipboardPlan("false", false);
+            if (!compactClipboard.CopySelectionSize || compactClipboard.CopyProcessed ||
+                processedClipboard.CopySelectionSize || !processedClipboard.CopyProcessed ||
+                disabledCompactClipboard.CopySelectionSize ||
+                disabledCompactClipboard.CopyProcessed ||
+                disabledProcessedClipboard.CopySelectionSize ||
+                disabledProcessedClipboard.CopyProcessed)
+                throw new InvalidOperationException("Studio screenshot clipboard policy changed.");
+        }
+
+        private static void VerifyStudioCommandReader()
+        {
+            int requested = 0;
+            using (StringReader commands = new StringReader("ignored\nstop\n"))
+                StudioOneShot.ReadStopCommands(commands, delegate { requested++; });
+            if (requested != 1)
+                throw new InvalidOperationException("Studio stop command was not handled exactly once.");
+
+            requested = 0;
+            using (StringReader eof = new StringReader(String.Empty))
+                StudioOneShot.ReadStopCommands(eof, delegate { requested++; });
+            if (requested != 1)
+                throw new InvalidOperationException("Studio stdin EOF did not stop recording exactly once.");
+
+            requested = 0;
+            using (TextReader failed = new FailingStudioCommandReader())
+                StudioOneShot.ReadStopCommands(failed, delegate { requested++; });
+            if (requested != 1)
+                throw new InvalidOperationException("Studio stdin failure did not stop recording exactly once.");
         }
 
         private static void VerifyOptionalRecordingArtifactFailure(string outputFolder)
@@ -2688,6 +2766,14 @@ namespace SharpShot
                 throw new InvalidOperationException(
                     "An optional cursor metadata failure removed finalized recording media.");
             File.Delete(recordingPath);
+        }
+
+        private sealed class FailingStudioCommandReader : TextReader
+        {
+            public override string ReadLine()
+            {
+                throw new IOException("synthetic stdin failure");
+            }
         }
 
         private static void VerifyDesktopDuplicationInterop()

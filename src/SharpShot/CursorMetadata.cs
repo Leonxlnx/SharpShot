@@ -437,6 +437,15 @@ namespace SharpShot
                 Normalize(-region.Width / 2, region.Width) != -500000)
                 throw new InvalidOperationException("Cursor coordinate normalization changed.");
 
+            string resultPath = Path.Combine(outputFolder, "cursor-result.ini");
+            StudioOneShot.TryWriteResult(
+                resultPath, "completed", videoPath, region.Width, region.Height,
+                166667L, false, null, sidecarPath);
+            string expectedResult = "cursorPath64=" + Convert.ToBase64String(
+                Encoding.UTF8.GetBytes(sidecarPath));
+            if (Array.IndexOf(File.ReadAllLines(resultPath), expectedResult) < 0)
+                throw new InvalidDataException("Studio result omitted the cursor sidecar path.");
+
             CursorMetadataProbeResult result = new CursorMetadataProbeResult();
             result.Iterations = iterations;
             result.SamplesWritten = recorder.SampleCount;

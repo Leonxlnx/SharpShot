@@ -140,7 +140,9 @@ try {
             'SharpShot-Package-Verify-' + [Guid]::NewGuid().ToString('N')
         )
         New-Item -ItemType Directory -Path $temporaryDirectory | Out-Null
-        Expand-Archive -LiteralPath $resolvedPackage -DestinationPath $temporaryDirectory
+        # ZipFile instead of Expand-Archive; see vendor-ffmpeg.ps1.
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        [IO.Compression.ZipFile]::ExtractToDirectory($resolvedPackage, $temporaryDirectory)
         $searchRoot = $temporaryDirectory
     }
     else {

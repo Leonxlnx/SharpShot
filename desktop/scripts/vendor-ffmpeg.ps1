@@ -75,7 +75,10 @@ try {
         New-Item -ItemType Directory -Path $temporaryDirectory | Out-Null
     }
     $expandedDirectory = Join-Path $temporaryDirectory 'expanded'
-    Expand-Archive -LiteralPath $archive -DestinationPath $expandedDirectory
+    # ZipFile instead of Expand-Archive: when Windows PowerShell is started from pwsh 7 it can load
+    # pwsh's newer Archive module, whose Expand-Archive fails on .NET Framework.
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [IO.Compression.ZipFile]::ExtractToDirectory($archive, $expandedDirectory)
     $archiveRoot = Join-Path $expandedDirectory ([string]$manifest.archiveRoot)
     if (-not (Test-Path -LiteralPath $archiveRoot -PathType Container)) {
         throw "Pinned FFmpeg archive root not found: $archiveRoot"
